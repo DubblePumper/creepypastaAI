@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+.env
 
 # Distribution / packaging
 .Python
@@ -172,3 +173,33 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# CreepyPasta AI specific
+logs/
+assets/output/
+assets/music/*.mp3
+assets/music/*.wav
+assets/images/*.jpg
+assets/images/*.png
+assets/images/*.gif
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Audio cache files
+*.cache
+cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini

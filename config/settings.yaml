@@ -1,0 +1,60 @@
+# Reddit Scraper Configuration
+reddit:
+  subreddit: "creepypasta"
+  allowed_flairs:
+    - "Text Story"
+    - "Very Short Story"
+  sort_by: "hot"  # hot, new, top, rising
+  time_filter: "week"  # hour, day, week, month, year, all
+  limit: 25
+
+# Text-to-Speech Configuration
+tts:
+  provider: "gtts"  # gtts, openai, azure
+  language: "en"
+  slow: false
+  
+  # OpenAI TTS settings (if using OpenAI)
+  openai:
+    model: "tts-1"
+    voice: "onyx"  # alloy, echo, fable, onyx, nova, shimmer
+    
+  # Azure TTS settings (if using Azure)
+  azure:
+    voice: "en-US-AriaNeural"
+    rate: "+0%"
+    pitch: "+0Hz"
+
+# Audio Configuration
+audio:
+  output_format: "mp3"
+  quality: "high"
+  volume:
+    narration: 0.8
+    background_music: 0.3
+  
+  # Background music settings
+  background_music:
+    enabled: true
+    fade_in_duration: 2.0
+    fade_out_duration: 2.0
+    loop: true
+
+# Story Processing
+story:
+  min_length: 100  # Minimum characters
+  max_length: 5000  # Maximum characters
+  clean_text: true
+  remove_markdown: true
+  
+# Output Settings
+output:
+  directory: "assets/output"
+  filename_format: "{title}_{timestamp}"
+  create_video: false  # Future feature
+  
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/creepypasta_ai.log"
