@@ -8,6 +8,8 @@ generation timestamps, and audio file paths.
 
 import json
 import logging
+import os
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any
@@ -90,14 +92,21 @@ class StoryTracker:
                 },
                 "stories": self.stories
             }
-            
-            # Write to temporary file first, then rename (atomic operation)
+              # Write to temporary file first, then move (atomic operation)
             temp_file = self.json_file_path.with_suffix('.tmp')
             with open(temp_file, 'w', encoding='utf-8') as file:
                 json.dump(data, file, indent=2, ensure_ascii=False)
             
-            # Rename temp file to actual file
-            temp_file.rename(self.json_file_path)
+            # Move temp file to actual file (cross-platform compatible)
+            # On Windows, remove existing file first if it exists
+            if os.name == 'nt' and self.json_file_path.exists():
+                try:
+                    os.remove(self.json_file_path)
+                except OSError:
+                    pass  # File might not exist or be locked
+            
+            # Use shutil.move for cross-platform compatibility
+            shutil.move(str(temp_file), str(self.json_file_path))
             
             self.logger.debug(f"Successfully saved {len(self.stories)} stories to {self.json_file_path}")
             return True

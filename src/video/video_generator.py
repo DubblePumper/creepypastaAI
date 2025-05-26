@@ -73,24 +73,8 @@ class VideoGenerator:
           # Check moviepy/FFmpeg configuration
         self._check_ffmpeg_config()
         
-        self.logger.info("Video generator initialized successfully")
+        self.logger.info("Video generator initialized successfulsly")
     
-    def _check_ffmpeg_config(self):
-        """Check and log moviepy/FFmpeg configuration."""
-        try:
-            from moviepy.config import FFMPEG_BINARY
-            self.logger.info(f"MoviePy FFmpeg binary: {FFMPEG_BINARY}")
-        except Exception as e:
-            self.logger.warning(f"Could not check FFmpeg configuration: {e}")
-            
-        # Test a simple moviepy operation
-        try:
-            from moviepy.editor import ColorClip
-            test_clip = ColorClip(size=(100, 100), color=(0, 0, 0), duration=0.1)
-            test_clip.close()
-            self.logger.info("MoviePy basic functionality test: PASSED")
-        except Exception as e:
-            self.logger.warning(f"MoviePy basic test failed: {e}")
     
     def generate_horror_images(self, story_title: str, story_content: str, num_images: Optional[int] = None) -> List[str]:
         """

@@ -10,8 +10,8 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
-# Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.utils.config_manager import ConfigManager
 from src.utils.story_tracker import StoryTracker

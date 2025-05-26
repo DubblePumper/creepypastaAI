@@ -1,29 +1,989 @@
 {
   "metadata": {
-    "total_stories": 1,
-    "last_updated": "2024-12-26T14:16:00.000000",
+    "total_stories": 34,
+    "last_updated": "2025-05-26T19:14:57.775726",
     "format_version": "1.0",
     "generated_by": "CreepyPasta AI"
   },
   "stories": [
     {
-      "id": "demo-story-123",
-      "title": "The Midnight Visitor",
-      "content": "It was a dark and stormy night when I heard the first knock at my door. Three soft taps, then silence. I waited, but nothing came. Then, just as I was about to return to bed, I heard it again. Three taps, deliberate and precise. This time, I decided to investigate...",
-      "reddit_url": "https://reddit.com/r/nosleep/demo",
+      "id": "d1c67b40-5a4e-47c8-b6c6-01ba2cb43b62",
+      "title": "The Used Snes",
+      "content": "I was a police officer at the time. My family and I lived in a poor state, barely scraping by. Vacations were a luxury we could never afford, and I always felt guilty that my kids never really got to enjoy their childhood like they should have. That changed on April 13th, 1997. I still remember the date—burned into my memory as the scariest day of my life. After a rare big paycheck and with my kids doing well in school, I decided to reward them. I bought them a Nintendo console I think it was a Super Nintendo, though I can’t quite remember. What I do remember is how their faces lit up. Pure joy. The next morning, they were already up, huddled around the TV, playing non-stop. They’d never owned a console before, so I couldn’t blame them. But just five days later, it broke. Maybe it overheated, or maybe it was just too old. I took it to a local repair shop. The guy there told me he couldn’t fix it but offered me a used one instead. I hesitated, but took it. I figured the kids would be happy either way. That evening, they plugged it in but something was off. The game loaded by itself, and it wasn’t anything I recognized. I saw Mario, but something was... wrong. I brushed it off. How could I have known what was coming? That night, I woke up around 3 a.m. for my shift. As I walked past the living room, I noticed the TV was on again even though I had turned it off before bed. I reached to switch it off, but as soon as I did... something appeared at the window. A shadowy figure. It wasn’t human. It wasn’t even animal. It looked... like a character from a game. Its shape was distorted, glitchy, like something trying to exist in our world but failing. I was frozen in fear. I don’t know why, but I turned the console back on. And it vanished. I called in sick the next day. I needed time to process what I had seen. Days passed quietly until another night at exactly 12 a.m., I heard the front door creak open. I thought it was my son sneaking out of bed. I was dead wrong. The same shadow figure walked in but now, with the light on, I saw its face. It had my son’s face... but warped, lifeless, and stretched across a deformed, hunched body. I nearly fainted. I couldn’t move. I couldn’t scream. And then, just like that, it left. I would’ve thought it was a nightmare, but when I inspected the door... it had claw marks. Still shaken, I turned on the Nintendo one last time. The screen flickered. A single image loaded. It was a picture of me. Sleeping. That was it. I called the station. Some officers dismissed me. But my chief... he believed me. Turns out, a family in California had been found murdered just a few weeks earlier. The only clue left behind was a Nintendo controller shoved into the father's skull. I still wonder what would have happened if I had ignored the signs. If I hadn’t gone to the station that day. Would my family still be here? Please, if anyone has information about a used Nintendo console like this—don’t plug it in. Burn it.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvsln5/the_used_snes/",
       "generation_info": {
-        "timestamp": "2024-12-26T14:16:00.000000",
+        "timestamp": "2025-05-26T19:14:57.527131",
         "tts_provider": "elevenlabs",
-        "audio_file_path": "output/audio/the_midnight_visitor.mp3",
-        "content_length": 235,
-        "word_count": 45,
-        "audio_generated_at": "2024-12-26T14:17:00.000000"
+        "audio_file_path": null,
+        "content_length": 2980,
+        "word_count": 564
       },
       "processing_stats": {
-        "original_length": 250,
-        "processed_length": 235,
-        "word_count": 45,
-        "processing_timestamp": "2024-12-26T14:15:30.000000"
+        "reddit_id": "1kvsln5",
+        "original_length": 0,
+        "processed_length": 2980,
+        "word_count": 564,
+        "scraping_timestamp": "unknown",
+        "author": "KARLmistery",
+        "score": 3,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "287bf389-2c8b-4508-8315-05b95f11fde0",
+      "title": "Evil.",
+      "content": "Guys, I'm still shaking after what just happened in Warzone. We were in the middle of a match, getting some sick kills, when suddenly this low, creepy voice comes out of nowhere and says \"Fetch me their souls.\" I'm not even kidding, it sent chills down my spine. Then, after I got another kill, my screen froze on the damage screen and when it came back, I was standing outside the map in some dark, deserted landscape. I tried to call out to my squad, but they were muted. Next thing I know, I'm sliding down a hill, and it's like I'm in a completely different game. We all died at the same time, and the game just... it felt off. Has anyone else ever experienced anything like this? I'm seriously freaked out, guys. Anyone know what could've caused this? Edit: I'm still getting some weird glitches and errors after this happened. Anyone know how to troubleshoot this?",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvpj8j/evil/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.560798",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 870,
+        "word_count": 158
+      },
+      "processing_stats": {
+        "reddit_id": "1kvpj8j",
+        "original_length": 0,
+        "processed_length": 870,
+        "word_count": 158,
+        "scraping_timestamp": "unknown",
+        "author": "ReleaseBig8914",
+        "score": 4,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "f61f5f27-f09e-451a-91b2-536f191cff72",
+      "title": "Whenever Jeremy eats the steak, he feels like he is sleeping with the chef",
+      "content": "I took Jeremy to a steak house restaurant that literally have their own cows, and that's how fresh they are. When Jeremy first ordered his steak and he ate into it, he looked at me with great concern. He said to me that he feels like he had sex with the chef, and I smiled because I assumed that the comment meant that he enjoyed the steak. Jeremy wasn't smiling though and he then had another deepening concerning look. I then asked him if he was OK and he replied \"I feel like I am having sex with the chef\" Then Jeremy nodded his head and he told me \"look the steak is amazing but very time I eat it, it feels like I am having se with the chef and I don't know why?\" And I gave a weird look back at Jeremy. I had no idea what he was on about but he just kind of put me off about my food. I said to Jeremy to stop being weird and to just eat his steak. The restaurant is a lovely place with their own farm and it's amazing to walk through it. Then after we paid the bill both Jeremy and I had agreed that the steak was the best ever one we have both had in our lives. Walking through the farm lands that belonged to the restaurant and seeing all other the cows, it's a genius idea for a farm to start a restaurant. Then the second time me and Jeremy went to the steak restaurant, it was amazing but Jeremy had this concerned look again. He told me that he felt like he was getting beaten up by the chef that cooked his steak this time, he loved it though and I just kind of stare at him like he was crazy. He is my long time friend and I have never seen him acting this strange. Then the third time we both went to that steak restaurant, Jeremy loved the steak but he felt he was having sex with the chef this time. As we went out and walked through the scenic farm field, there was a painful groan coming from a cow and inside some shed. It was open and when me and Jeremy checked it out, the head chef was enacting beastiality upon that cow. Then in another shed we heard more cries from a cow and when we checked that shed out, the chef was beating the cow. So Jeremy was right all along and we will no longer be going to that restaurant ever again.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvt29w/whenever_jeremy_eats_the_steak_he_feels_like_he/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.566096",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2154,
+        "word_count": 436
+      },
+      "processing_stats": {
+        "reddit_id": "1kvt29w",
+        "original_length": 0,
+        "processed_length": 2154,
+        "word_count": 436,
+        "scraping_timestamp": "unknown",
+        "author": "shortstory1",
+        "score": 2,
+        "num_comments": 1
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "be592263-ad8d-463f-a53b-7578eda398aa",
+      "title": "Watch Tom Cruise as Ethan hunt in the 9th instalment of mission impossible, as Ethan hunt and failing miserably at a daring stunt and actually dying!!!",
+      "content": "Tom Cruise is known for his big actions epics and wild out of this world death defying stunts. Right now though people are kind of use to seeing Tom Cruise defy all odds and pull off an impossible stunt. He has done it all and the audience is getting bored. We need to see something new with Tom Cruise and I had just the idea. For Tom cruises next big death defying stunt, Tom Cruise will actually have to fail and die. Imagine what people would think and the billions of dollars this will produce. I knew exactly how to pull this off. So I made another big epic action 9th surprise installment of mission impossible with Tom Cruise as the star and a big stunt he will have to do. I will tell cruise what he will do and show him all of the safety features, and I will even let him have a few practice runs. The stunt is basically hanging off a helicopter again but just higher up and cruise will have no problems with this. I mean everyone expected the mission impossible franchise to end after the 8th film, so when everyone gets surprised with a 9th film, people will be so surprised. I give a script to cruise and he thinks the film is going one way. Then I hold a secret meeting with the rest of the cast, crew and director. I tell them that I am going to make sure that Tom Cruise will fail in the stunt because of me secretly messing around with the helicopter. Then we will advertise the 9th instalment of mission impossible as 'watch Tom Cruise as Ethan hunt doing another daring stunt! And failing at it miserably and dying.' The audience will be even more stunned by this because they are use to seeing cruise being successful in doing stunts, so when they hear him being unsuccessful at doing a stunt and actually dying, they will want to see it for sure. It's also a definite billion dollars earner. The rest of the cast were behind me in doing this, because let's face it their careers needed a boost. So everything is set up and tom Cruise thinks the film is going one way, while the rest of the cast knows it will go another way. I mean everyone will want to see this and they are so bored of Tom Cruise pulling off another daring stunt, people need something different. So when the 9th instalment of mission impossible comes out, watch and be surprised as tom Cruise fails to do a stunt!",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvwdfb/watch_tom_cruise_as_ethan_hunt_in_the_9th/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.569443",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2304,
+        "word_count": 436
+      },
+      "processing_stats": {
+        "reddit_id": "1kvwdfb",
+        "original_length": 0,
+        "processed_length": 2304,
+        "word_count": 436,
+        "scraping_timestamp": "unknown",
+        "author": "shortstory1",
+        "score": 0,
+        "num_comments": 1
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "41b6b828-fd25-4fb9-9a85-3d6aba0e5638",
+      "title": "[Dark RP] For the Femme Fatale who feels no guilt… only pleasure 🖤🔪",
+      "content": "My name is Jacob. I’m 21, sharp-minded, soft-spoken, and always calculating. I’m not here for small talk or fantasy fluff. I’m here looking for the kind of woman who doesn’t just wear danger — she is danger. You know the type: red lips, calm eyes, and a body count hidden behind charming smiles and perfect manners. A killer in heels. A manipulator who turns love into a weapon and desire into control. If that sounds like you, then I’m already interested. I’m not offering flowers. I offer a match and a bottle of gasoline. A chance to create something intense — twisted, maybe even destructive — but real. Something worth bleeding for. Worth fearing. Your exes? I assume they’re long gone. Figuratively… or otherwise. You’re not the type to leave survivors. And that’s what I find beautiful. You don’t just break hearts — you dissect them. I don’t want a partner. I want a rival. A mirror. Someone who understands that the line between love and death is thinner than most think — and knows how to dance right on it. If your kiss is poison and your heart’s a locked vault, then send me a message. Let’s see how far down the rabbit hole we can go.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvnr42/m4fdark_rp_for_the_femme_fatale_who_feels_no/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.572105",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1147,
+        "word_count": 208
+      },
+      "processing_stats": {
+        "reddit_id": "1kvnr42",
+        "original_length": 0,
+        "processed_length": 1147,
+        "word_count": 208,
+        "scraping_timestamp": "unknown",
+        "author": "Civil-Examination772",
+        "score": 3,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "ed8fbe69-2f66-4ad0-8429-b521c3628055",
+      "title": "A Pulse",
+      "content": "Each step down the creaking, narrow staircase leads you deeper into the damp shadows, the walls pressing closer with each descent. The air is thick, smelling faintly of mildew and earth. Somewhere above, the mansion sits in silence, unaware, or perhaps indifferent, that you’re slipping into its hidden spaces. You hesitate on a step, listening to the quiet, but then you feel it: a faint, rhythmic thrum beneath your feet. It’s almost unnoticeable, this pulse, but it’s there, vibrating through the old wood, beating in sync with the rhythm of your heart. You press on, curiosity outweighing caution as the walls grow rougher, jagged stones now lining the narrow corridor. The pulse grows stronger, humming up through your soles, through your legs, tugging you forward as if it were alive. Ahead, the darkness seems to breathe, as if something is waiting just beyond reach. You touch the wall, grounding yourself, but even the stones beneath your fingertips vibrate, the pulsing beat now almost steady, alive, as if the house itself has a heartbeat buried deep within. You stop, hold your breath. For a moment, you wonder if it’s your own heart that’s echoing back at you, but no, this pulse is older, deeper. It’s something ancient, waiting, patient as stone. You take a step back, feel the pulse fade with each step upward, but you know it’s still there, buried in the dark, waiting for someone else to find it.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvrtvj/a_pulse/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.578416",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1414,
+        "word_count": 240
+      },
+      "processing_stats": {
+        "reddit_id": "1kvrtvj",
+        "original_length": 0,
+        "processed_length": 1414,
+        "word_count": 240,
+        "scraping_timestamp": "unknown",
+        "author": "Zealousideal-Eye630",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "c139d62e-9d6f-4fb9-b6ad-9fe2499f7393",
+      "title": "My little dip into this asethetic",
+      "content": "Note: This is my original work. Also this started out as an another oc world and somehow took a dark turn. Yes this is made by taking inspiration from dreamcore, weirdcore, backrooms and liminal spaces. This is all fictional. There is a world, The Axis Sanctum, which you may enter from 2:20am, it opens only for 4 minutes and 17 seconds a phenomen known as the Veil's Blink. You MUST enter during the time too early? Or too late? Is dangerous. There are some rules which you must keep in mind: 1. Never speak nor write down your true name in the Sanctum. The Sanctum feeds on names. Saying or writing your true name causes it to bleed from reality, drawing unseen eyes and endless whispers. If you must write it, burn the paper before entering—or risk vanishing into silence. 2. Do not follow the flicker of shifting shadows. Shadows here twist and move with a will of their own. They don’t guide you home—they lead you deeper into the maze, to places no one returns from. If a shadow flickers near, look away. Do not follow. 3. Refuse any direction, drink, food or help. Nothing inside the Sanctum is what it seems. Accepting help, directions, or sustenance binds you to this place. The smallest favor or bite can trap your soul in endless wandering or worse... 4. Never touch the glowing cracks in the walls—nor the drifting stars. These fractures are tears in reality, dangerous and unpredictable. Touching them can tear your mind or body apart—or trap you forever between worlds. Watch from a distance and never reach out. A few extra things ALWAYS leave BEFORE 4am, the Sanctum’s power grows, and escape becomes almost impossible. Time warps and creatures become merciless hunters. Find the Gate of Fractures to escape you must exit it BEFORE the Veil's Blink closes or find yourself trapped.. waiting until it opens again To bind yourself to reality, you may bring a watch or spare watches in hand...but be warned to not stare to check the time often. Time is a fickle thing inside the Sanctum, checking too often may spiral you to madness. Only check when nessacary. The hand of your watch will point to the Gate when 4am strikes closer... DON'T ignore them. I wish you safe travels...",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvrrgv/my_little_dip_into_this_asethetic/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.582016",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2193,
+        "word_count": 386
+      },
+      "processing_stats": {
+        "reddit_id": "1kvrrgv",
+        "original_length": 0,
+        "processed_length": 2193,
+        "word_count": 386,
+        "scraping_timestamp": "unknown",
+        "author": "Beginning-Act3246",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "479f70c5-768f-4ccb-b826-74e0591e82af",
+      "title": "Aquele que me assistia no escuro..",
+      "content": "Aquele que me assistia no escuro parte 2 Acordei de manhã cedo tomei café e fui pra escola mal podia esperar pra contar pra alguém aquilo,meu melhor amigo estudava comigo é pensei que ele acreditaria em mim se insistisse,eu só queria contar para alguém Aqueles olhos ainda estavam na minha mente. Cheguei na escola fui direto pra sala não vi meu amigo pensei será se ele nao vem hoje? Passou 5 minutos ele chegou Falei ei achei que você ia me deixar sozinho nessa aula chata,ele riu é disse eae como vai? Eu ri e disse mais ou menos quero te contar uma coisa no intervalo, a professora já tinha começado a aula então era difícil conversar ali Depois da aula peguei meu lanche e fui sentar com meu amigo no pátio, ele perguntou oque era que eu queria contar eu disse: provavelmente você não vai acreditar em mim mas tenho que falar disso com alguém Contei tudo para ele e ele comentou Acho que você está vendo muito filmes de terror, não foi um pesadelo não? Eu irritado disse: lógico que não sabia que ia pensar que sou louco, ele disse calma cara eu acredito em você mas realmente parece loucura,você acha que essa coisa ainda tá na sua casa? Eu dise eu espero que não. Depois da aula cheguei em casa faminto fui almoçar depois fui assistir um pouco de desenho tinha esquecido por um instante daquela coisa, mais tarde meus amigos me chamaram pra brincar, acabei indo Ficamos brincando por umas hora apenas Minha mãe me chamou pois tinha algumas atividades da escola pra fazer acabei voltando pra casa cedo e fui fazer as atividades o dia foi passando Deu 18 horas estava ficando tudo escuro Me deu um arrepio de lembrar que a noite estava tão perto, e o pior eu ia ter que dormir no meu quarto tentei afastar esses pensamentos, chegou a hora do almoço fiquei conversando com meus pais depois fomos ver um filme chegou a hora de dormi Eu fiquei com um aperto no coração não sei explicar mas quando minha mãe me colocou na cama é disse boa noite filho e fechou a porta eu imediatamente olhei para o guarda roupa, e não tinha nada fiquei aliviado mas Ao mesmo tempo fiquei será se ele foi embora ou está escondido em algum lugar? Eu estava sem sono mas a noite foi passando e eu acabei dormindo, dormi algumas horas e acordei de madrugada denovo, senti uma coisa gelada caindo no meu rosto por um segundo eu passei a mão no rosto ainda No estado meio que dormindo e acordado ao mesmo tempo, quando abri os olhos minha alma saiu do corpo por um tempo eu vi aquela coisa mas ele estava tão perto que aquilo era algo que saia dos olhos dele, o mais estranho era que ele não se movia não piscava ele era como um boneco imóvel eu estava tão apavorado que fiquei olhando por um tempo até cair na real,por mais que ele não se mexesse aquela presença me deixava fraco Meio tonto, parecia sugar minhas forças Crie coragem levantei e fui correndo pro quarto dos meus pais entrei lá assustei minha mãe que disse oque foi filho? Eu falei mãe tem algo no quarto Ela disse filho... Pensei que só eu visse aquilo. (eu não sei se continuo ou deixo o final aberto pra dar uma vibe de terror desconhecido)",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvmw5b/aquele_que_me_assistia_no_escuro/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.598267",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 3086,
+        "word_count": 573
+      },
+      "processing_stats": {
+        "reddit_id": "1kvmw5b",
+        "original_length": 0,
+        "processed_length": 3086,
+        "word_count": 573,
+        "scraping_timestamp": "unknown",
+        "author": "Remote-Tailor-509",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "c984cc50-55a7-46a0-9064-82d307630948",
+      "title": "Unknown Messages",
+      "content": "I was scrolling on my phone until I got a message saying \"𝔚𝔬 𝔡𝔬 𝔶𝔬𝔲 𝔱𝔥𝔦𝔫𝔨 𝔶𝔬𝔲 𝔞𝔯𝔢?\" With a photo of a face inside my kitchen and I live alone. The next night, I come home from school and I hear very loud banging in my kitchen, so I quickly and quietly peek through the kitchen and see someone’s face, and the EXACT same face in the picture that the Unknown Number sent me last night… 5 week’s later, I move out to New York City but I still see the face everywhere I blink at.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvftij/unknown_messages/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.600805",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 475,
+        "word_count": 97
+      },
+      "processing_stats": {
+        "reddit_id": "1kvftij",
+        "original_length": 0,
+        "processed_length": 475,
+        "word_count": 97,
+        "scraping_timestamp": "unknown",
+        "author": "Sufficient-Joke-7820",
+        "score": 3,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "4113fa13-3c45-4111-8493-fa26227f45a7",
+      "title": "How do I prove to the judge that the video showing me getting beat up, is not an AI video?",
+      "content": "I got punched by a guy who lives on the same floor as me, it's on the 8th floor. There are no cameras on the floors or on the stair ways. So this guy has loud parties and is always causing trouble and no body on the block likes him. Anyway he punched me and I contacted the police and i even recorded it, he started telling police that it was all made by AI. Now let me recap and say that I wear body cameras where ever I go as I suffer from anxiety and body cameras make me feel safe. So when this guy punched me, I had it all recorded but the police weren't too sure whether it was real or not. Then when the police weren't going to take further action as they thought it was all AI, I took the guy to court. I was sure that the recording would be enough and I still had the bruise on my left eye and it still hurt. Even the judge was questioning the video and all I had for support was from my grown adult daughter. I always talk to her and she has been giving me words of comfort, she lives with her boyfriend in some fancy apartment. Well more fancier than mine. Then when I got the stupid idiot of a neighbour actually stabbing me on camera, and had the actual stab marks on my body and luckily it didn't go in too deep, the guy was still accusing me of creating an AI video. The courts, the lawyers and judges were still on the fence whether it was an AI video or not. Also my apt got robbed and my computer was taken and everything. The idiot of a neighbour kept accusing me of creating an AI video of him attacking me. It was going to be a long fight but I got to speak to my daughter. She was giving me encouraging words and she told me how great her life was going and that everything was OK. Then one day I saw her boyfriend flirting with other women outside in some clubs. I told my daughter but she said that it was fine and that they are in an open relationship. This confused me because my daughter had always been against that sort of thing, I let it go though. Then finally the courts decided that the video was real and the guy got charged and taken to prison. As happy as I am, I have a confession to make, and basically I did create an AI video of that guy hitting me. I took secret photos of him and used that for AI to replicate. I had to punch myself and even stab myself as evidence. I destroyed my laptop and reported it as stolen to the police. I just wanted that guy to be gone. Then I get a phone call from the police about my daughter, they tell me that she had been dead for months and that the putrid smell made her neighbours report something as off to them. Her boyfriend killed her 4 months ago and stuffed her body in the storage room, which was right next to the hallway and which is why the other residents in their block could smell it. I also found out that I had been conversing with an AI voice of my daughter which could think of what to say to me. The AI even made a deep fake video of my daughter when I spoke to her through video call. I guess karma goes round.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvlml5/how_do_i_prove_to_the_judge_that_the_video/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.604497",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 3007,
+        "word_count": 606
+      },
+      "processing_stats": {
+        "reddit_id": "1kvlml5",
+        "original_length": 0,
+        "processed_length": 3007,
+        "word_count": 606,
+        "scraping_timestamp": "unknown",
+        "author": "shortstory1",
+        "score": 1,
+        "num_comments": 1
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "beb432f9-8628-47ca-9eb1-cb60409b67d9",
+      "title": "Rats",
+      "content": "Let me explain. I’m a 25-year-old man who just recently moved out of his parents’ house. Not long ago, I got an apartment not too far from the city center, which worked out perfectly because of my job. The rent isn’t too expensive: just 6,000 Mexican pesos (around 311 dollars at the current exchange rate). Considering the location, I find it quite affordable. In fact, I’ve been thinking about getting a roommate to split costs and ease the burden a bit. Although the apartment is generally fine and everything seems to be going well, I’ve been experiencing some issues over the past few days. Food has started to go missing. At first, I thought maybe it was me—maybe I had forgotten I ate it. But no. The food that disappears is usually the stuff I leave on the table, but what’s even stranger is that sometimes I don’t leave anything out… and still, I find the pantry open. Food has even gone missing from the fridge. At first, I thought it might be rats. But… what kind of rat opens a pantry? Or a refrigerator? And more importantly, closes it again afterward? Maybe a really big, incredibly smart rat—though that sounds more like a movie scene than a real-life problem. What unsettles me even more is that sometimes I hear noises in the kitchen right when I’m about to fall asleep. I know I should get up and check, but honestly… I’m afraid of finding out what’s really going on. So I’m thinking of buying security cameras.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvliyy/rats/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.607158",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1429,
+        "word_count": 257
+      },
+      "processing_stats": {
+        "reddit_id": "1kvliyy",
+        "original_length": 0,
+        "processed_length": 1429,
+        "word_count": 257,
+        "scraping_timestamp": "unknown",
+        "author": "Independent-Grape-38",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "96947d23-04ef-4397-9b4e-0bb4c1ec27b2",
+      "title": "He Knocked Four Times,Then My Life Ended",
+      "content": "I never believed in those old creepypasta stories. The masked killer, the spiraled eyes, the axe. Theo Hollow was just another campfire myth, something edgy kids posted on forums for karma. At least, that’s what I thought—until he showed up at my door. It was past midnight. I was alone at home, binge-watching garbage on TV, when I heard knocking. Not urgent or panicked—just slow. Four knocks. Pause. Four more. When I checked the peephole, no one was there. And yet… the knocking continued. The third time, I opened the door. He was standing right there—gray hoodie, black mask like melted tar, with white spirals where his eyes should’ve been. The air felt wrong, like it folded around him. In his hand was an axe with a curved wooden handle, stained dark at the edge. I froze. He tilted his head. The spirals on his face started to pulse—slow, hypnotic, almost breathing. I slammed the door and locked it. Pointless. Somehow, he was already inside. I turned around and there he was, halfway down my hallway. I don’t know how he moved so silently. One second nothing, the next—him. My chest seized. I barely made it upstairs. My heart was thundering in my ears, and the walls—God, the walls—they started to bleed. Thin lines of red trickling down the paint like veins bursting open. I barricaded myself in the bedroom with the dresser, tried to call 911, but the line was dead. No signal. No power. My phone drained to zero in seconds. That’s when I heard them. Voices. Coming from the vents, the cracks in the wall, the floorboards. Familiar voices. My mom, who passed five years ago. My sister, who died in a fire. All of them whispering: “Let him in.” When he broke through the door, it wasn’t loud or dramatic. Just wood cracking like old bones. He stepped inside, dragging the axe behind him, letting it carve a scar across my floor. I threw a lamp at him. It shattered. He didn’t even flinch. The swing came fast. The axe buried itself in my thigh and hit bone. I felt it shatter inside me. Pain ripped through me so violently I couldn’t even scream. I just collapsed, twitching, trying to crawl. And he stood over me. Watching. For a second, I swear I saw under the mask. Just a glimpse. A boy’s face, burnt and twisted, mouth sewn shut with wire. Black tears leaking from his eyes. Then—just the spirals again, spinning faster now, dragging me into that abyss behind them. I don’t know why he didn’t finish me. I woke up hours later, stuffed in the hall closet. My blood soaked half the carpet. My leg’s useless. Everything smells like rust and rot. On the wall, smeared in what looked like raw flesh, he’d written: “I SEE YOU NOW.” He’s still here. I know it. I can feel him watching me through the glass of the TV, the hallway mirror, the screen of this laptop. So if you’re reading this—break your mirrors. Smash your screens. Don’t look too long into anything that reflects. Because if you do… You’ll see those spirals. And by then, it’s already too late.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvkjjr/he_knocked_four_timesthen_my_life_ended/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.610361",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2971,
+        "word_count": 533
+      },
+      "processing_stats": {
+        "reddit_id": "1kvkjjr",
+        "original_length": 0,
+        "processed_length": 2971,
+        "word_count": 533,
+        "scraping_timestamp": "unknown",
+        "author": "Narrow_Bed_731",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "abb9d7d2-b3f9-4151-8bed-5a7531e1d52b",
+      "title": "Creepypasta",
+      "content": "Esta historia empieza a sí: ●Un chico llamado Emeterio y tenia 17 años (era de Cuba), vivia en Estados Unidos y su madre lo habia abandonado en ese pais cuando él tenia 12 años. Una familia lo habia adoptado. Cuando era pequeño se habia lastimado el ojo derecho y algunas veces no veia nada. -Emeterio era algo callado y tranquilo, estaba terminando la secundaria y no tenia tantos amigos; le gustaba las historias de terror o veia series policiales. -Un día, estaba mirando su computadora algunas cosas de terror. De repente, alguien tocaba su ventana; se acerco a la ventana, abrio un poco la cortina y vio a una persona alta sin rostro. El chico se quedo shockeado y cuando retrosedio un poco, se tropezo con su patineta y se golpeo su cabeza contra su escritorio. -Cuando se desperto, noto que estaba en el hospital. Sus padres estaban a su lado preocupados. \"¿Que paso?\" Dijo Emeterio. \"Te golpeaste cuando acomodabas tu habitacion.\" Dijo su madre. El chico sabia que no estaba acomodando su habitacion, habia visto otra cosa, pero no queria hablar tanto por el dolor de la cabeza. Pasaban las semanas, el chico tenia ataques de ira sin sentido y se cortaba los brazos. Sabia que alguien en su cabeza le decia esas cosas, pero cuando lo intentaban ayudar, él no se dejaba y los lastimaba. Algunas veces tomaba un remedio, pero no funcionaba. -Habia pasado 1 mes de lo sucedido y Emeterio no habia mejorado. Aunque sus padres lo habian mandado al Psicologo, el doctor no ayudaba y ni le prestaba atencion. El chico miraba por la ventana de su habitacion y siemore veía a la misma persona encapuchada, con unos anteojos, con un barvijo y con un hacha en la mano. Esa persona desconocida siempre lo miraba, como si estuviera esperando algo de él. Emeterio ya no soporto más, mato a su piscologo con un cuchillo y se escapo al bosque. La policia y la ambulancia lo buscaban, pero no aparecia en ningun lugar. El chico estaba en una casa abandonada y jugaba un poco con el pequeño mechero. De repente, alguien entro a la casa y era Ticci Toby. \"¿Que quieres de mí? Siempre me miras.\" Dijo Emeterio. \"No dire nada, solamente vendras con nosotros. Ademas, eres fuerte.\" Dijo Toby. Ambos se fueron en el oscuro bosque y nadie encontro a Emeterio. No se si se entiende esta historia, pero, intente resimir esta historia que la habia escuchado hace bastante tiempo. Algunas cosas no me las acuerdo tanto en esta historia. Espero que les guste. Si quieren saber algun detalle mas, pueden preguntarme.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvjn90/creepypasta/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.613597",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2494,
+        "word_count": 437
+      },
+      "processing_stats": {
+        "reddit_id": "1kvjn90",
+        "original_length": 0,
+        "processed_length": 2494,
+        "word_count": 437,
+        "scraping_timestamp": "unknown",
+        "author": "Aneva_Black",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "22fdd19f-09d9-4dc6-a89e-9932648945f5",
+      "title": "The thing under my bed",
+      "content": "There is something under my bed and it keeps calling my name. I was drifting off to sleep. I just got home from work and was exhausted when I heard a whisper “Elijah” Then I lifted my head from my pillow and looked around, nothing. “Elijah” It whispered again. I rose up and looked in my closet but it was empty. I went back to bed and tried to get some sleep again. “Elijah” Now I got angry and turned on the lights in my room. Where on earth does this whispering come from? I tracked the sound under my bed and looked in there but nothing. Nothing but darkness and a little bit of dust. I went back to bed and finally fell asleep. After what I assume to be a couple of hours I woke up from a terrifying nightmare. The whole world was burning and I could see my family burning alive. It was horrible and I was completely soaked in sweat. “Elijah” I heard again. There was this cat sized creature sitting on my chest. It was pale, had cat-like eyes that were glowing and ragged clothing. It had big ears and it was hairy. It just looked at me, I stared back but couldn’t say a thing. I was petrified. The sun was shining on my face and I jumped up from my bed. There was no sign of that creature so I thought it was just sleep paralysis. Then I heard it “Elijah” Glancing under my bed I noticed scratch marks. There were these small scratch marks under my bed directly where my head would be when I slept. “Elijah, we’ll meet again” It whispered in a raspy voice.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuzj09/the_thing_under_my_bed/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.628332",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1463,
+        "word_count": 285
+      },
+      "processing_stats": {
+        "reddit_id": "1kuzj09",
+        "original_length": 0,
+        "processed_length": 1463,
+        "word_count": 285,
+        "scraping_timestamp": "unknown",
+        "author": "NathanielPhoenix",
+        "score": 16,
+        "num_comments": 3
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "fa1b673c-19c3-4dc9-9cfd-1463e91767f2",
+      "title": "We Never Swam at Night Again",
+      "content": "When I was 14, my brother, sister, and I had this ritual—night swims in our backyard pool. No lights, no goggles, no opening your eyes underwater. That was the rule. It made the game of hide-and-seek feel dangerous, exciting, like we were tempting the dark. But one night, I broke the rule. I waited until they weren’t looking, slipped on a pair of goggles, and dove into the deep end. Eight feet down, the water was black, heavy, and cold. As my vision adjusted, I saw her. My sister. Or what I thought was my sister. She was sitting cross-legged at the bottom of the pool, hair floating like seaweed around her face. Perfectly still. Peaceful. Too peaceful. I hovered above her, confused. She didn’t move. I surfaced, took a breath, then looked down again. Still there. Still sitting. Still staring—though I couldn’t see her eyes through the tangle of hair. “Damn,” I thought. “She’s really holding her breath.” I dove back down, reached out, and placed my hand on the top of her head—just a light tap. “You’re it,” I tried to say, though the words just bubbled out. She didn’t react. Not even a twitch. Her head tilted slightly, and her hair shifted just enough for me to realize something was off. Something was wrong. I stayed there with my hand on her for maybe seven seconds. Long enough to feel the cold. Then I heard my brother’s voice, far off—muffled, but clear enough to shake me. “What are you doing? You’ve been over there forever.” I turned, startled. He was standing in the shallow end—with my sister beside him. She laughed. “Are you gonna play or just keep going underwater?” I looked back down. The thing was still there. Cross-legged. Still. Waiting. I didn’t breathe. I didn’t think. I screamed. “Get out of the pool!” I scrambled to the edge, flipped on the pool lights. The water lit up in a pale blue glow… and the deep end was empty. Nothing was there. We never swam at night again. And to this day, none of us talk about the girl sitting at the bottom of the pool. Because we all saw her. And she wasn’t any of us.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuufi1/we_never_swam_at_night_again/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.633399",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2040,
+        "word_count": 371
+      },
+      "processing_stats": {
+        "reddit_id": "1kuufi1",
+        "original_length": 0,
+        "processed_length": 2040,
+        "word_count": 371,
+        "scraping_timestamp": "unknown",
+        "author": "xTheDennisSystem",
+        "score": 33,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "43ce6782-05f6-43b0-8906-cf0c6d678604",
+      "title": "Ed Edd N Eddy, Bootleg",
+      "content": "Ed Edd N Eddy, If You Have Never Heard Of It, Is An Early 2000s Cartoon About 3 Children Trying To Scam Their Fellow Neighbourhood Kids Out Of Their Money So They Could Buy Their Favourite Candy, Which Was Jawbreakers. It Was A Very Fun And Goofy Show That Could Be Enjoyed By A Wide Range Of People, Including Me As A Child. But What I Saw Recently, Was Much Different… I Was On My PC Looking Through Random Obscure Streaming Sites When I Came Across This One Website. I Clicked On It, And I Was Greeted By A Black Screen With A Download Link For A Zip Folder, Which Apparently Contained Every Episode Of Ed Edd N Eddy. I Clicked On It And The File Began Downloading. Once It Had Finished, I Extracted The Folder And All That Was Inside The Folder Was One. AVI File Called “EENE. Avi”. I Thought That I Had Been Scammed Out Of My Time But I Clicked On The File Anyways Out Of Curiosity. What Was On The File Began To Play, And What I Saw, Was Sickening. The Energetic Theme Song Began To Play, It Was Almost Identical The The Regular Show. The Only Difference Being That It Would Freeze And Glitch Every Couple Of Seconds, Then The Audio Would Speed Up To Catch Up With The Animation. There Was No Title Card, No Credits, It Just Skipped Straight To The Episode. It Began With Edd Sleeping In His Bed. One Thing I Noticed Was That The Video Quality Was Poor, Like It Had Been Recorded On An Old Camera. Double D Is Then Awoken By The Sound Of Knocking On His Door. He Then Goes Downstairs And Opens His Door, Where He Is Greeted By Eddy. Eddy Tells Him That He Has Come Up With His Best Scam Yet And Comedically Drags Double D Out Of His House. It Then Cuts To Eddy, Ed And Double D Looking At Something Offscreen. It Is Then Revealed What They’re Looking At, A Barrel Of Water. The Water Bubbled, Indicating That It Was Boiling. Eddy Then Walks Away And Returns After A Couple Of Seconds With Kevin. Kevin Then Asks What They Are Up To. Eddy The Leads Him Closer To The Barrel, Eventually To The Point That Both Of Them Are Right In Front Of The Barrel And Are Looking Into It. I Thought That The Episode Was Going To Take A Lighthearted, Comedic Approach Like Eddy Throwing Kevin’s Cap Into The Bucket. I Was Wrong, Very Wrong… Eddy, Without Hesitation, Trips Up Kevin, Causing Him To Fall Headfirst Into The Boiling Water. Eddy Then Shuts The Lid Of The Barrel. I Could Hear Kevin’s Muffled Thrashing And Screaming From Inside The Bucket. It Sounded Like His Voice Actor Was In Genuine Distress. Over A Solid Minute, The Sounds Gradually Grew Quieter And Eventually Stopped. Eddy Then Opened The Lid And We Got To See The Contents Inside. What I Saw, Left Me Mortified… Kevin’s Scalded, Unrecognisable Body, Was Floating On The Water, Motionless. He Had A Large Amount Of Scald Marks On His Body. What Made It So Much Worse, Was That The Body Looked Realistic, Like They Had Actually Edited Someone’s Scalded Corpse Into The Episode. Eddy Then Grabbed Some Gloves. Once He Had Put Them On, He Grabbed Kevin’s Body. Ed And Double D Were Stood There Frozen, With Traumatised Looks On Their Faces. Eddy Then Told Them That If They Told Anyone, They Would Be Next. It Then Cut To A Scene Of Eddy In His Kitchen With Kevin’s Corpse On A Chopping Board. Eddy Then Grabs A Butcher Knife And Starts Cutting Kevin’s Body Into Slices Until He Was Even More Unrecognisable. It Then Cut To Another Scene. It Showed A Stand Outside Of Eddy’s House With A Long Line Of Customers Made Up Of Sarah, Johnny, Jimmy, Nazz And Rolf. There Was A Sign In Front Of The Stand Which Read “Roast Beef, 25c”. Eddy Was At The Counter Of The Stand, Giving Out The Slices Of Kevin’s Body To The Kids In Exchange For Their Quarters. Everyone Seemed To Enjoy Their Food. Strangely, Nobody Questioned Kevin’s Disappearance. The Scene Then Faded To Black, But Then I Saw An Image Flash For A Split Second. I Then Rewound The Video. The Image Was A Single Frame Of The Cul-De-Sac On Fire. The Episode Then Ended With The Normal Credits. I Sat There In Silence, At A Loss For Words. I Then Shut Off The Computer And Watched Some Tv Downstairs To Calm Myself Down. I Had Vivid Nightmares For Weeks About Being Trapped In That Barrel. Every Time I Watch That Show, The Memories Flood Back.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kvfeqx/ed_edd_n_eddy_bootleg/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.638239",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 4255,
+        "word_count": 789
+      },
+      "processing_stats": {
+        "reddit_id": "1kvfeqx",
+        "original_length": 0,
+        "processed_length": 4255,
+        "word_count": 789,
+        "scraping_timestamp": "unknown",
+        "author": "tilly1984",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "0a9dc66b-ff3c-46d1-b606-7a24ed94db57",
+      "title": "I saw the world through your eyes",
+      "content": "You don't know me. But I know you. Not in the superficial way people connect today, exchanging likes and empty comments on carefully staged photos. I really know you. I know the exact way the morning light hits your face when you finally open your eyes, still floating between dream and wakefulness. I know the small hesitation before choosing the outfit for the day, the almost imperceptible sigh when you realize you're late once again. It's these little details that paint the real picture, the unfiltered version you think you keep just for yourself. It started unpretentiously, I assure you. A momentary curiosity, perhaps. Your profile appeared as a suggestion, one of those happy coincidences of the algorithm. A photo of you smiling, holding a disposable coffee cup, the caption talking about how small joys can redeem a Monday. Trivial, at first glance. But there was something there, a spark of authenticity rare amidst so much performance. I clicked. And then, like someone pulling at a loose thread in a delicate fabric, I began to unravel the complex tapestry of his life. Your apartment. I know exactly where it is. It wasn't much of a challenge to figure it out; you mark the location of that charming cafe on the corner almost daily. Interestingly, it's just a few blocks from mine. A pleasant walk, especially at dusk, when the city lights begin to twinkle and the windows turn into small screens, displaying intimate fragments of other people's lives. Your window, I must admit, has become my favorite. The curtain is never completely closed. A mere oversight? Perhaps. Or, who knows, an unconscious part of you longs to be seen, truly understood. I watch you arrive from work, visibly exhausted. Shoulders hunched under the invisible weight of the day, the bag seeming to contain more than objects. You throw the keys on the table in the hall – invariably in the same place. He turns on the television, but his gaze is lost in the void, his mind is distant. Take your cell phone. Swipe your finger through the infinite feed, in an incessant search for a connection that always seems to slip through your fingers. I notice the subtle frustration that shadows his face. They don't understand her. None of them. Neither the noisy friends in the photos, nor the co-worker who clearly simulates a non-existent interest. They only see the surface, the carefully constructed persona you project to the world. But I see beyond. I see the collection of books on the shelf, the genres you're truly passionate about, not the ones you mention in conversation to sound intellectual. I see the pen notes in the margins, the passages that touched her deeply. I see the half-forgotten plant in the corner of the room, which you insist on trying to revive, even when you forget to water it. I listen to the playlist you listen to when you think no one is around, that bittersweet mix of nostalgia and silent hope. Occasionally, I allow myself small interventions. Subtle, almost imperceptible gestures. That rare book you casually mentioned online, out of print on every major chain? It appeared as if by magic on the shelf of a small independent bookstore near his office. A happy coincidence, you might have thought. That somewhat inconvenient “friend” who always seemed to monopolize your time and energy? He seems to have withdrawn lately, suddenly absorbed by his own dramas. Lucky you, right? Don't get me wrong. My intentions are the best. I do this because I understand her on a level that no one else can. Because I see the brilliant potential that lies beneath the layers of insecurity and other people's expectations. My only desire is to protect this essence. I want to cultivate an environment where you can flourish, free from the distractions and negative influences that insist on surrounding you. Last night, you left the window open a little wider than usual. The night breeze swayed the curtain gently, like an invitation. I could see her falling asleep on the couch, a book forgotten on her lap. For a fleeting moment, I felt an almost irresistible urge to… intervene more directly. Adjust the blanket over your shoulders, turn off the light in the room that was left on, ensure your comfort and safety. I held back, of course. Patience is a virtue. The right time has not yet arrived. But he approaches, inexorably. Our connection deepens every day. You are not yet aware of it, but every detail of your existence, every breath, every thought that you consider to be exclusively yours… I am there. Observing. Understanding. Waiting. I see the world through your eyes. And very soon, you will see the world through mine. You just haven't realized it yet.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kv9znd/i_saw_the_world_through_your_eyes/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.642840",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 4676,
+        "word_count": 800
+      },
+      "processing_stats": {
+        "reddit_id": "1kv9znd",
+        "original_length": 0,
+        "processed_length": 4676,
+        "word_count": 800,
+        "scraping_timestamp": "unknown",
+        "author": "Nex0rium",
+        "score": 2,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "31447ae8-1745-4360-9726-e11a2ec0c2c1",
+      "title": "5 True Chilling Apartment Horror Stories",
+      "content": "I used to live in this old apartment once. The place I lived in when I was younger was actually a large house that had probably been split into two separate units. I had a kitchen, a living room, a bedroom, and a bathroom. There was also a staircase leading down to a small entryway and a door. I assumed the other side of the house was laid out the same, but I never knew who lived there. I stayed in that apartment for a few months. It was cheap and close to my work, and aside from that, nothing about it was particularly special. During the first month, nothing strange happened. I was usually working a lot, and when I was home, everything seemed perfectly normal. But then I started noticing something odd — I would wake up in the middle of the night for no clear reason. At first, I only remembered waking up and then falling right back asleep. One time, I thought I had heard a noise, but once I was awake, I heard nothing else. I sat up in bed and listened carefully, but everything was silent. Eventually, I just fell back asleep. It struck me as strange because I usually slept very deeply and never woke up during the night. These were the kinds of moments I often barely remembered the next day. But after about a week, the third time I woke up in the middle of the night, I was certain I had heard something. It was genuinely odd. I sat up again and listened closely, but there was no more sound. I couldn’t tell if I’d heard it in a dream or while I was awake. Everything felt strange, but nothing else happened and I eventually drifted off again. I couldn’t figure out why I kept waking up or what was causing it. Then, one night, it happened again. This time, I remember I didn’t hear anything at first — I just suddenly woke up, fully alert. I didn’t sit up; I just turned over to face the other side of the room. My room was dark, and as I looked in that direction, I heard a faint creaking sound. It was like the door to my bedroom was slowly opening. I looked that way — and saw it really was opening. Then, suddenly, a man stepped inside. I couldn’t make out many details — it was too dark. He took one step into the room and stopped. I was frozen with fear. It was so dark, I didn’t even know if he could tell I was awake. Then, he pulled out what looked like a camera — and took a photo of me. After that, he stepped back behind the door and into the hallway. I couldn’t believe what had just happened. Then I heard faint creaking from the hallway, like a door being opened and closed. Very soft, but noticeable. And then — silence again. I sat there in bed for at least 10 or 20 minutes, not hearing a thing. I didn’t know if I was being robbed or if someone was still inside. But since it stayed quiet for so long, I finally got up. I walked around my bedroom — still no sound. Then, slowly, I checked the rest of the apartment. It wasn’t a large place, so it didn’t take long to realize the man was gone. But when I reached the end of the hallway upstairs, past my bedroom and across from a closet, I noticed something. There was a door that connected to the neighbor’s unit. I had been told that this door wasn’t used and was always locked. In fact, there was a small table and a lamp placed in front of it. The door had even been painted the same color as the wall, so it was hard to notice. But I realized the man must have come through there. It must not have been locked from the other side. After that night, I couldn’t sleep at all. I stayed up until morning. As soon as it was light, I contacted the building management. I told them everything that had happened and immediately began looking for another apartment. I stayed with a friend for a few nights. Long story short, it turned out there was a man living in the neighboring unit — and he was eventually caught. Thankfully, he never got into my apartment again. The nights I kept waking up were probably the times he was sneaking back into his place — maybe when he was closing that hidden door. Seeing him in my room was the most terrifying moment of my life. I will never forget it. Check out more True Chilling Apartment Horror Stories",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kve3h3/5_true_chilling_apartment_horror_stories/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.648014",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 4128,
+        "word_count": 797
+      },
+      "processing_stats": {
+        "reddit_id": "1kve3h3",
+        "original_length": 0,
+        "processed_length": 4128,
+        "word_count": 797,
+        "scraping_timestamp": "unknown",
+        "author": "nightofdarkevents",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "ddc71486-9489-4719-b0bd-57cb82b310d9",
+      "title": "The Inevitability",
+      "content": "\"I am The Witness, I have watched men bargain with shadows, wrestle with storms, and try to shout louder than silence itself. But none run more blindly than those who run from her. This is the tale of Tony Keller, a man who thought he could escape the inevitable.\" The first thing Tony remembered was waking up on cold pavement. Streetlights flickered above like stuttering stars. Rain patted gently against the earth. His car was nowhere in sight. No people. No sound. Only the long, empty stretch of Ashvale Avenue, lined with skeletal trees. “Hello?” he called out, throat dry. A voice answered—not loud. “Your time has come, Tony Keller.” Tony spun, heart punching his ribs. She stood at the end of the street. Her shape was that of a person carved from living shadow, her features lost in the black, save for two glowing white eyes that did not blink. No footsteps. No movement. Just her, watching. Tony stumbled back. “What the hell are you?” “I am Death,” she replied. He laughed. Short, nervous. “You’re here to kill me, huh?” Tony turned and ran. He didn’t look back. He couldn’t. “I’m not ready!” Tony screamed. “You already were,” her voice replied, from everywhere and nowhere. “It was peaceful, Tony. You didn’t even feel it.” “Feel what?” he gasped. But he kept running. Streetlamps flickered as he passed them. His legs never tired, his lungs never burned. He darted into a gas station—abandoned, flickering, the fluorescent light buzzing like a dying insect. Shelves of dust and rot. The register blinked 0:00. He looked into a mirror behind the counter. And saw nothing. No reflection. Only darkness. “No,” he whispered. “No, no, no...” The lights died. “You don’t have to be afraid,” she said from behind him. He turned slowly. Death stood in the doorway, filling the frame like a painting made of midnight. Her eyes, not cruel—just tired. Patient. “I don’t want to go,” Tony said, voice breaking. “I still have things to do. I have people.” “You had,” she corrected gently. “You don’t belong there anymore.” “You can’t make me!” he shouted, backing away. “You don’t get to decide!” “I don’t,” she said. “I only come when it’s time.” “Wake up!” he screamed. “Wake up, wake up!” “You’re not asleep,” Death whispered. “You’re just lost.” He found himself back in his house. Morning sun poured through the windows. He blinked. Coffee bubbled in the pot. A breeze stirred the curtains. He exhaled. “I made it,” he whispered. “I made it back.” The door opened. His wife walked in. Carrying a black urn. She didn’t see him. She placed the urn on the mantle, next to a photo of Tony. She lit a candle. Said nothing. Tony stood, frozen. The wind stirred again. Death stood behind him. “It was quick,” she said softly. “No pain. A truck. Rain-slicked road. You swerved to avoid a deer. You saved a life. But yours ended there.” He stared at the urn. At the photo. At the life he no longer had. “No,” he breathed. “No, no...” Death reached out a hand. Not forceful. Not cruel. Just waiting. “You ran long, Tony,” she said. “But you’ve reached the shore.” Tony trembled. Looked at his wife, her tear-lined cheeks. And then he took Death’s hand. They vanished together, like a sigh in the wind. \"Death is something that shouldn't be feared, what should be feared is how. Don't run from Death because you are already dead.\"",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kv5qvx/the_inevitability/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.661613",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 3328,
+        "word_count": 581
+      },
+      "processing_stats": {
+        "reddit_id": "1kv5qvx",
+        "original_length": 0,
+        "processed_length": 3328,
+        "word_count": 581,
+        "scraping_timestamp": "unknown",
+        "author": "Dicedungeon",
+        "score": 2,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "f67cb34c-58ec-4989-9a84-3514d8e12f63",
+      "title": "Is your Dog acting Weird???",
+      "content": "Hey everone, i was always into Analog and PSA and i just made a short story, This is my 1st one. if you like analog horror please watch it here, thanks for reading",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kv0gt8/is_your_dog_acting_weird/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.664539",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 163,
+        "word_count": 33
+      },
+      "processing_stats": {
+        "reddit_id": "1kv0gt8",
+        "original_length": 0,
+        "processed_length": 163,
+        "word_count": 33,
+        "scraping_timestamp": "unknown",
+        "author": "TrickLibrary1730",
+        "score": 5,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "621c6865-7b62-4382-94fd-67dfd8b6f6ee",
+      "title": "FIRST TO DIE",
+      "content": "I met Daniel Whitaker in the fall of 2018. We were both part of the same volunteer fire department in rural Pennsylvania. He wasn’t the kind of man you forget—tall, quiet, the kind whose eyes always scanned the room like he was waiting for something terrible. He never smiled much, but he was kind, and there was never a question where his loyalty stood: with his wife, Claire, and their two kids, Ben and Ellie. What happened to them wasn’t in the papers. You wouldn’t find it on the local news or in online forums. But I was there when we responded to the 911 call that night. And I know what I saw. It started with a weird noise. Claire described it as a whisper through the walls. It happened at night. Just after they’d gone to bed, they’d hear someone—or something—speaking words too distorted to understand. At first, Daniel thought it was just the wind or maybe an animal in the walls. But then Ben started waking up screaming, saying a “man without a face” was standing at the foot of his bed. They installed cameras. Nothing ever showed up. Not even shadows. But the whispers didn’t stop. Daniel came to me about it once. He looked like he hadn’t slept in days. Said he thought something had followed him home from one of our calls—a burned-out farmhouse a few towns over. Said when he walked through the basement, he felt like he’d passed through a veil of cold air, like something old and angry was watching him. “It doesn’t want them,” he told me. “It wants me.” That night, Claire called 911. I got there before the others. The house was silent—no lights, no movement, just the front door wide open, like something had walked in and didn’t care to close it. I stepped inside, called out to Daniel, Claire, the kids. No answer. Then I heard a sound coming from the basement. Not footsteps. Something else. Something wet. I found Daniel there, sitting in the dark at the bottom of the stairs, holding a knife. At first, I thought he’d hurt himself. But he was uninjured. His hands were shaking. There were markings on the wall—symbols scratched in with what looked like blood. I tried to get him to come up with me, to tell me where Claire and the kids were. “They’re safe,” he whispered. “I told it I’d go first.” He looked at me then, and his eyes were hollow. “It promised it wouldn’t touch them if I said yes. If I went willingly.” Before I could stop him, he plunged the knife into his chest. We found Claire and the kids upstairs. They were alive, shaken but unharmed. Claire kept asking where Daniel was. When I told her… something passed over her face. Not shock. Not sorrow. Relief. “He said it would only take the first one,” she whispered. They moved away soon after. No forwarding address. No phone calls. But sometimes, when I’m alone at night, I swear I hear it too. A whisper through the walls, promising safety in exchange for something I’ll never get back. And I think about Daniel—how brave he was, how selfless. And how maybe, just maybe… it lied.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kv4bqu/first_to_die/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.697359",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2978,
+        "word_count": 542
+      },
+      "processing_stats": {
+        "reddit_id": "1kv4bqu",
+        "original_length": 0,
+        "processed_length": 2978,
+        "word_count": 542,
+        "scraping_timestamp": "unknown",
+        "author": "Whoishe_242",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "2dfa5d67-d1f7-4be1-803f-94e8928c1e55",
+      "title": "The Reaper Stopped To Watch by Nicholas Leonard",
+      "content": "This has been removed on every sub I tried posting it to, but this subreddit has nothing done me wrong so here you go. It’s not a scary story at all but there’s theme of dying so that’s kind of dark enough.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kv3ol3/the_reaper_stopped_to_watch_by_nicholas_leonard/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.700229",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 206,
+        "word_count": 42
+      },
+      "processing_stats": {
+        "reddit_id": "1kv3ol3",
+        "original_length": 0,
+        "processed_length": 206,
+        "word_count": 42,
+        "scraping_timestamp": "unknown",
+        "author": "poetnicholasleonard",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "f4a04956-c6f9-4795-b8cd-75c4bb0151be",
+      "title": "Swapping diseases is so much fun!!",
+      "content": "It's so much fun swapping diseases and illnesses, and it doesn't sound fun but it really is. Before joining in this great past time event, I was healthy with no diseases or illnesses of any kind. I was visiting a relative at a hospital and when the visit was over, I was walking towards the door that leads you out of the ward, I then saw a room with a group of people who had all sorts of diseases and illnesses. I stayed on the ward just watching them laugh and smile, they were all so happy that it wasn't common to see someone so happy like that. I saw cancer patients swapping their ailments with heart attack patients. It was truly surreal and something I thought I would never think of or see. Now healthy people with no illnesses or diseases of any kinds were allowed to join in and I thought that was unfair. Now the reason the hospital allowed this was because if a cancer patient passed on his illness to a heart attack patients, and vice versa, the cancer would have to start again in a new body by becoming small and the heart attack would have to start again in another new body. Now I knew that I wasn't allowed to join in due to having no illnesses of any kinds, but watching these people swapping their illnesses looked really fun. I needed that kind of fun in my life and so I secretly joined in. I didn't know how it worked but we just had to touch each other and the illness will swap with another person. I got someone's kidney problems, then I got someone's bone cancer, then I got someone brain damage problems. It was really fun seeing how my body changed and adapted. Then one person realised he had no illnesses anymore, it was because of me. He uttered \"I have no illness that means someone here had joined in the game without an illness when they shouldn't have done so!\" And when he tried to run out of the room because now he was healthy, even though it was my health, the others stopped him. Someone else haf touched that guy and then that woman was now healthy. Now everyone was fighting for my health, and I now realised why healthy people with no illnesses weren't allowed to play this game. I then saw a guy trying to sneak out of the room but I caught up to him and touched him. Now I had my health back. Then I ran out of that room and when that guy touched me, nothing was swapping because only in that room could you swap illnesses.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kv29bm/swapping_diseases_is_so_much_fun/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.704199",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2371,
+        "word_count": 453
+      },
+      "processing_stats": {
+        "reddit_id": "1kv29bm",
+        "original_length": 0,
+        "processed_length": 2371,
+        "word_count": 453,
+        "scraping_timestamp": "unknown",
+        "author": "shortstory1",
+        "score": 1,
+        "num_comments": 1
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "cccbffdf-f369-4c52-a765-1093ab93c03f",
+      "title": "Valeria Marquez | Streamer shot On Camera | Real Incident - 8D audio story also available",
+      "content": "Part 1: I used to follow her online. Not in a weird way—just like everyone else did. Her name was Sofia Mendez. She was beautiful, full of life, and always smiling. She had this ability to talk through the camera like she was looking right at you, like she knew you. She ran a beauty channel. Makeup tutorials, hair tips, product reviews—nothing dark, nothing unusual. And recently, she’d opened her dream salon—“Blossom.” It was bright, pastel pink, all mirrors and fairy lights. But something changed in her streams about a week before it happened. She seemed nervous. Distracted. At first, I thought maybe it was just stress. A new business, lots of pressure, right? But then she mentioned something… odd. She said someone had been sending her gifts. Not fan mail. Not PR packages. Just… expensive things. A bottle of perfume in a black velvet box. No note. No label. A pair of designer heels—her exact size. And then a message appeared in her inbox: “For the face that must never fade.” Creepy? Sure. But she laughed it off. She even opened the gifts live, trying to make it a bit. But something about the way she smiled… it wasn’t the same. It didn’t reach her eyes. A few days later, she said on stream that someone had come to the salon. A delivery guy. But she couldn’t see his face—he wore a cap low over his eyes. “He knew my name,” she said. “But I never told him.” That was the last time she ever looked relaxed. And the last time any of us saw her alive. To be continued (check bio for channel link 8D audio Horror Stories, latest video post )...",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuuaeg/valeria_marquez_streamer_shot_on_camera_real/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.716766",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1559,
+        "word_count": 284
+      },
+      "processing_stats": {
+        "reddit_id": "1kuuaeg",
+        "original_length": 0,
+        "processed_length": 1559,
+        "word_count": 284,
+        "scraping_timestamp": "unknown",
+        "author": "moiz2",
+        "score": 3,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "8f4d60c6-c849-4a6d-b073-f750926f5a78",
+      "title": "Reversed death",
+      "content": "I was ready to die. Then like always you came to tell me something hopeful. But this time i didn't listen and jumped i fell and fell but never reached the end. With an idiotic laugh i saw you sticking with me on my back with a self centered attitude. I say get off me but this time you actually do and I see the ground getting closer. That moment I wanted to escape it but started to feel good the more closer I went. The more you laughed -the more I laughed. It was just that simple to end this day but your voice told me something else hiding behind that laugh full of lies. So I fell upwards to your arms again.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuttqr/reversed_death/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.720363",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 614,
+        "word_count": 124
+      },
+      "processing_stats": {
+        "reddit_id": "1kuttqr",
+        "original_length": 0,
+        "processed_length": 614,
+        "word_count": 124,
+        "scraping_timestamp": "unknown",
+        "author": "Sea-Introduction622",
+        "score": 2,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "25508f1e-1f6f-4909-9987-31e15cb29c02",
+      "title": "I just found out something depressing, our world and I mean this world, is real and not some matrix or AI",
+      "content": "I just discovered that our world, this world, is the real world. How depressing is that and I had always hoped that this depressing world was the matrix or an AI prompt. I mean it's why I still work in some dead end job and its why I still carry on, because I thought thus world wasn't the real world. So I lost my but I love losing my way because when I find my way back again, it's the most greatest feeling. This time though I felt lost forever and I couldn't accept that our world was the real one. I just couldn't understand how our world was the real one and just looking at our world, I became saddened that our world was the real one. I went up to someone and started go kick him with my right leg and I kicked him in the knee and he fell down to the ground. He was in pain and I was observing him being in pain and this was proof that our world was real. So I kept kicking and when I kept on stamping on his head, he was no more. Why did this world have to be the real on and why not something else. This world made of brick and mortar, smelly air and pointless tasks. Why is this world the real world? So then I saw someone hanging onto the bridge, they must have decided not to jump last minute but they lost balance. With my right arm I helped the guy up and everyone deserve an helping hand in this world. This world that's the real one and what a dull world it is, and it would make a terrible fake world. Like it has no imagination or uniqueness and I started to become angry again. When I was at dead end job again my mind kept denying that this cannot be real, and that there has to be something else. I'd rather be living in a fake world doing fun stuff than this drivel. Like in another fake world another fake version of me is doing amazingly well and having a good time. I became jealous at that idea and I started to trash my work place. Then with my right leg I knocked out little one Janice with a kick to her face. I became horrified at what I had done in front of everyone and I hated this world being real even more, because this was now real with real consequences. I'm on the run now.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuw7ym/i_just_found_out_something_depressing_our_world/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.723929",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 2113,
+        "word_count": 426
+      },
+      "processing_stats": {
+        "reddit_id": "1kuw7ym",
+        "original_length": 0,
+        "processed_length": 2113,
+        "word_count": 426,
+        "scraping_timestamp": "unknown",
+        "author": "shortstory1",
+        "score": 1,
+        "num_comments": 1
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "9bdf9893-68f4-4126-a9d3-07d848fcc2d1",
+      "title": "Caso Tamam Shud.",
+      "content": "El Caso Tamam Shud, o “el Misterio del Hombre de Somerton”, es uno de los enigmas más desconcertantes de Australia. El 1 de diciembre de 1948, un hombre apareció muerto en la playa de Somerton, sin identificación, con un mensaje oculto en su ropa que decía “Tamam Shud” –fin en persa–. No había señales claras de violencia ni causa de muerte. La autopsia apuntó a un posible veneno, nunca detectado. Se encontró también un libro con un supuesto código secreto. Durante décadas, su identidad fue un misterio… hasta que en 2022 fue identificado como Carl Charles Webb. Aun así, muchas preguntas siguen sin respuesta.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kusfgq/caso_tamam_shud/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.727033",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 614,
+        "word_count": 104
+      },
+      "processing_stats": {
+        "reddit_id": "1kusfgq",
+        "original_length": 0,
+        "processed_length": 614,
+        "word_count": 104,
+        "scraping_timestamp": "unknown",
+        "author": "Unknown",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "90f63bb0-8475-45d8-85ba-aa766de7e8cf",
+      "title": "O Apartamento 71 e a Umidade que Chora",
+      "content": "Sabe como é a vida na cidade grande, né? Correria, conta pra pagar, e a gente se vira como pode. Consegui alugar um cantinho no centro, prédio antigo, daqueles com a pintura descascando e o elevador que pensa duas vezes antes de subir. Apartamento 71. O preço era o que dava, e pelo menos era perto do trabalho. Tinha um cheiro de mofo que não saía por nada, mas achei que era só falta de ventilação. O antigo morador deixou umas tralhas pra trás. A imobiliária falou que eu podia jogar fora. No meio das caixas, achei um rádio antigo, daqueles de madeira escura, com botões amarelados. Pesado pra caramba. Por curiosidade, liguei na tomada. Funcionou. Pegava umas AM chiando, música velha, programa de notícia que parecia de outra época. Deixei ele num canto da sala, mais como enfeite esquisito. Logo na primeira semana, a umidade começou a ficar estranha. Não era só o cheiro. Manchas escuras brotavam nas paredes do quarto, perto da janela, como se a parede estivesse chorando uma água suja. E um frio... um frio que não combinava com o calorão lá fora. Vinha do nada, arrepiava a espinha, e parecia se concentrar perto do rádio velho. Comecei a ouvir coisas no chiado do rádio, mesmo desligado da tomada. Não era música, era... um lamento? Um choro baixo, quase um murmúrio de alguém com muita, muita dor. E às vezes, uma palavra solta no meio da estática: \"...volta...\", \"...minha...\". Achei que estava ficando maluco, cansaço, estresse. Normal na selva de pedra. Mas a sensação de não estar sozinho piorou. Sabe quando você sente que tem alguém te olhando, mesmo de costas? Era isso, o tempo todo. E o apartamento ficava mais frio, a umidade mais agressiva. As manchas na parede pareciam crescer, formar contornos que lembravam... um rosto? Um rosto triste, desesperado. Conversei com o Seu Antenor, o porteiro antigo do prédio. Perguntei do morador do 71 antes de mim. Ele fez uma cara estranha. \"Ah, o Seu Ramiro... Coitado. Morreu aí dentro mesmo. Dizem que de tristeza.\" Contou que o Seu Ramiro tinha perdido a esposa, muitos anos atrás, num acidente besta. Nunca superou. Ficou recluso, obcecado pela memória dela. Falava sozinho, chamava por ela. Os vizinhos ouviam choro vindo do apartamento dia e noite. Depois disso, as coisas desandaram de vez. O rádio ligava sozinho no meio da noite, sempre na mesma estação fantasma, com aquele lamento chiado. A umidade tomou conta do quarto, o cheiro de mofo era sufocante, e o frio era de congelar os ossos. Comecei a ter pesadelos horríveis: eu estava preso no apartamento escuro, e uma figura sombria, feita de sombra e mofo, tentava me abraçar, sussurrando \"fica comigo\", \"não me deixa\". Acordava suando frio, com o coração na boca. A figura dos sonhos começou a aparecer de relance no apartamento. Um vulto no canto do olho, um reflexo rápido no espelho do banheiro manchado de umidade. E a sensação de controle... sutil, mas estava lá. Uma vontade de não sair de casa, uma tristeza profunda que não era minha, uma raiva quando eu pensava em jogar o rádio fora. Uma noite, cheguei do trabalho exausto. O apartamento estava gelado, as paredes do quarto quase pretas de umidade. O rádio estava ligado, o lamento mais alto que nunca. Fui até ele pra desligar, e quando toquei no botão, senti um choque, mas não elétrico. Foi um choque de... sentimento. Uma onda de dor, de saudade, de possessividade tão forte que me fez cambalear. E no chiado, claro como água: \"ELA É MINHA! FICA!\". Não era pra mim. Era o Seu Ramiro. A dor dele tinha ficado ali, impregnada nas paredes, na umidade, no rádio. E ele não queria ficar sozinho. Ele queria companhia na sua miséria eterna. Pânico total. Peguei o rádio pesado, arranquei da tomada e corri pra fora do apartamento, desci as escadas tropeçando. Joguei o trambolho na caçamba de lixo lá na rua com toda a força. O som dele quebrando foi um alívio. Voltei pro 71. O frio tinha diminuído um pouco. A sensação de presença também. Mas a umidade... as manchas na parede... continuam lá. Às vezes, tarde da noite, ainda ouço um chiado baixo vindo do corredor, ou sinto aquele arrepio gelado. Não sei se jogar o rádio fora adiantou. Acho que a tristeza do Seu Ramiro virou parte do prédio, parte da cidade. E fico pensando... pra onde vai uma dor tão grande quando não tem mais onde ficar?",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kunob1/o_apartamento_71_e_a_umidade_que_chora/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.731988",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 4282,
+        "word_count": 747
+      },
+      "processing_stats": {
+        "reddit_id": "1kunob1",
+        "original_length": 0,
+        "processed_length": 4282,
+        "word_count": 747,
+        "scraping_timestamp": "unknown",
+        "author": "Nex0rium",
+        "score": 2,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "b60a3379-fb7b-4817-8ef1-623665bac93e",
+      "title": "The One Who Remembers Me",
+      "content": "The old man speaks like he’s afraid the walls might listen. “You ever forget someone so completely… it scares you? Like you loved ’em once. Laughed with ’em. Then one day—gone. Not just gone, but like they were never there?” He taps the bar with one yellowed nail. “That’s how you know the Skinkeeper’s passed through.” He swirls the drink but doesn’t sip. “Before cities, before songs, there were Hollow seasons. The sky turned white for weeks. And in those weeks… people went missing. But no one noticed at first. Because the ones taken—they were remembered wrong. You’d see a smile in a photo that wasn’t theirs. A laugh that didn’t quite fit. Like someone had tried to be them… and got close enough.” He glances at the cellar door, then back at you. “The Skinkeeper doesn’t eat. Doesn’t speak. It catalogues. Wears your skin like a coat it’s trying to break in. And when it’s done with you? It folds your memory up, tucks it in some hole beneath the world, and moves on.” “A boy once saw it. Said it had no face. Just threads and creases, like something that never fully formed. Its fingers—too gentle. Like it didn’t want to hurt you. Just… preserve you.” He finally drinks. Then says, quieter: “I used to have a brother. Swore he was real. Swore we carved our names into the tree out back. But when I checked… only my name was there. And I’m not sure if I ever carved it.” The lantern flickers. “And if I didn’t… maybe he’s the one who remembers me.”",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuojpi/the_one_who_remembers_me/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.735460",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1456,
+        "word_count": 266
+      },
+      "processing_stats": {
+        "reddit_id": "1kuojpi",
+        "original_length": 0,
+        "processed_length": 1456,
+        "word_count": 266,
+        "scraping_timestamp": "unknown",
+        "author": "Dankkeyy",
+        "score": 1,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "59901dae-8d68-45a4-a0e5-b56efe88a39d",
+      "title": "Logs Discovered",
+      "content": "06 March, 1761 My travels are at lasT at an end. Back in Virginia after two months away in Jamaica finalizing trade agreements with a cane supplier. I have acquired a various number of personal effects from my late cousin, Will Harris, a first mate and navigator on a private cargo vessel contracted and under the East India Company. Him and tHe rest of crew were made part of a tragic demise when their vessel was seemingly set ablaze and sunk outside the eastern Caribee Islands. From what I and numerous others would suspect to have bEen carried out by some damned and hellish pirates. The wreckage was discovered some months ago, no bodies were among the wreckage. All that remains are the personal belongings of some of the crew, like the ones I have brought back with me. A nuMber of small trinkets, a pair of eyeglasses, a captain’s whistle, a decent number of papers that show signs of water damage, and part of a mAp of the West Indies. I met the men at the East India Company port yard who gathered these belongings and I asked to keep them. They had gone unclaimed for some time and I was told that I was the only relative of any of the creW that could be reached. The strangest thing that I retrieved from the lot was an envelope addressed to me. It contains 2 books, one was a smaller pocketable book, the other was a bit larger. There seemed to be some confusion as to who at the port prepared the envelope. With one of the books being my cousin’s journal, I took possession of the other concluding it was a second book of Will’s. I have finally taken a look at the larger book and now see that it is something I have no business in keeping. It is the ship’s captain’s log. I have found the first log before the voyage in which the crew had met their unfortunate end. I sit here pondering whether I want to delve into these items. I may be stirring up some sort of misfortune upon myself by stirring up the personal writings of the dead. I never been one to believe in things of those sorts. Jonthan E. Harris ———————————————————————— Captain's Log: Cpt. Hendrik de Ruijter. 10, May 1760, Weather: Temperature, 82’F Wind, 9 knots West Light cloud coverage ReceivIng a few new crewmen today at port in Montego Bay. Two men I have already met, both strapping decent men. A couple of the men were delayed by the storm of last week. Same storm that damaged our rigging and main mast coming into port. I’ve left it to newly promoted First Mate, Will Harris, to see that the repairS are made to the damage that The Sea Wren has sustained as well as refitting two new cannons to her starboard side. Nearly 3 years now with my own ship and crew sailing the tropical West Indies hauling precious goods to and from the more remote ports and islands to be delivered to British, French, and SpanisH companies. The Sea Wren, being a Schooner, is a perfect vessel for these types of jobs. Its smaller size allows it to be fast and nimble, but still has a large enough bay to transport decently large amoUnts of cargo. Bulky East Indiamen and frigates are too large to navigate the waters between these smaller islands and ports, and I seem to have made a reputation of traveling waters most would consider innavigabible. We are scheduled to pick up and haul a shipmeNt of a large sum of indigo, ginger, and molasses from an island to the north of Grenada. Another discreet run for the East India Company near French controlled waters. Nevertheless thouGh, my vessel is one for hire and is at this time under employment of the East India Company, as it was under employment transpoRting supplies for the Spanish Navy all but a year ago. I am in good standings with most of the larger companies operating in the West Indies due to my taking of nearly impossible jobs other crews turn away. The Sea Wren travels freely wherever she may. We depart as soon as the rest of the new men arrive and repairs are finished. Expecting to make sail in within 48 hours towards the Lesser Antilles. PraYers that the winds favor us.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kug3eq/logs_discovered/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.740771",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 4015,
+        "word_count": 736
+      },
+      "processing_stats": {
+        "reddit_id": "1kug3eq",
+        "original_length": 0,
+        "processed_length": 4015,
+        "word_count": 736,
+        "scraping_timestamp": "unknown",
+        "author": "Accomplished_End1684",
+        "score": 3,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "bbafc3ba-f1d2-4938-8251-160ae5c21168",
+      "title": "The mirror didn’t reflect me. It showed someone else living my life.",
+      "content": "I didn’t wake up to anything strange. No flicker. No nightmare. Just a feeling that the room wasn’t mine anymore. Everything looked exactly the same - bed, desk, clothes on the floor - but something had been shifted. Like someone had copied it from memory and didn’t care about getting it perfect. The air felt like it was listening. That was the first thing. Like when a speaker’s plugged in and you can hear the faint hum even when it’s silent. The second thing was the mirror. It didn’t show me. It showed my room, yes - down to the wrinkled sheets and my chipped mug on the desk - but I wasn’t in it. I stood there for a full minute, not blinking. And then the reflection moved. Not me. The other me. She stepped forward. Same hair. Same shirt. Same scars. But she wasn’t copying me - she was acting on her own. She looked straight at me, then past me. And smiled. Not a creepy smile. Not sinister. Just… calm. Like she knew something I didn’t. Like she remembered something I forgot. Then it blinked. Not her - the whole reflection. A frame skip. For one second, the room was empty. For the next, she was gone, and I was staring at myself again. Everything looked normal again. But it wasn’t. I felt different, like something had been updated. I haven’t touched the mirror since. Sometimes it catches me at the wrong angle. Sometimes, it doesn’t catch me at all. I started writing it down. Just in case this version of me forgets.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1ku60oz/the_mirror_didnt_reflect_me_it_showed_someone/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.757634",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1435,
+        "word_count": 266
+      },
+      "processing_stats": {
+        "reddit_id": "1ku60oz",
+        "original_length": 0,
+        "processed_length": 1435,
+        "word_count": 266,
+        "scraping_timestamp": "unknown",
+        "author": "nova0x_",
+        "score": 11,
+        "num_comments": 3
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "15f3e475-2367-4e7e-9916-1e541b29ac0a",
+      "title": "The great book of concepts",
+      "content": "The book of concepts is about a list of ideas and concepts. Beware to those who dare to read the book of concepts, too many concepts upon the mind can cause insanity and delusions. Concept 1: An astronaut was floating in space and his oxygen tank was running out of oxygen. He had accidentally wandered and floated away from his rocket. Then as his oxygen tank ran out of oxygen, he was still surprised that he could still breathe. Then he took his helmet off and he couldn't believe that he could breath in space. He was astounded by this but he knew something was wrong... Concept 2: a battle is ongoing in a town to become the most unknown person. 5 people are trying their best to be so unknown that they will kill anyone who looks at them. Then when there was only 1 guy left as the most unknown guy in the world, he knew that he had to kill himself as he knows himself. Concept 3. A famous singer on a singing contest show, hears the most beautiful voice he had ever heard and it was coming from a hotel. He tracks the room and when he goes in, no one was present. This was strange as he could hear the singing through the door. Then he realised that the singing is coming from something not human. Concept 4. A man tries to hang himself from his ceiling but something held onto the ropes, which stopped him from going down to far and cracking his neck. Then he sees a veiny grey coloured throat, and he realises that he accidentally hung the rope around a statue like creature. Concept 5. A family were terrified when someone started to break into their house through their front door, and it was just an Amazon delivery driver delivering parcels. Then the family started to notice other delivery people that were breaking into their house just to deliver a parcel. Concept 6. A man finds that his car has completely run out of petrol, but his car is still running. Then after of 2 hours of driving with an empty tank, he has no idea how his car is running. Then when he tried to change direction, the car doesn't work anymore. Then when he drives in the direction that he has been driving for the past 4 hours, his car suddenly works. Something wants him in that direction. Concept 6. Everytime when Roger opens the front door to go outside, there is always someone different outside his front door. Then when he closes the door and opens the door a minute later, there is a completely different person waiting outside. Roger doesn't want this at all. Concept 7. Mikey hates people that can shape shift and when he killed someone that can shape shift, mikey realised that this person regularly lost weight and put on weight, and allowed his hair to grow long only to cut it. So it looked like he was a shape shifter. Concept 8. To change one's name you can't just change a name, but Helen had to destroy how she lived her life and her whole past as Helen. Then when she destroyed her body she then found herself coming out of the womb as Rosie, but still looking exactly the same. Concept 9. After having a severe panic attack in my room when I found out that my mother had been killed by a bear, my room mate quietly called the police instead of consoling me. Then I found myself sitting at the same sofa as my room mate who just called the police. The room mate is acting all weird now and doing odd things like tip toeing around me and dancing silently. Concept 10. Gregory was so fat that he couldn't even fly as he was so heavy. One day as Gregory wanted to prove everyone wrong and he flew so high into the air, but it took all of his strength and he couldn't hold his weight in the air, and he fell down to the ground and he splattered himself all over the place. Concept 11. As jade and her family are moving in, they have to watch the other family being forcibly moved out as they couldn't pay rent. As jade and her family move in, they have to hear the pleas and cries of the other family whose stuff was being thrown out by the land lords men. Then as the other family were being kicked out at the same time as jade's family were moving in, jade's family was now a target. Concept 12. The multiverse is actually an octopus keeping all universes aligned and in peace. So as to celebrate the multiverse being held together by the great octopus, a group of people allowed themselves to drown in waters full of octopuses as a worthy sacrifice for the great octopus of the multiverse. Then through shere luck the great octopus of the universe was in the waters and through its great tentacles, the people who allowed themselves to be sacrificed, travelled to other alternate universes. That it will be it for the great book of concepts. We will carry on another time.",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuhmxz/the_great_book_of_concepts/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.768803",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 4681,
+        "word_count": 877
+      },
+      "processing_stats": {
+        "reddit_id": "1kuhmxz",
+        "original_length": 0,
+        "processed_length": 4681,
+        "word_count": 877,
+        "scraping_timestamp": "unknown",
+        "author": "shortstory1",
+        "score": 1,
+        "num_comments": 1
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "d5712692-b89e-425c-a271-d0efa9d277b8",
+      "title": "Need help finding the name of this creepypasta",
+      "content": "It was this story I heard on youtube a while back, it follows this young kid who got given a videocamera/ cam corder by a \"distant uncle\" for his birthday I believe, and his parents didn't want to talk about him. it later turns out that the uncle was the man who was originally supposed to adopt the narrator before his parents changed their minds. the stalker would watch the narrator and his friends (I believe two other boys) in the wood and the boys would try to mimic those cryptid hunting videos on youtube, catching the stalker in certain frames believing him to be a cryptid. and one day they devise a plan to catch the cryptid where the boys go into the woods with knives or something. it ends up going wrong and the boys get split up, only two of the boys came out of the woods and since they got split up they assumed the 3rd boy just went home but he never did. the other boy was accused of killing or attacking the missing boy but it later turned out that the stalker snatched the missing boy because he mistook the boy for the narrator. years later the narrator set out to figure out what happened to his friend and the stalker was found in a secluded shed dead holding the missing boy in his arms and they were all skeletal and the shed was covering in drawings I believe. I saw someone else post about this story on here about a month back also trying to find the name so if you know anything please let me know! (sorry for the wordiness)",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kugogj/need_help_finding_the_name_of_this_creepypasta/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.772579",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 1454,
+        "word_count": 278
+      },
+      "processing_stats": {
+        "reddit_id": "1kugogj",
+        "original_length": 0,
+        "processed_length": 1454,
+        "word_count": 278,
+        "scraping_timestamp": "unknown",
+        "author": "kadotathrowaway",
+        "score": 0,
+        "num_comments": 0
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    },
+    {
+      "id": "e35b470d-9c05-426e-a9ab-d19dc16dffa3",
+      "title": "Creepypasta de gta san andreas rap",
+      "content": "era un dia normal como cualquier otro, me encontraba solo en casa llamaron a mi puerta y era un extraño paquete roto, decidi abrirlo y se encontraba un disco con el gta san andreas pero con el titulo rojo, al momento de jugar me di cuenta de algo y era el reloj que estaba fallando tanto hasta que empezo a dar las 3 de la mañana como si de magia hubiese tratado, pero no le di importancia y segui jugando, ya despues de un rato el cj me estaba hablando para luego la pantalla se apagara por un rato, ya despues de eso la pantalla volvio a salir algo, me decia que tenia que seguir jugando pero salio cj con ojos realistas sangrando, me asuste tanto que mi corazon se acelero bastante, se esucho un grito en la cocina, decidi ir a ver y era cj matando a mi familia, desde ese dia no volvi a jugar gta san andreas",
+      "reddit_url": "https://www.reddit.com/r/creepypasta/comments/1kuc24j/creepypasta_de_gta_san_andreas_rap/",
+      "generation_info": {
+        "timestamp": "2025-05-26T19:14:57.775709",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": null,
+        "content_length": 812,
+        "word_count": 160
+      },
+      "processing_stats": {
+        "reddit_id": "1kuc24j",
+        "original_length": 0,
+        "processed_length": 812,
+        "word_count": 160,
+        "scraping_timestamp": "unknown",
+        "author": "Chiaoxbrrr",
+        "score": 0,
+        "num_comments": 0
       },
       "config_snapshot": {
         "min_length": 100,
