@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "total_stories": 1,
+    "last_updated": "2024-12-26T14:16:00.000000",
+    "format_version": "1.0",
+    "generated_by": "CreepyPasta AI"
+  },
+  "stories": [
+    {
+      "id": "demo-story-123",
+      "title": "The Midnight Visitor",
+      "content": "It was a dark and stormy night when I heard the first knock at my door. Three soft taps, then silence. I waited, but nothing came. Then, just as I was about to return to bed, I heard it again. Three taps, deliberate and precise. This time, I decided to investigate...",
+      "reddit_url": "https://reddit.com/r/nosleep/demo",
+      "generation_info": {
+        "timestamp": "2024-12-26T14:16:00.000000",
+        "tts_provider": "elevenlabs",
+        "audio_file_path": "output/audio/the_midnight_visitor.mp3",
+        "content_length": 235,
+        "word_count": 45,
+        "audio_generated_at": "2024-12-26T14:17:00.000000"
+      },
+      "processing_stats": {
+        "original_length": 250,
+        "processed_length": 235,
+        "word_count": 45,
+        "processing_timestamp": "2024-12-26T14:15:30.000000"
+      },
+      "config_snapshot": {
+        "min_length": 100,
+        "max_length": 5000,
+        "tts_provider": "elevenlabs",
+        "audio_format": "mp3"
+      }
+    }
+  ]
+}

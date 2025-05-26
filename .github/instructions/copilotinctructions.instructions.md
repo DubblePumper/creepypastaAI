@@ -21,3 +21,6 @@ When using third-party services or APIs, handle errors gracefully and provide fa
 When working with asynchronous code, ensure that it is handled correctly and that any potential issues are addressed proactively.
 
 edit the README.md file to reflect these guidelines and best practices.
+
+if there is a need to create test. put them in the tests folder and use a clear naming convention for test files and functions. Ensure that tests cover a range of scenarios, including edge cases, and that they are easy to understand and maintain. 
+if the output of a test is a file. put that output in test/results and use a clear naming convention for output files. Ensure that the output files are easy to understand and maintain.

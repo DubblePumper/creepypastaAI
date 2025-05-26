@@ -1,8 +1,9 @@
+# filepath: c:\Users\sande\Documents\GitHub\creepypastaAI\src\audio\tts_manager.py
 """
 Text-to-Speech Manager
 
 This module handles converting text to speech using various TTS providers
-including Google TTS, OpenAI TTS, and Azure Speech Services.
+including Google TTS, OpenAI TTS, Azure Speech Services, and ElevenLabs TTS.
 """
 
 import logging
@@ -29,6 +30,15 @@ try:
 except ImportError:
     AZURE_AVAILABLE = False
 
+try:
+    from elevenlabs import ElevenLabs, Voice, VoiceSettings
+    ELEVENLABS_AVAILABLE = True
+except ImportError:
+    ElevenLabs = None
+    Voice = None
+    VoiceSettings = None
+    ELEVENLABS_AVAILABLE = False
+
 from ..utils.config_manager import ConfigManager
 
 
@@ -36,7 +46,8 @@ class TTSManager:
     """
     Manages text-to-speech conversion using multiple providers.
     
-    Supports Google TTS (free), OpenAI TTS (paid), and Azure Speech Services (paid).
+    Supports Google TTS (free), OpenAI TTS (paid), Azure Speech Services (paid),
+    and ElevenLabs TTS (paid).
     """
     
     def __init__(self, config: ConfigManager):
@@ -68,11 +79,17 @@ class TTSManager:
             self.logger.warning("Azure Speech not available, falling back to gTTS")
             self.provider = "gtts"
         
+        if self.provider == "elevenlabs" and not ELEVENLABS_AVAILABLE:
+            self.logger.warning("ElevenLabs not available, falling back to gTTS")
+            self.provider = "gtts"
+        
         # Initialize provider-specific clients
         if self.provider == "openai" and OPENAI_AVAILABLE:
             self._initialize_openai()
         elif self.provider == "azure" and AZURE_AVAILABLE:
             self._initialize_azure()
+        elif self.provider == "elevenlabs" and ELEVENLABS_AVAILABLE:
+            self._initialize_elevenlabs()
     
     def _initialize_openai(self):
         """Initialize OpenAI TTS client."""
@@ -118,9 +135,39 @@ class TTSManager:
             self.logger.error(f"Failed to initialize Azure Speech: {e}")
             self.provider = "gtts"
     
+    def _initialize_elevenlabs(self):
+        """Initialize ElevenLabs TTS client."""
+        if not ELEVENLABS_AVAILABLE or ElevenLabs is None:
+            self.logger.error("ElevenLabs library not available")
+            self.provider = "gtts"
+            return
+            
+        try:
+            api_key = self.config.get_env("ELEVENLABS_API_KEY")
+            if not api_key or api_key == "your_elevenlabs_api_key_here":
+                self.logger.error("ElevenLabs API key not configured")
+                self.provider = "gtts"
+                return
+                
+            # Initialize ElevenLabs client
+            self.elevenlabs_client = ElevenLabs(api_key=api_key)
+            
+            # Get configuration settings
+            self.elevenlabs_model = self.config.get("tts.elevenlabs.model", "eleven_monolingual_v1")
+            self.elevenlabs_voice_id = self.config.get("tts.elevenlabs.voice", "21m00Tcm4TlvDq8ikWAM")
+            self.elevenlabs_stability = self.config.get("tts.elevenlabs.stability", 0.75)
+            self.elevenlabs_similarity_boost = self.config.get("tts.elevenlabs.similarity_boost", 0.5)
+            self.elevenlabs_style = self.config.get("tts.elevenlabs.style", 0.0)
+            self.elevenlabs_use_speaker_boost = self.config.get("tts.elevenlabs.use_speaker_boost", True)
+            
+            self.logger.info(f"ElevenLabs TTS client initialized with voice: {self.elevenlabs_voice_id}")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize ElevenLabs TTS: {e}")
+            self.provider = "gtts"
+    
     def text_to_speech(self, text: str, title: Optional[str] = None) -> Optional[str]:
         """
-        Convert text to speech using the configured provider.
+        Convert text to speech using the configured provider with automatic fallback.
         
         Args:
             text: Text content to convert
@@ -129,29 +176,52 @@ class TTSManager:
         Returns:
             Path to generated audio file, or None if failed
         """
+        # Generate filename and output_path before try block to ensure it is always defined
+        filename = self._generate_filename(text, title)
+        output_path = self.output_dir / f"{filename}.mp3"
         try:
-            # Generate filename
-            filename = self._generate_filename(text, title)
-            output_path = self.output_dir / f"{filename}.mp3"
-            
             # Check if file already exists (caching)
             if output_path.exists():
                 self.logger.info(f"Using cached TTS file: {output_path}")
                 return str(output_path)
             
-            # Generate speech based on provider
+            # Try primary provider first
+            result = None
             if self.provider == "gtts":
-                return self._gtts_generate(text, output_path)
+                result = self._gtts_generate(text, output_path)
             elif self.provider == "openai":
-                return self._openai_generate(text, output_path)
+                result = self._openai_generate(text, output_path)
+                # If OpenAI fails, automatically fallback to gTTS
+                if result is None:
+                    self.logger.warning("OpenAI TTS failed, falling back to gTTS")
+                    result = self._gtts_generate(text, output_path)
             elif self.provider == "azure":
-                return self._azure_generate(text, output_path)
+                result = self._azure_generate(text, output_path)
+                # If Azure fails, automatically fallback to gTTS
+                if result is None:
+                    self.logger.warning("Azure TTS failed, falling back to gTTS")
+                    result = self._gtts_generate(text, output_path)
+            elif self.provider == "elevenlabs":
+                result = self._elevenlabs_generate(text, output_path)
+                # If ElevenLabs fails, automatically fallback to gTTS
+                if result is None:
+                    self.logger.warning("ElevenLabs TTS failed, falling back to gTTS")
+                    result = self._gtts_generate(text, output_path)
             else:
-                self.logger.error(f"Unknown TTS provider: {self.provider}")
-                return None
+                self.logger.error(f"Unknown TTS provider: {self.provider}, using gTTS")
+                result = self._gtts_generate(text, output_path)
+            
+            return result
                 
         except Exception as e:
             self.logger.error(f"Error in text_to_speech: {e}")
+            # Last resort: try gTTS if not already tried
+            if self.provider != "gtts":
+                try:
+                    self.logger.warning("Attempting final fallback to gTTS")
+                    return self._gtts_generate(text, output_path)
+                except Exception as fallback_error:
+                    self.logger.error(f"Fallback to gTTS also failed: {fallback_error}")
             return None
     
     def _gtts_generate(self, text: str, output_path: Path) -> Optional[str]:
@@ -200,7 +270,8 @@ class TTSManager:
                 input=text
             )
             
-            response.stream_to_file(str(output_path))
+            with open(output_path, 'wb') as f:
+                f.write(response.content)
             
             self.logger.info(f"Generated OpenAI TTS audio: {output_path}")
             return str(output_path)
@@ -244,6 +315,80 @@ class TTSManager:
             self.logger.error(f"Azure TTS generation failed: {e}")
             return None
     
+    def _elevenlabs_generate(self, text: str, output_path: Path) -> Optional[str]:
+        """
+        Generate speech using ElevenLabs TTS.
+        
+        Args:
+            text: Text to convert
+            output_path: Output file path
+            
+        Returns:
+            Path to generated file or None if failed
+        """
+        if not ELEVENLABS_AVAILABLE or not hasattr(self, 'elevenlabs_client') or Voice is None or VoiceSettings is None:
+            self.logger.warning("ElevenLabs client not available")
+            return None
+            
+        try:
+            # Create voice settings
+            voice_settings = VoiceSettings(
+                stability=self.elevenlabs_stability,
+                similarity_boost=self.elevenlabs_similarity_boost,
+                style=self.elevenlabs_style,
+                use_speaker_boost=self.elevenlabs_use_speaker_boost            )            # Try to use a simple approach that should work with most ElevenLabs versions
+            # Note: The exact API may vary depending on elevenlabs package version
+            audio = None
+            
+            # Try common API patterns
+            try:
+                # Try newer SDK pattern first
+                if hasattr(self.elevenlabs_client, 'text_to_speech'):
+                    audio = self.elevenlabs_client.text_to_speech.convert(
+                        text=text,
+                        voice_id=self.elevenlabs_voice_id,
+                        voice_settings=voice_settings
+                    )
+                elif hasattr(self.elevenlabs_client, 'generate'):
+                    # Use getattr to avoid linter complaints about unknown method
+                    generate_method = getattr(self.elevenlabs_client, 'generate')
+                    audio = generate_method(
+                        text=text,
+                        voice=self.elevenlabs_voice_id
+                    )
+                else:
+                    raise AttributeError("No suitable ElevenLabs API method found")
+                    
+            except Exception as api_error:
+                # For now, log the error and fall back to other TTS providers
+                self.logger.error(f"ElevenLabs API call failed: {api_error}")
+                self.logger.info("ElevenLabs TTS not working - check API version compatibility")
+                return None
+            
+            if not audio:
+                self.logger.error("ElevenLabs returned no audio data")
+                return None
+            
+            # Save audio to file
+            with open(output_path, 'wb') as f:
+                for chunk in audio:
+                    f.write(chunk)
+            
+            self.logger.info(f"Generated ElevenLabs TTS audio: {output_path}")
+            return str(output_path)
+            
+        except Exception as e:
+            error_msg = str(e).lower()
+            if "quota" in error_msg or "limit" in error_msg:
+                self.logger.warning(f"ElevenLabs TTS quota/limit exceeded: {e}")
+            elif "unauthorized" in error_msg or "401" in error_msg:
+                self.logger.error(f"ElevenLabs TTS authentication failed: {e}")
+            elif "payment" in error_msg or "402" in error_msg:
+                self.logger.error(f"ElevenLabs TTS payment required: {e}")
+            else:
+                self.logger.error(f"ElevenLabs TTS generation failed: {e}")
+            return None
+    
     def _generate_filename(self, text: str, title: Optional[str] = None) -> str:
         """
         Generate a filename for the audio file.
@@ -282,5 +427,8 @@ class TTSManager:
             
         if AZURE_AVAILABLE and self.config.get_env("AZURE_SPEECH_KEY"):
             providers.append("azure")
+            
+        if ELEVENLABS_AVAILABLE and ElevenLabs is not None and self.config.get_env("ELEVENLABS_API_KEY"):
+            providers.append("elevenlabs")
         
         return providers

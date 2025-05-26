@@ -4,19 +4,19 @@ reddit:
   allowed_flairs:
     - "Text Story"
     - "Very Short Story"
-  sort_by: "hot"  # hot, new, top, rising
-  time_filter: "week"  # hour, day, week, month, year, all
-  limit: 25
+  sort_by: "best"  # hot, new, top, rising
+  time_filter: "all"  # hour, day, week, month, year, all
+  limit: 10
 
 # Text-to-Speech Configuration
 tts:
-  provider: "gtts"  # gtts, openai, azure
+  provider: "elevenlabs"  # gtts, openai, azure, elevenlabs
   language: "en"
   slow: false
   
   # OpenAI TTS settings (if using OpenAI)
   openai:
-    model: "tts-1"
+    model: "tts-1-hd"
     voice: "onyx"  # alloy, echo, fable, onyx, nova, shimmer
     
   # Azure TTS settings (if using Azure)
@@ -24,6 +24,15 @@ tts:
     voice: "en-US-AriaNeural"
     rate: "+0%"
     pitch: "+0Hz"
+    
+  # ElevenLabs TTS settings (if using ElevenLabs)
+  elevenlabs:
+    model: "eleven_multilingual_v2"  # eleven_monolingual_v1, eleven_multilingual_v2, eleven_turbo_v2
+    voice: "3SF4rB1fGBMXU9xRM7pz"   # Rachel (creepy/dramatic voice)
+    stability: 0.75
+    similarity_boost: 0.5
+    style: 0.0
+    use_speaker_boost: true
 
 # Audio Configuration
 audio:
@@ -47,11 +56,46 @@ story:
   clean_text: true
   remove_markdown: true
   
+# Video Configuration
+video:
+  enabled: true
+  resolution:
+    width: 1920
+    height: 1080
+  fps: 30
+  image_duration: 10  # seconds per image
+  transition_duration: 1.0  # seconds for crossfade transition
+  
+  # Image generation settings
+  images:
+    count: 6  # Number of images to generate per story
+    style: "kid_friendly_horror"  # Horror but suitable for children
+    quality: "hd"  # standard or hd
+    size: "1792x1024"  # DALL-E 3 size options: 1024x1024, 1792x1024, 1024x1792
+    cache_enabled: true
+    
+  # Background music mixing
+  background_music:
+    volume: 0.2  # Lower volume for videos
+    fade_in_duration: 3.0
+    fade_out_duration: 3.0
+    
+  # Output settings
+  output:
+    directory: "assets/videos"
+    format: "mp4"
+    codec: "libx264"
+    audio_codec: "aac"
+    bitrate: "2000k"
+
 # Output Settings
 output:
   directory: "assets/output"
   filename_format: "{title}_{timestamp}"
-  create_video: false  # Future feature
+  create_video: true  # Enable video creation
+  
+# API Keys (set via environment variables)
+# OPENAI_API_KEY - Required for image generation
   
 # Logging
 logging:

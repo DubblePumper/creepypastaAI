@@ -203,3 +203,5 @@ cache/
 .DS_Store
 Thumbs.db
 Desktop.ini
+tests/results/
+tests/assets/

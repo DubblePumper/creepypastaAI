@@ -8,6 +8,7 @@ gTTS>=2.4.0                 # Google Text-to-Speech
 pygame>=2.5.2               # Audio playback and mixing
 pydub>=0.25.1               # Audio processing
 audioop-lts>=0.2.1          # Audio operations for Python 3.13+ (audioop replacement)
+pyaudioop>=0.2.1            # Alternative audioop replacement (backup)
 mutagen>=1.47.0             # Audio metadata
 
 # Image Processing
@@ -19,9 +20,13 @@ pandas>=2.1.0               # Data manipulation
 beautifulsoup4>=4.12.0      # HTML parsing
 lxml>=4.9.3                 # XML/HTML parser
 
-# AI/ML (Optional - for advanced TTS)
-openai>=1.0.0               # OpenAI API (optional)
+# AI/ML and Video Processing
+openai>=1.0.0               # OpenAI API for DALL-E image generation
+moviepy>=1.0.3             # Video editing and composition
+imageio>=2.31.1             # Image I/O for moviepy
+imageio-ffmpeg>=0.4.8       # FFmpeg wrapper for moviepy
 azure-cognitiveservices-speech>=1.34.0  # Azure Speech Services (optional)
+elevenlabs>=0.2.26          # ElevenLabs TTS API (optional)
 
 # Development and Testing
 pytest>=7.4.0              # Testing framework

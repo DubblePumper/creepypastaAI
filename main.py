@@ -8,14 +8,18 @@ and creates atmospheric audio experiences with background music and effects.
 
 import logging
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
+from datetime import datetime
 
 from src.scrapers.reddit_scraper import RedditScraper
 from src.audio.tts_manager import TTSManager
 from src.audio.audio_mixer import AudioMixer
+from src.video.video_generator import VideoGenerator
 from src.utils.config_manager import ConfigManager
 from src.utils.story_processor import StoryProcessor
+from src.utils.story_tracker import StoryTracker
 from src.utils.logger import setup_logger
 
 
@@ -35,12 +39,13 @@ class CreepyPastaAI:
         """
         self.config = ConfigManager(config_path)
         self.logger = setup_logger("CreepyPastaAI", self.config.get("logging.level", "INFO"))
-        
-        # Initialize components
+          # Initialize components
         self.reddit_scraper = RedditScraper(self.config)
         self.tts_manager = TTSManager(self.config)
         self.audio_mixer = AudioMixer(self.config)
+        self.video_generator = VideoGenerator(self.config)
         self.story_processor = StoryProcessor(self.config)
+        self.story_tracker = StoryTracker(self.config)
         
         self.logger.info("CreepyPasta AI initialized successfully")
     
@@ -63,42 +68,21 @@ class CreepyPastaAI:
             
             self.logger.info(f"Starting CreepyPasta AI workflow for {num_stories} stories")
             
-            # Step 1: Scrape stories from Reddit
-            self.logger.info("Scraping stories from Reddit...")
-            raw_stories = self.reddit_scraper.scrape_stories(limit=int(num_stories))
+            # Step 1: Scrape and store stories from Reddit
+            new_stories_count = self._scrape_and_store_stories(int(num_stories))
             
-            if not raw_stories:
-                self.logger.warning("No stories found. Exiting.")
-                return []
+            if new_stories_count == 0:
+                self.logger.info("No new stories to process.")
+            else:
+                self.logger.info(f"Added {new_stories_count} new stories to database")
             
-            self.logger.info(f"Found {len(raw_stories)} stories")
-            
-            # Step 2: Process and filter stories
-            self.logger.info("Processing stories...")
-            processed_stories = []
-            for story in raw_stories:
-                processed_story = self.story_processor.process_story(story)
-                if processed_story:
-                    processed_stories.append(processed_story)
-            
-            self.logger.info(f"Processed {len(processed_stories)} valid stories")
-            
-            # Step 3: Generate audio for each story
-            generated_files = []
-            for i, story in enumerate(processed_stories, 1):
-                self.logger.info(f"Generating audio for story {i}/{len(processed_stories)}: {story['title'][:50]}...")
-                
-                try:
-                    audio_file = self._generate_story_audio(story)
-                    if audio_file:
-                        generated_files.append(audio_file)
-                        self.logger.info(f"Successfully generated: {audio_file}")
-                    
-                except Exception as e:
-                    self.logger.error(f"Failed to generate audio for story '{story['title']}': {e}")
-                    continue
+            # Step 2: Generate audio for stories without audio files
+            generated_files = self._generate_audio_for_pending_stories()
             
             self.logger.info(f"Workflow completed. Generated {len(generated_files)} audio files")
+              # Display tracking statistics
+            self._display_tracking_statistics()
+            
             return generated_files
             
         except Exception as e:
@@ -138,7 +122,344 @@ class CreepyPastaAI:
         except Exception as e:
             self.logger.error(f"Error generating audio for story '{story['title']}': {e}")
             return None
-
+        
+    def display_system_info(self):
+        """Display system information and available TTS providers."""
+        self.logger.info("=" * 50)
+        self.logger.info("CreepyPasta AI System Information")
+        self.logger.info("=" * 50)
+        
+        # Display available TTS providers
+        providers = self.tts_manager.get_available_providers()
+        current_provider = self.config.get("tts.provider", "gtts")
+        
+        self.logger.info(f"Current TTS Provider: {current_provider}")
+        self.logger.info(f"Available TTS Providers: {', '.join(providers)}")
+        if "openai" in providers and current_provider == "openai":
+            self.logger.info("✅ OpenAI TTS configured with automatic fallback to Google TTS")
+        elif "gtts" in providers:
+            self.logger.info("✅ Google TTS available as fallback option")
+        
+        self.logger.info("=" * 50)
+    
+    def _display_tracking_statistics(self):
+        """Display story tracking statistics."""
+        try:
+            stats = self.story_tracker.get_statistics()
+            
+            self.logger.info("=" * 50)
+            self.logger.info("Story Tracking Statistics")
+            self.logger.info("=" * 50)
+            
+            self.logger.info(f"📚 Total Stories Tracked: {stats.get('total_stories', 0)}")
+            self.logger.info(f"🎵 Stories with Audio: {stats.get('stories_with_audio', 0)}")
+            self.logger.info(f"📊 Average Content Length: {stats.get('average_content_length', 0):.0f} characters")
+            self.logger.info(f"📝 Average Word Count: {stats.get('average_word_count', 0):.0f} words")
+            
+            tts_providers = stats.get('tts_providers_used', [])
+            if tts_providers:
+                self.logger.info(f"🗣️ TTS Providers Used: {', '.join(tts_providers)}")
+            
+            date_range = stats.get('date_range', {})
+            if date_range:
+                self.logger.info(f"📅 Date Range: {date_range.get('earliest', 'N/A')[:10]} to {date_range.get('latest', 'N/A')[:10]}")
+            
+            self.logger.info(f"💾 Stories saved to: data/generated_stories.json")
+            self.logger.info("=" * 50)
+            
+        except Exception as e:
+            self.logger.error(f"Error displaying tracking statistics: {e}")
+    
+    def _scrape_and_store_stories(self, num_stories: int) -> int:
+        """
+        Scrape stories from Reddit and store new ones in JSON database.
+        
+        Args:
+            num_stories: Number of stories to scrape
+            
+        Returns:
+            Number of new stories added to database
+        """
+        try:
+            self.logger.info("Scraping stories from Reddit...")
+            raw_stories = self.reddit_scraper.scrape_stories(limit=num_stories)
+            
+            if not raw_stories:
+                self.logger.warning("No stories found.")
+                return 0
+            
+            self.logger.info(f"Found {len(raw_stories)} stories from Reddit")
+            
+            # Process and store each story
+            new_stories_count = 0
+            for i, story in enumerate(raw_stories, 1):
+                self.logger.info(f"Processing story {i}/{len(raw_stories)}: {story.get('title', 'Unknown')[:50]}...")
+                
+                try:
+                    # Process the story
+                    processed_story = self.story_processor.process_story(story)
+                    if not processed_story:
+                        self.logger.warning(f"Story processing failed for: {story.get('title', 'Unknown')[:50]}")
+                        continue
+                      # Check if story already exists in database
+                    reddit_url = processed_story.get('url')
+                    reddit_id = processed_story.get('id')
+                    title = processed_story.get('title')
+                    
+                    if self.story_tracker.story_exists(reddit_url=reddit_url, reddit_id=reddit_id, title=title):
+                        safe_title = title[:50] if title else "Unknown"
+                        self.logger.info(f"Story already exists in database, skipping: {safe_title}...")
+                        continue
+                    
+                    # Add new story to database
+                    story_id = self.story_tracker.add_story(
+                        title=processed_story['title'],
+                        content=processed_story['content'],
+                        reddit_url=reddit_url or 'unknown',
+                        tts_provider=None,  # Will be set when audio is generated
+                        processing_stats={
+                            "reddit_id": reddit_id,
+                            "original_length": len(story.get('raw_content', '')),
+                            "processed_length": len(processed_story['content']),
+                            "word_count": len(processed_story['content'].split()),
+                            "scraping_timestamp": processed_story.get('timestamp', 'unknown'),
+                            "author": processed_story.get('author', 'unknown'),
+                            "score": processed_story.get('score', 0),
+                            "num_comments": processed_story.get('num_comments', 0)
+                        }                    )
+                    
+                    if story_id:
+                        new_stories_count += 1
+                        safe_title = title[:50] if title else "Unknown"
+                        self.logger.info(f"Added new story to database: {safe_title}... (ID: {story_id})")
+                    else:
+                        safe_title = title[:50] if title else "Unknown"
+                        self.logger.error(f"Failed to add story to database: {safe_title}...")
+                        
+                except Exception as e:
+                    self.logger.error(f"Error processing story '{story.get('title', 'Unknown')[:50]}': {e}")
+                    continue
+            
+            self.logger.info(f"Successfully added {new_stories_count} new stories to database")
+            return new_stories_count
+            
+        except Exception as e:
+            self.logger.error(f"Error in scraping and storing stories: {e}")
+            return 0
+    
+    def _generate_audio_for_pending_stories(self) -> List[str]:
+        """
+        Generate audio for all stories in database that don't have audio files yet.
+        
+        Returns:
+            List of generated audio file paths
+        """
+        try:
+            self.logger.info("Generating audio for stories without audio files...")
+            
+            # Get all stories that need audio generation
+            pending_stories = []
+            for story in self.story_tracker.stories:
+                audio_path = story.get("generation_info", {}).get("audio_file_path")
+                if not audio_path:
+                    pending_stories.append(story)
+            
+            if not pending_stories:
+                self.logger.info("No pending stories found for audio generation")
+                return []
+            
+            self.logger.info(f"Found {len(pending_stories)} stories pending audio generation")
+            
+            # Generate audio for each pending story
+            generated_files = []
+            for i, story in enumerate(pending_stories, 1):
+                self.logger.info(f"Generating audio {i}/{len(pending_stories)}: {story['title'][:50]}...")
+                
+                try:
+                    # Prepare story data for audio generation
+                    story_data = {
+                        'title': story['title'],
+                        'content': story['content'],
+                        'url': story['reddit_url'],
+                        'timestamp': story.get('generation_info', {}).get('timestamp', 'unknown')
+                    }
+                    
+                    # Generate audio for the story
+                    audio_file = self._generate_story_audio(story_data)
+                    if audio_file:
+                        generated_files.append(audio_file)
+                        self.logger.info(f"Successfully generated: {audio_file}")
+                        
+                        # Update story record with audio file path and TTS provider
+                        self.story_tracker.update_story_audio(story['id'], audio_file)
+                        
+                        # Update TTS provider info
+                        story['generation_info']['tts_provider'] = self.config.get("tts.provider", "gtts")
+                        self.story_tracker._save_stories()
+                        
+                    else:
+                        self.logger.warning(f"Audio generation failed for story: {story['title'][:50]}...")
+                        
+                except Exception as e:
+                    self.logger.error(f"Failed to generate audio for story '{story['title']}': {e}")
+                    continue
+            
+            self.logger.info(f"Audio generation completed. Generated {len(generated_files)} files")
+            return generated_files
+            
+        except Exception as e:
+            self.logger.error(f"Error generating audio for pending stories: {e}")
+            return []
+    
+    def generate_videos(self, generate_for_all: bool = True) -> List[str]:
+        """
+        Generate videos for audio files.
+        
+        Args:
+            generate_for_all: If True, generate videos for all audio files
+            
+        Returns:
+            List of generated video file paths
+        """
+        try:
+            self.logger.info("Starting video generation workflow...")
+            
+            if generate_for_all:
+                # Generate videos for all existing audio files
+                generated_videos = self.video_generator.generate_videos_for_all_audio()
+            else:
+                # Generate videos only for stories without videos
+                generated_videos = self._generate_videos_for_pending_stories()
+            
+            self.logger.info(f"Video generation completed. Generated {len(generated_videos)} videos")
+            return generated_videos
+            
+        except Exception as e:
+            self.logger.error(f"Error in video generation workflow: {e}")
+            return []
+    
+    def _generate_videos_for_pending_stories(self) -> List[str]:
+        """
+        Generate videos for stories that have audio but no video yet.
+        
+        Returns:
+            List of generated video file paths
+        """
+        try:
+            self.logger.info("Generating videos for stories without videos...")
+            
+            # Get all stories with audio files
+            stories_with_audio = []
+            for story in self.story_tracker.stories:
+                audio_path = story.get("generation_info", {}).get("audio_file_path")
+                if audio_path and Path(audio_path).exists():
+                    stories_with_audio.append(story)
+            
+            if not stories_with_audio:
+                self.logger.info("No stories with audio files found")
+                return []
+            
+            self.logger.info(f"Found {len(stories_with_audio)} stories with audio files")
+            
+            # Generate videos for each story
+            generated_videos = []
+            for i, story in enumerate(stories_with_audio, 1):
+                self.logger.info(f"Generating video {i}/{len(stories_with_audio)}: {story['title'][:50]}...")
+                
+                try:
+                    audio_path = story["generation_info"]["audio_file_path"]
+                    
+                    # Check if video already exists
+                    video_exists = self._check_if_video_exists(story['title'])
+                    if video_exists:
+                        self.logger.info(f"Video already exists for: {story['title'][:50]}...")
+                        continue
+                    
+                    # Generate video
+                    video_path = self.video_generator.create_video(
+                        audio_file=audio_path,
+                        story_title=story['title'],
+                        story_content=story['content']
+                    )
+                    
+                    if video_path:
+                        generated_videos.append(video_path)
+                        self.logger.info(f"Successfully generated video: {video_path}")
+                        
+                        # Update story record with video file path
+                        self._update_story_with_video_path(story['id'], video_path)
+                    else:
+                        self.logger.warning(f"Video generation failed for story: {story['title'][:50]}...")
+                        
+                except Exception as e:
+                    self.logger.error(f"Failed to generate video for story '{story['title']}': {e}")
+                    continue
+            
+            self.logger.info(f"Video generation completed. Generated {len(generated_videos)} files")
+            return generated_videos
+            
+        except Exception as e:
+            self.logger.error(f"Error generating videos for pending stories: {e}")
+            return []
+    
+    def _check_if_video_exists(self, title: str) -> bool:
+        """
+        Check if a video already exists for the given title.
+        
+        Args:
+            title: Story title
+            
+        Returns:
+            True if video exists, False otherwise
+        """
+        try:
+            videos_path = Path("assets/videos")
+            if not videos_path.exists():
+                return False
+            
+            # Create safe filename pattern
+            safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '-', '_')).rstrip()
+            safe_title = safe_title.replace(' ', '_')[:50]
+            
+            # Check for existing videos with similar names
+            existing_videos = list(videos_path.glob(f"*{safe_title}*.mp4"))
+            return len(existing_videos) > 0
+            
+        except Exception as e:
+            self.logger.error(f"Error checking if video exists: {e}")
+            return False
+    
+    def _update_story_with_video_path(self, story_id: str, video_path: str) -> bool:
+        """
+        Update story record with video file path.
+        
+        Args:
+            story_id: Unique story ID
+            video_path: Path to generated video file
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            for story in self.story_tracker.stories:
+                if story["id"] == story_id:
+                    if "generation_info" not in story:
+                        story["generation_info"] = {}
+                    
+                    story["generation_info"]["video_file_path"] = video_path
+                    story["generation_info"]["video_generated_at"] = datetime.now().isoformat()
+                    
+                    if self.story_tracker._save_stories():
+                        self.logger.info(f"Updated story {story_id} with video path: {video_path}")
+                        return True
+                    return False
+            self.logger.warning(f"Story ID {story_id} not found for video update")
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"Error updating story {story_id} with video: {e}")
+            return False
+        
 
 def main():
     """Main entry point for the application."""
@@ -148,6 +469,9 @@ def main():
         
         # Initialize and run the application
         app = CreepyPastaAI()
+        
+        # Display system information
+        app.display_system_info()
         
         # Check command line arguments
         num_stories = None

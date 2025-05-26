@@ -23,12 +23,15 @@ class ConfigManager:
     def __init__(self, config_path: str = "config/settings.yaml"):
         """
         Initialize the configuration manager.
-        
-        Args:
+          Args:
             config_path: Path to the YAML configuration file
         """
         self.config_path = Path(config_path)
         self.config = {}
+        
+        # Initialize logger first
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger(__name__)
         
         # Load environment variables from .env file
         load_dotenv()
@@ -36,8 +39,6 @@ class ConfigManager:
         # Load configuration
         self._load_config()
         
-        logging.basicConfig(level=logging.INFO)
-        self.logger = logging.getLogger(__name__)
         self.logger.info(f"Configuration loaded from {config_path}")
     
     def _load_config(self):
