@@ -193,6 +193,10 @@ tmp/
 *.cache
 cache/
 
+# Temporary files
+temp/
+*TEMP_MPY*.mp3
+
 # IDE files
 .vscode/
 .idea/

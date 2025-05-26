@@ -15,7 +15,7 @@ import argparse
 # Add the parent directory to Python path to access src
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from test_video_generation import TestVideoGeneration, run_standalone_tests
+from tests.test_video_generation import TestVideoGeneration, run_standalone_tests
 
 
 def run_unittest_suite():

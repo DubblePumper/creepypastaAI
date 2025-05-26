@@ -4,7 +4,7 @@ reddit:
   allowed_flairs:
     - "Text Story"
     - "Very Short Story"
-  sort_by: "best"  # hot, new, top, rising
+  sort_by: "top"  # hot, new, top, rising
   time_filter: "all"  # hour, day, week, month, year, all
   limit: 10
 
@@ -37,10 +37,10 @@ tts:
 # Audio Configuration
 audio:
   output_format: "mp3"
-  quality: "high"
+  quality: "high"   
   volume:
-    narration: 0.8
-    background_music: 0.3
+    narration: 0.7  # Slightly reduced to let background music through
+    background_music: 0.6  # Higher volume for better audibility
   
   # Background music settings
   background_music:
@@ -73,10 +73,9 @@ video:
     quality: "hd"  # standard or hd
     size: "1792x1024"  # DALL-E 3 size options: 1024x1024, 1792x1024, 1024x1792
     cache_enabled: true
-    
-  # Background music mixing
+      # Background music mixing
   background_music:
-    volume: 0.2  # Lower volume for videos
+    volume: 0.8  # Increased volume for better audibility
     fade_in_duration: 3.0
     fade_out_duration: 3.0
     

@@ -8,8 +8,13 @@ Creates atmospheric horror videos by combining:
 """
 
 import os
+import io
+import sys
 import logging
 import hashlib
+import random
+import shutil
+import tempfile
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 from datetime import datetime
@@ -48,7 +53,8 @@ class VideoGenerator:
         """
         self.config = config
         self.logger = logging.getLogger(__name__)
-          # Set up OpenAI API
+        
+        # Set up OpenAI API
         openai_api_key = os.getenv("OPENAI_API_KEY")
         if not openai_api_key:
             self.logger.warning("OPENAI_API_KEY not found in environment variables. Image generation will be disabled.")
@@ -61,37 +67,36 @@ class VideoGenerator:
         self.music_path = Path("assets/music")
         self.images_path = Path("assets/images")
         self.videos_path = Path("assets/videos")
+        self.temp_video_dir = Path("temp/video")
         
         # Ensure directories exist
         self.images_path.mkdir(parents=True, exist_ok=True)
         self.videos_path.mkdir(parents=True, exist_ok=True)
+        self.temp_video_dir.mkdir(parents=True, exist_ok=True)
         
         # Video settings
         self.image_duration = 10  # seconds per image
         self.fade_duration = 1.0  # seconds for smooth transitions
         self.video_resolution = (1920, 1080)  # Full HD
-          # Check moviepy/FFmpeg configuration
-        self._check_ffmpeg_config()
         
-        self.logger.info("Video generator initialized successfulsly")
-    
+        # Check moviepy/FFmpeg configuration
+        self._check_ffmpeg_config()        
+        self.logger.info("Video generator initialized successfully")
     
     def generate_horror_images(self, story_title: str, story_content: str, num_images: Optional[int] = None) -> List[str]:
         """
-        Generate kid-friendly horror images using OpenAI DALL-E.
+        Generate atmospheric horror images for the story using existing images first,
+        then generating only what's needed in random order.
         
         Args:
             story_title: Title of the story for context
             story_content: Story content to extract themes
-            num_images: Number of images to generate (auto-calculated if None)
+            num_images: Number of images needed (auto-calculated if None)
             
         Returns:
-            List of generated image file paths
+            List of paths to image files in random order
         """
         try:
-            if not self.openai_client:
-                self.logger.error("OpenAI client not available. Please set OPENAI_API_KEY environment variable.")
-                return []
             # Calculate number of images needed based on audio duration
             if num_images is None:
                 # Estimate audio duration (rough calculation: ~150 words per minute)
@@ -99,59 +104,90 @@ class VideoGenerator:
                 estimated_duration = (word_count / 150) * 60  # seconds
                 num_images = max(3, int(estimated_duration / self.image_duration))
             
-            self.logger.info(f"Generating {num_images} horror images for story: {story_title[:50]}...")
+            self.logger.info(f"Need {num_images} horror images for story: {story_title[:50]}...")
             
-            # Create prompts for different scenes
-            prompts = self._create_image_prompts(story_title, story_content, num_images)
+            # First, collect existing horror images
+            existing_images = []
+            if self.images_path.exists():
+                existing_images = list(self.images_path.glob("horror_*.png"))
             
-            generated_images = []
-            for i, prompt in enumerate(prompts, 1):
-                self.logger.info(f"Generating image {i}/{len(prompts)}: {prompt[:100]}...")
+            self.logger.info(f"Found {len(existing_images)} existing horror images")
+            
+            # If we have enough existing images, use them in random order
+            if len(existing_images) >= num_images:
+                selected_images = random.sample(existing_images, num_images)
+                random.shuffle(selected_images)  # Additional shuffle for good measure
+                self.logger.info(f"Using {num_images} existing images in random order")
+                return [str(img) for img in selected_images]
+            
+            # If we need more images, use all existing ones plus generate additional ones
+            final_images = [str(img) for img in existing_images]
+            images_needed = num_images - len(existing_images)
+            
+            self.logger.info(f"Using {len(existing_images)} existing images, generating {images_needed} new images")
+            
+            if images_needed > 0:
+                if not self.openai_client:
+                    self.logger.error("OpenAI client not available. Please set OPENAI_API_KEY environment variable.")
+                    # Return existing images shuffled if we can't generate new ones
+                    if existing_images:
+                        random.shuffle(final_images)
+                        return final_images
+                    return []
                 
-                # Check if image already exists (cache)
-                image_hash = hashlib.md5(prompt.encode()).hexdigest()
-                image_filename = f"horror_{image_hash}.png"
-                image_path = self.images_path / image_filename
+                # Create prompts for new images
+                prompts = self._create_image_prompts(story_title, story_content, images_needed)
                 
-                if image_path.exists():
-                    self.logger.info(f"Using cached image: {image_filename}")
-                    generated_images.append(str(image_path))
-                    continue
-                
-                try:
-                    # Generate image with OpenAI DALL-E
-                    response = self.openai_client.images.generate(
-                        model="dall-e-3",
-                        prompt=prompt,
-                        size="1792x1024",  # Landscape format
-                        quality="standard",
-                        n=1
-                    )
-                      # Download and save the image
-                    if response and response.data and len(response.data) > 0:
-                        image_url = response.data[0].url
-                        if image_url:
-                            image_response = requests.get(image_url)
-                            
-                            if image_response.status_code == 200:
-                                with open(image_path, 'wb') as f:
-                                    f.write(image_response.content)
-                                
-                                generated_images.append(str(image_path))
-                                self.logger.info(f"Successfully generated and saved: {image_filename}")
-                            else:
-                                self.logger.error(f"Failed to download image {i}")
-                        else:
-                            self.logger.error(f"No image URL returned for image {i}")
-                    else:
-                        self.logger.error(f"No image data returned for image {i}")
+                for i, prompt in enumerate(prompts, 1):
+                    self.logger.info(f"Generating new image {i}/{len(prompts)}: {prompt[:100]}...")
+                    
+                    # Check if image already exists (cache)
+                    image_hash = hashlib.md5(prompt.encode()).hexdigest()
+                    image_filename = f"horror_{image_hash}.png"
+                    image_path = self.images_path / image_filename
+                    
+                    if image_path.exists():
+                        self.logger.info(f"Using cached image: {image_filename}")
+                        final_images.append(str(image_path))
+                        continue
+                    
+                    try:
+                        # Generate image with OpenAI DALL-E
+                        response = self.openai_client.images.generate(
+                            model="dall-e-3",
+                            prompt=prompt,
+                            size="1792x1024",  # Landscape format
+                            quality="standard",
+                            n=1
+                        )
                         
-                except Exception as e:
-                    self.logger.error(f"Error generating image {i}: {e}")
-                    continue
+                        # Download and save the image
+                        if response and response.data and len(response.data) > 0:
+                            image_url = response.data[0].url
+                            if image_url:
+                                image_response = requests.get(image_url)
+                                
+                                if image_response.status_code == 200:
+                                    with open(image_path, 'wb') as f:
+                                        f.write(image_response.content)
+                                    
+                                    final_images.append(str(image_path))
+                                    self.logger.info(f"Successfully generated and saved: {image_filename}")
+                                else:
+                                    self.logger.error(f"Failed to download image {i}")
+                            else:
+                                self.logger.error(f"No image URL returned for image {i}")
+                        else:
+                            self.logger.error(f"No image data returned for image {i}")
+                            
+                    except Exception as e:
+                        self.logger.error(f"Error generating image {i}: {e}")
+                        continue
+              # Shuffle final image list for random order
+            random.shuffle(final_images)
             
-            self.logger.info(f"Generated {len(generated_images)} images successfully")
-            return generated_images
+            self.logger.info(f"Final image set: {len(final_images)} images in random order")
+            return final_images
             
         except Exception as e:
             self.logger.error(f"Error in image generation: {e}")
@@ -226,8 +262,7 @@ class VideoGenerator:
         # Common locations
         locations = ["room", "hallway", "garden", "building", "cabin", "mansion", "apartment"]
         location = next((l for l in locations if l in text), "room")
-        
-        # Common objects
+          # Common objects
         objects = ["mirror", "doll", "book", "phone", "computer", "music box", "painting", "door"]
         obj = next((o for o in objects if o in text), "mirror")
         
@@ -236,7 +271,8 @@ class VideoGenerator:
         main_element = next((e for e in main_elements if e in text), "")
         
         return {
-            "setting": setting,            "location": location,
+            "setting": setting,
+            "location": location,
             "object": obj,
             "main_element": main_element
         }
@@ -250,8 +286,7 @@ class VideoGenerator:
             story_title: Title of the story (extracted from filename if None)
             story_content: Story content for image generation context
             output_dir: Optional output directory (uses default if None)
-            
-        Returns:
+              Returns:
             Path to generated video file, or None if failed
         """
         try:
@@ -269,7 +304,8 @@ class VideoGenerator:
             # Load audio to get duration
             audio_clip = AudioFileClip(str(audio_path))
             audio_duration = audio_clip.duration
-              # Get story content from database if not provided
+            
+            # Get story content from database if not provided
             if not story_content:
                 retrieved_content = self._get_story_content(story_title)
                 story_content = retrieved_content or ""
@@ -281,8 +317,7 @@ class VideoGenerator:
                 self.logger.error("No images generated, cannot create video")
                 audio_clip.close()
                 return None
-            
-            # Create video clips from images
+              # Create video clips from images
             video_clips = self._create_video_clips_from_images(image_paths, audio_duration)
             
             # Combine all video clips
@@ -290,7 +325,8 @@ class VideoGenerator:
             
             # Add background music
             final_video = self._add_background_music(final_video, audio_clip)
-              # Generate output filename and path
+            
+            # Generate output filename and path
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             safe_title = "".join(c for c in story_title if c.isalnum() or c in (' ', '-', '_')).rstrip()
             safe_title = safe_title.replace(' ', '_')[:50]
@@ -302,56 +338,83 @@ class VideoGenerator:
                 output_path_base.mkdir(parents=True, exist_ok=True)
             else:
                 output_path_base = self.videos_path
-                
-            output_path = output_path_base / output_filename# Write the final video with robust FFmpeg settings
-            self.logger.info(f"Rendering video: {output_filename}")
             
-            # Ensure video has proper FPS
+            output_path = output_path_base / output_filename
+            
+            # Write the final video with robust FFmpeg settings
+            self.logger.info(f"Rendering video: {output_filename}")            # Ensure video has proper FPS
             final_video = final_video.set_fps(24)
             
-            # Try multiple rendering approaches
+            # Try rendering with proper logger configuration
             success = False
-            
-            # Method 1: Simple rendering
+            old_tempdir = tempfile.tempdir  # Store original temp directory
             try:
-                self.logger.info("Attempting simple video rendering...")
-                final_video.write_videofile(
-                    str(output_path),
-                    fps=24,
-                    verbose=False,
-                    logger=None,
-                    audio=True
-                )
-                success = True
+                self.logger.info("Rendering video with MoviePy...")
                 
-            except Exception as e1:
-                self.logger.warning(f"Simple rendering failed: {e1}")
+                # Configure temp file location
+                tempfile.tempdir = str(self.temp_video_dir)
                 
-                # Method 2: Without audio codec specification
                 try:
-                    self.logger.info("Trying without codec specification...")
-                    final_video.write_videofile(
+                    # Try creating the video without audio first, then add audio separately
+                    self.logger.info("Creating video without audio first...")
+                    
+                    # Create video-only clip
+                    video_only = final_video.without_audio()
+                    
+                    # Write video without audio
+                    temp_video_path = str(output_path).replace('.mp4', '_temp_video.mp4')
+                    video_only.write_videofile(
+                        temp_video_path,
+                        fps=24,
+                        codec='libx264',
+                        verbose=False,
+                        audio=False  # Explicitly no audio
+                    )
+                    
+                    # Load the temp video and add audio
+                    self.logger.info("Adding audio to video...")
+                    temp_video_clip = VideoFileClip(temp_video_path)
+                    final_with_audio = temp_video_clip.set_audio(audio_clip)
+                    
+                    # Write final video with audio
+                    final_with_audio.write_videofile(
                         str(output_path),
                         fps=24,
-                        verbose=False,
-                        logger=None
+                        codec='libx264',
+                        audio_codec='aac',
+                        verbose=False
                     )
+                    
+                    # Cleanup
+                    video_only.close()
+                    temp_video_clip.close()
+                    final_with_audio.close()
+                    
+                    # Remove temp file
+                    Path(temp_video_path).unlink(missing_ok=True)
+                    
                     success = True
                     
-                except Exception as e2:
-                    self.logger.warning(f"Second method failed: {e2}")
-                    
-                    # Method 3: Most basic approach
+                except Exception as e:
+                    self.logger.warning(f"Failed with separate audio/video approach: {e}")
+                    # Try with absolute minimal settings - just the essential parameters
                     try:
-                        self.logger.info("Trying most basic rendering...")
-                        final_video.write_videofile(str(output_path), fps=24)
+                        final_video.write_videofile(
+                            str(output_path),
+                            fps=24
+                        )
                         success = True
                         
-                    except Exception as e3:
-                        self.logger.error(f"All rendering methods failed:")
-                        self.logger.error(f"  Method 1: {e1}")
-                        self.logger.error(f"  Method 2: {e2}")
-                        self.logger.error(f"  Method 3: {e3}")
+                    except Exception as e2:
+                        self.logger.error(f"All rendering attempts failed: {e2}")
+                        success = False
+                        
+            except Exception as e:
+                self.logger.error(f"Video rendering failed: {e}")
+                success = False
+            finally:
+                # Restore original temp directory
+                tempfile.tempdir = old_tempdir
             
             if not success:
                 # Cleanup and return None
@@ -370,10 +433,33 @@ class VideoGenerator:
             self.logger.error(f"Error creating video: {e}")
             return None
     
+    def cleanup_temp_files(self):
+        """Clean up temporary files created during video generation."""
+        try:
+            # Clean up temp video directory
+            if self.temp_video_dir.exists():
+                for temp_file in self.temp_video_dir.glob("*TEMP_MPY*"):
+                    try:
+                        temp_file.unlink()
+                        self.logger.debug(f"Cleaned up temp file: {temp_file.name}")
+                    except Exception as e:
+                        self.logger.warning(f"Could not remove temp file {temp_file}: {e}")
+            
+            # Clean up any temp files in root directory (fallback)
+            root_dir = Path(".")
+            for temp_file in root_dir.glob("*TEMP_MPY*"):
+                try:
+                    temp_file.unlink()
+                    self.logger.info(f"Cleaned up stray temp file: {temp_file.name}")
+                except Exception as e:
+                    self.logger.warning(f"Could not remove stray temp file {temp_file}: {e}")
+                    
+        except Exception as e:
+            self.logger.error(f"Error during temp file cleanup: {e}")
+    
     def _create_video_clips_from_images(self, image_paths: List[str], total_duration: float) -> List[VideoFileClip]:
         """
-        Create video clips from images with smooth transitions.
-        
+        Create video clips from images with smooth transitions.        
         Args:
             image_paths: List of image file paths
             total_duration: Total duration needed for the video
@@ -382,7 +468,8 @@ class VideoGenerator:
             List of video clips
         """
         clips = []
-          # Calculate duration per image
+        
+        # Calculate duration per image
         duration_per_image = total_duration / len(image_paths)
         
         for i, image_path in enumerate(image_paths):
@@ -425,7 +512,6 @@ class VideoGenerator:
                 continue
         
         return clips
-    
     def _add_background_music(self, video_clip, narration_audio: AudioFileClip):
         """
         Add background music to the video.
@@ -441,25 +527,43 @@ class VideoGenerator:
             # Find background music file
             music_file = self.music_path / "creepy-music.mp3"
             if not music_file.exists():
-                self.logger.warning("Background music file not found, proceeding without music")
+                self.logger.warning(f"Background music file not found at {music_file}, proceeding without music")
                 return video_clip.set_audio(narration_audio)
             
+            self.logger.info(f"Loading background music from {music_file}")
+            
             # Load background music
-            background_music = AudioFileClip(str(music_file))            # Loop music if it's shorter than the video
+            background_music = AudioFileClip(str(music_file))
+            
+            # Loop music if it's shorter than the video
             if background_music.duration < video_clip.duration:
                 # Calculate how many loops we need
                 loops_needed = int(video_clip.duration / background_music.duration) + 1
+                self.logger.info(f"Looping background music {loops_needed} times to match video duration")
                 background_music = concatenate_audioclips([background_music] * loops_needed)
             
             # Trim music to match video duration
-            background_music = background_music.subclip(0, video_clip.duration)
+            background_music = background_music.subclip(0, video_clip.duration)            # Get background music volume from config (try multiple config paths)
+            music_volume = (
+                self.config.get("video.background_music.volume", None) or
+                self.config.get("audio.volume.background_music", None) or
+                self.config.get("audio.background_music.volume", None) or
+                self.config.get("video.background_music_volume", None) or
+                0.8  # Default to 80% volume for better audibility
+            )
             
-            # Reduce background music volume
-            music_volume = self.config.get("video.background_music_volume", 0.3)
+            self.logger.info(f"Setting background music volume to {music_volume}")
+            
+            # Reduce background music volume 
             background_music = background_music.volumex(music_volume)
             
+            # Slightly reduce narration volume to make room for background music
+            narration_volume = self.config.get("audio.volume.narration", 0.7)
+            adjusted_narration = narration_audio.volumex(narration_volume)
+            
             # Combine narration and background music
-            final_audio = CompositeAudioClip([narration_audio, background_music])
+            self.logger.info("Combining narration and background music")
+            final_audio = CompositeAudioClip([adjusted_narration, background_music])
             
             # Set the combined audio to the video
             final_video = video_clip.set_audio(final_audio)
@@ -467,10 +571,13 @@ class VideoGenerator:
             # Cleanup
             background_music.close()
             
+            self.logger.info("Successfully added background music to video")
             return final_video
             
         except Exception as e:
             self.logger.error(f"Error adding background music: {e}")
+            import traceback
+            self.logger.error(f"Background music error traceback: {traceback.format_exc()}")
             # Return video with just narration audio
             return video_clip.set_audio(narration_audio)
     
@@ -572,10 +679,15 @@ class VideoGenerator:
                 if video_path:
                     generated_videos.append(video_path)
             
+            # Clean up any temp files
+            self.cleanup_temp_files()
+            
             self.logger.info(f"Generated {len(generated_videos)} videos successfully")
             return generated_videos
             
         except Exception as e:
+            # Clean up temp files even on error
+            self.cleanup_temp_files()
             self.logger.error(f"Error generating videos for all audio: {e}")
             return []
     

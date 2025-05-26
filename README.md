@@ -63,6 +63,47 @@ creepypastaAI/
 └── main.py                # Application entry point
 ```
 
+## 🏛️ Development Guidelines & Code Organization
+
+This project follows software engineering best practices to ensure maintainability, readability, and collaboration:
+
+### Code Organization Principles
+- **Clear Structure**: Logical separation using folders and subfolders
+- **Descriptive Naming**: Clear, descriptive names for files, functions, and variables
+- **Separation of Concerns**: Related code grouped together, unrelated code separated
+- **Single Responsibility**: Each module, class, and function has a clear, focused purpose
+
+### Code Quality Standards
+- **Clean & Readable**: Code is clean, readable, and maintainable
+- **Well Documented**: Comments explain complex logic and important design decisions
+- **Simplicity First**: Avoid unnecessary complexity, strive for simple solutions
+- **Error Handling**: Comprehensive edge case and error handling throughout
+- **Type Hints**: Use Python type hints for better code clarity and IDE support
+
+### Testing & Validation
+- **Test Coverage**: Tests in the `tests/` folder with clear naming conventions
+- **Edge Cases**: Tests cover various scenarios including edge cases
+- **Output Organization**: Test outputs stored in `tests/results/` with clear naming
+- **Regression Prevention**: Tests prevent future regressions and ensure stability
+
+### Version Control & Collaboration
+- **Frequent Commits**: Regular commits with clear, descriptive messages
+- **Branch Strategy**: Feature branches for new functionality, stable main branch
+- **Code Reviews**: Pull requests enable discussions and quality assurance
+- **Documentation**: Clear setup and usage instructions in README and code comments
+
+### Security & Performance
+- **Data Protection**: Best practices for handling sensitive data (API keys in environment)
+- **Performance Optimization**: Profile code to identify bottlenecks, optimize thoughtfully
+- **External Dependencies**: Graceful error handling for third-party services and APIs
+- **Async Handling**: Proper asynchronous code patterns where applicable
+
+### Project Dependencies
+- **Dependency Management**: Well-managed and documented dependencies in `requirements.txt`
+- **Framework Conventions**: Follow conventions and best practices of used libraries
+- **Environment Variables**: Sensitive configuration stored in environment variables
+- **Cross-Platform**: Code works consistently across Windows, macOS, and Linux
+
 ## 🔧 Execution Modes
 
 CreepyPasta AI supports independent execution modes for maximum flexibility and development efficiency:
