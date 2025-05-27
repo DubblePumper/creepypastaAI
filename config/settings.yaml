@@ -77,12 +77,21 @@ video:
     quality: "hd"  # standard or hd
     size: "1792x1024"  # DALL-E 3 size options: 1024x1024, 1792x1024, 1024x1792
     cache_enabled: true
-    
-  # Background music mixing
+      # Background music mixing
   background_music:
     volume: 0.4  # Much lower volume for subtle background ambiance
     fade_in_duration: 3.0
     fade_out_duration: 3.0
+      # Subtitle settings
+  subtitles:
+    enabled: true  # Enable subtitle generation and overlay
+    font_size: 24  # Font size for subtitles
+    font_color: "white"  # Font color (white, yellow, etc.)
+    outline_color: "black"  # Outline color for better readability
+    outline_width: 2  # Outline width in pixels
+    position: "bottom"  # Position: bottom, top, center
+    max_chars_per_line: 50  # Maximum characters per subtitle line
+    words_per_subtitle: 8  # Words per subtitle segment
     
   # Output settings
   output:

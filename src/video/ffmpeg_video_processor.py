@@ -72,7 +72,6 @@ class FFmpegVideoProcessor:
             raise RuntimeError("FFmpeg not found. Please install FFmpeg and add it to your PATH.")
         except subprocess.TimeoutExpired:
             raise RuntimeError("FFmpeg validation timed out")
-    
     def create_video_from_images(
         self, 
         image_paths: List[str], 
@@ -81,9 +80,9 @@ class FFmpegVideoProcessor:
         output_path: str = "output.mp4",
         background_music_path: Optional[str] = None,
         music_volume: float = 0.3,
-        crossfade_duration: float = 1.0,
-        resolution: Optional[Tuple[int, int]] = None,
-        fps: int = 24
+        crossfade_duration: float = 1.0,        resolution: Optional[Tuple[int, int]] = None,
+        fps: int = 24,
+        subtitle_path: Optional[str] = None
     ) -> bool:
         """
         Create video from image sequence with audio and optional background music.
@@ -98,6 +97,7 @@ class FFmpegVideoProcessor:
             crossfade_duration: Duration of crossfade transitions between images
             resolution: Video resolution (width, height)
             fps: Frames per second
+            subtitle_path: Optional path to SRT subtitle file
             
         Returns:
             bool: True if video creation succeeded
@@ -119,7 +119,6 @@ class FFmpegVideoProcessor:
             self._method_simple_slideshow,
             self._method_basic_conversion
         ]
-        
         for i, method in enumerate(methods):
             try:
                 self.logger.info(f"🎬 Attempting Method {i}: {method.__name__}")
@@ -132,7 +131,8 @@ class FFmpegVideoProcessor:
                     music_volume=music_volume,
                     crossfade_duration=crossfade_duration,
                     resolution=resolution,
-                    fps=fps
+                    fps=fps,
+                    subtitle_path=subtitle_path
                 )
                 
                 if success and Path(output_path).exists():
@@ -145,7 +145,6 @@ class FFmpegVideoProcessor:
         
         self.logger.error("❌ All video creation methods failed")
         return False
-    
     def _method_opencv_sequence(
         self, 
         image_paths: List[str], 
@@ -156,7 +155,8 @@ class FFmpegVideoProcessor:
         music_volume: float,
         crossfade_duration: float,
         resolution: Tuple[int, int],
-        fps: int
+        fps: int,
+        subtitle_path: Optional[str] = None
     ) -> bool:
         """
         Method 0: OpenCV video writer with FFmpeg audio combination.
@@ -169,16 +169,14 @@ class FFmpegVideoProcessor:
             self._create_video_with_opencv(
                 image_paths, durations, temp_video_path, 
                 resolution, fps, crossfade_duration
-            )
-            
-            # Add audio using FFmpeg
-            if audio_path or background_music_path:
+            )            # Add audio using FFmpeg
+            if audio_path or background_music_path or subtitle_path:
                 return self._add_audio_with_ffmpeg(
                     temp_video_path, output_path, audio_path, 
-                    background_music_path, music_volume
+                    background_music_path, music_volume, subtitle_path
                 )
             else:
-                # No audio, just move the video file
+                # No audio or subtitles, just move the video file
                 shutil.move(temp_video_path, output_path)
                 return True
                 
@@ -187,7 +185,6 @@ class FFmpegVideoProcessor:
             # Cleanup
             Path(temp_video_path).unlink(missing_ok=True)
             return False
-    
     def _method_ffmpeg_concat(
         self, 
         image_paths: List[str], 
@@ -198,7 +195,8 @@ class FFmpegVideoProcessor:
         music_volume: float,
         crossfade_duration: float,
         resolution: Tuple[int, int],
-        fps: int
+        fps: int,
+        subtitle_path: Optional[str] = None
     ) -> bool:
         """
         Method 1: FFmpeg concat protocol for image sequence.
@@ -246,7 +244,6 @@ class FFmpegVideoProcessor:
         except Exception as e:
             self.logger.error(f"FFmpeg concat method failed: {e}")
             return False
-    
     def _method_simple_slideshow(
         self, 
         image_paths: List[str], 
@@ -257,7 +254,8 @@ class FFmpegVideoProcessor:
         music_volume: float,
         crossfade_duration: float,
         resolution: Tuple[int, int],
-        fps: int
+        fps: int,
+        subtitle_path: Optional[str] = None
     ) -> bool:
         """
         Method 2: Simple slideshow using FFmpeg filter_complex.
@@ -305,7 +303,6 @@ class FFmpegVideoProcessor:
         except Exception as e:
             self.logger.error(f"Simple slideshow method failed: {e}")
             return False
-    
     def _method_basic_conversion(
         self, 
         image_paths: List[str], 
@@ -316,7 +313,8 @@ class FFmpegVideoProcessor:
         music_volume: float,
         crossfade_duration: float,
         resolution: Tuple[int, int],
-        fps: int
+        fps: int,
+        subtitle_path: Optional[str] = None
     ) -> bool:
         """
         Method 3: Basic image-to-video conversion.
@@ -433,30 +431,42 @@ class FFmpegVideoProcessor:
                 
         finally:
             video_writer.release()
-    
     def _add_audio_with_ffmpeg(
         self, 
         video_path: str,
         output_path: str, 
         audio_path: Optional[str],
         background_music_path: Optional[str],
-        music_volume: float
+        music_volume: float,
+        subtitle_path: Optional[str] = None
     ) -> bool:
         """
-        Add audio to video using FFmpeg with optional background music mixing.
-        
+        Add audio to video using FFmpeg with optional background music mixing and subtitle overlay.
+
         Args:
             video_path: Input video file path
             output_path: Output video file path
             audio_path: Main audio (narration) file path
             background_music_path: Background music file path
             music_volume: Volume level for background music
+            subtitle_path: Optional SRT subtitle file path
             
         Returns:
             bool: True if audio was successfully added
-        """
+        """       
         try:
             video_stream = ffmpeg.input(video_path)
+            
+            # Apply subtitle overlay if provided
+            if subtitle_path and Path(subtitle_path).exists():
+                self.logger.info(f"Adding subtitle overlay: {subtitle_path}")
+                # Apply subtitle filter to video stream
+                video_stream = ffmpeg.filter(
+                    video_stream, 
+                    'subtitles', 
+                    subtitle_path,
+                    force_style='FontSize=24,PrimaryColour=&Hffffff,OutlineColour=&H000000,Outline=2,Alignment=2'
+                )
             
             if audio_path and background_music_path:
                 # Mix narration and background music
@@ -470,7 +480,7 @@ class FFmpegVideoProcessor:
                 output_stream = ffmpeg.output(
                     video_stream, mixed_audio,
                     output_path,
-                    vcodec='copy',
+                    vcodec=self.default_codec if subtitle_path else 'copy',
                     acodec=self.default_audio_codec,
                     shortest=None
                 )
@@ -481,7 +491,7 @@ class FFmpegVideoProcessor:
                 output_stream = ffmpeg.output(
                     video_stream, audio_stream,
                     output_path,
-                    vcodec='copy',
+                    vcodec=self.default_codec if subtitle_path else 'copy',
                     acodec=self.default_audio_codec,
                     shortest=None
                 )
@@ -494,12 +504,20 @@ class FFmpegVideoProcessor:
                 output_stream = ffmpeg.output(
                     video_stream, music_adjusted,
                     output_path,
-                    vcodec='copy',
+                    vcodec=self.default_codec if subtitle_path else 'copy',
                     acodec=self.default_audio_codec,
                     shortest=None
                 )
+            elif subtitle_path:
+                # Only subtitles, no audio
+                output_stream = ffmpeg.output(
+                    video_stream,
+                    output_path,
+                    vcodec=self.default_codec,
+                    shortest=None
+                )
             else:
-                # No audio to add
+                # No audio or subtitles to add
                 return False
             
             ffmpeg.run(output_stream, overwrite_output=True, quiet=True)

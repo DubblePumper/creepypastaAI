@@ -241,7 +241,17 @@ video:
   resolution: "1920x1080"   # Video resolution
   fps: 30                   # Frames per second
   background_images: true   # Use AI-generated backgrounds
-  subtitles: false          # Include subtitles
+  
+  # Subtitle configuration
+  subtitles:
+    enabled: false          # Enable/disable subtitle generation
+    font_size: 24           # Font size in pixels
+    font_color: "white"     # Text color (white, yellow, etc.)
+    outline_color: "black"  # Outline color for readability
+    outline_width: 2        # Outline thickness in pixels
+    position: "bottom"      # Position: bottom, top, center
+    max_chars_per_line: 50  # Maximum characters per line
+    words_per_subtitle: 8   # Words per subtitle segment
 
 output:
   directory: "assets/output"
@@ -249,6 +259,96 @@ output:
   video_format: "mp4"
   organize_by_date: true    # Create date-based folders
 ```
+
+### 📝 Subtitle Configuration Details
+
+The subtitle system provides professional-quality subtitle generation and overlay for your CreepyPasta videos. Here's a detailed breakdown of all available subtitle options:
+
+#### Basic Subtitle Settings
+
+```yaml
+video:
+  subtitles:
+    enabled: true           # Master switch for subtitle functionality
+```
+
+#### Text Formatting Options
+
+```yaml
+video:
+  subtitles:
+    font_size: 24          # Font size in pixels (recommended: 20-32)
+    font_color: "white"    # Options: white, yellow, cyan, red, green
+    outline_color: "black" # Outline color for text readability
+    outline_width: 2       # Outline thickness (recommended: 1-3)
+```
+
+#### Positioning and Layout
+
+```yaml
+video:
+  subtitles:
+    position: "bottom"           # Options: bottom, top, center
+    max_chars_per_line: 50       # Maximum characters per subtitle line
+    words_per_subtitle: 8        # Words per subtitle segment
+```
+
+#### Advanced Subtitle Configuration
+
+For fine-tuned control, you can customize additional subtitle properties:
+
+```yaml
+video:
+  subtitles:
+    enabled: true
+    font_size: 28
+    font_color: "white"
+    outline_color: "black"
+    outline_width: 2
+    position: "bottom"
+    max_chars_per_line: 45       # Shorter lines for better readability
+    words_per_subtitle: 6        # Fewer words for dramatic pacing
+    # Additional styling (applied via FFmpeg)
+    alignment: 2                 # Subtitle alignment (1=left, 2=center, 3=right)
+    margin_v: 50                 # Vertical margin from edge (pixels)
+    shadow: true                 # Enable text shadow for better contrast
+```
+
+#### Subtitle Timing Examples
+
+The subtitle system automatically calculates timing based on audio duration and text length. Here's how different settings affect subtitle pacing:
+
+| Words per Subtitle | Reading Speed | Use Case |
+|-------------------|---------------|----------|
+| 4-6 words | Slow, dramatic | Horror emphasis, suspense |
+| 6-8 words | Normal reading | Standard narration |
+| 8-12 words | Fast pacing | Action sequences, dialogue |
+
+#### Font Color Options
+
+| Color | Hex Code | Best For |
+|-------|----------|----------|
+| `white` | #FFFFFF | General use, dark backgrounds |
+| `yellow` | #FFFF00 | Classic subtitle style |
+| `cyan` | #00FFFF | Modern, tech feel |
+| `red` | #FF0000 | Horror emphasis |
+| `green` | #00FF00 | Supernatural themes |
+
+#### Troubleshooting Subtitle Issues
+
+**Problem**: Subtitles not appearing
+- ✅ Check `video.subtitles.enabled: true` in settings.yaml
+- ✅ Ensure story content is available for subtitle generation
+- ✅ Verify FFmpeg is properly installed
+
+**Problem**: Subtitle timing is off
+- ✅ Adjust `words_per_subtitle` value (lower = slower pacing)
+- ✅ Check audio file duration matches expectations
+
+**Problem**: Text is hard to read
+- ✅ Increase `outline_width` to 3 or higher
+- ✅ Use high contrast colors (white text, black outline)
+- ✅ Increase `font_size` for better visibility
 
 ---
 
@@ -346,6 +446,56 @@ python main.py --debug --stories 1
 python main.py --output /path/to/output --stories 3
 ```
 
+### Example 5: Subtitle-Enabled Video Generation
+
+Generate videos with professional subtitles enabled:
+
+```bash
+# Enable subtitles in your configuration first
+# Edit config/settings.yaml:
+# video:
+#   subtitles:
+#     enabled: true
+#     font_size: 24
+#     font_color: "white"
+
+# Generate videos with subtitles
+python main.py --mode complete --stories 3
+
+# Create videos only with subtitle overlay
+python main.py --mode video
+```
+
+**Custom Subtitle Styling:**
+```yaml
+# config/settings.yaml
+video:
+  subtitles:
+    enabled: true
+    font_size: 28
+    font_color: "yellow"     # Classic subtitle appearance
+    outline_color: "black"
+    outline_width: 3         # Thick outline for better readability
+    position: "bottom"
+    max_chars_per_line: 45   # Shorter lines for mobile viewing
+    words_per_subtitle: 6    # Slower pacing for horror emphasis
+```
+
+### Example 6: Batch Processing with Subtitles
+
+Process multiple stories with different subtitle configurations:
+
+```bash
+# Process 10 stories with subtitles enabled
+python main.py --mode complete --stories 10
+
+# Check generated subtitle files
+ls temp/subtitles/
+
+# Check final videos with embedded subtitles
+ls assets/videos/
+```
+
 ---
 
 ## 🔄 Execution Modes
@@ -420,9 +570,18 @@ creepypastaAI/
 ### Video Generation Features
 - **AI-Generated Imagery**: Horror-themed visuals created with AI models
 - **Dynamic Transitions**: Smooth scene changes and visual effects
-- **Text Overlays**: Subtitles and title cards (optional)
+- **Professional Subtitle Support**: Automatic SRT subtitle generation and overlay
+- **Text Overlays**: Customizable subtitles and title cards
 - **Multiple Formats**: Support for various video formats and resolutions
 - **Thumbnail Generation**: Automatic creation of engaging video previews
+
+### 📝 Subtitle System Features
+- **Automatic SRT Generation**: Creates properly timed subtitle files from story content
+- **Intelligent Text Segmentation**: Smart word grouping for optimal reading experience
+- **Customizable Styling**: Font size, color, outline, and positioning options
+- **FFmpeg Integration**: Seamless subtitle overlay during video generation
+- **Multi-Language Support**: Compatible with various character sets and languages
+- **Configurable Timing**: Adjustable words per subtitle and timing synchronization
 
 ---
 
@@ -451,7 +610,37 @@ audio_file = tts.generate_speech(text="Your story here", voice="onyx")
 from src.video.video_generator import VideoGenerator
 
 generator = VideoGenerator()
-video_file = generator.create_video(audio_file, background_images=True)
+video_file = generator.create_video(
+    audio_file, 
+    story_title="My Horror Story",
+    story_content="Once upon a time...",
+    background_images=True
+)
+```
+
+#### `SubtitleGenerator`
+```python
+from src.video.subtitle_generator import SubtitleGenerator
+
+subtitle_gen = SubtitleGenerator(config)
+subtitle_file = subtitle_gen.generate_subtitle_file(
+    text="Your story content here",
+    audio_duration=120.5,  # Audio duration in seconds
+    output_path="subtitles/story.srt"
+)
+```
+
+#### `FFmpegVideoProcessor`
+```python
+from src.video.ffmpeg_video_processor import FFmpegVideoProcessor
+
+processor = FFmpegVideoProcessor(config)
+final_video = processor.create_video_with_audio(
+    images=["img1.jpg", "img2.jpg"],
+    audio_path="narration.mp3",
+    output_path="final_video.mp4",
+    subtitle_path="subtitles.srt"  # Optional subtitle overlay
+)
 ```
 
 ### Configuration API
@@ -504,6 +693,39 @@ config.set_audio_effects(True)
 - Check output directory write permissions
 - Try different output directory: `--output /different/path`
 
+#### 🔴 Subtitle Generation Issues
+**Error**: `Subtitle generation failed` or `No subtitles in video`
+**Solution**:
+1. **Enable subtitles in configuration:**
+   ```yaml
+   video:
+     subtitles:
+       enabled: true
+   ```
+2. **Check story content availability:**
+   - Ensure story content is not empty
+   - Verify story text is being passed to video generator
+3. **Verify FFmpeg subtitle support:**
+   ```bash
+   ffmpeg -filters | grep subtitle
+   ```
+4. **Check subtitle file generation:**
+   - Look for .srt files in `temp/subtitles/` directory
+   - Verify file permissions and content
+
+**Error**: `Subtitle timing is incorrect`
+**Solution**:
+- Adjust `words_per_subtitle` in configuration (lower = slower)
+- Check audio duration accuracy
+- Verify text segmentation with manual SRT review
+
+**Error**: `Subtitles are unreadable or poorly positioned`
+**Solution**:
+- Increase `font_size` (try 28-32 for better visibility)
+- Use high contrast colors: `font_color: "white"`, `outline_color: "black"`
+- Increase `outline_width` to 3 or higher
+- Adjust `position` setting (`bottom`, `top`, `center`)
+
 ### Debugging Tips
 ```bash
 # Enable verbose logging
@@ -538,6 +760,18 @@ A: Place your audio files in `assets/music/` and update the configuration in `se
 
 **Q: Can I customize the TTS voices?**
 A: Yes! Each provider offers different voices. Configure them in `settings.yaml` under the `tts` section.
+
+**Q: How do I enable subtitles in my videos?**
+A: Set `video.subtitles.enabled: true` in `config/settings.yaml`. The system will automatically generate SRT files and overlay them during video creation.
+
+**Q: Can I customize subtitle appearance?**
+A: Absolutely! You can configure font size, color, outline, position, and timing in the subtitle settings. See the [Subtitle Configuration](#-subtitle-configuration-details) section for details.
+
+**Q: Do subtitles work with all TTS providers?**
+A: Yes! Subtitles are generated from the story text content, not the audio, so they work with any TTS provider (OpenAI, Azure, Google TTS).
+
+**Q: Can I use existing subtitle files?**
+A: The system generates subtitles automatically, but you can manually edit the generated SRT files in the `temp/subtitles/` directory before video processing.
 
 **Q: How do I schedule automatic story generation?**
 A: Use system schedulers:
