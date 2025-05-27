@@ -1,6 +1,15 @@
-# CreepyPasta AI - Execution Scripts
+# 🚀 Scripts Directory
 
-This folder contains convenience scripts for running different components of CreepyPasta AI independently.
+This directory contains automation scripts and utilities for the CreepyPasta AI application, providing convenient shortcuts for common operations.
+
+## 📁 Contents
+
+- **Cross-Platform Scripts**: Both Windows (.bat) and Unix (.sh) versions
+- **Operation Shortcuts**: Quick access to core application functions
+- **Automation Tools**: Batch processing and workflow automation
+- **Utility Scripts**: Helper tools for maintenance and management
+
+## 🛠️ Available Scripts
 
 ## Windows Scripts (.bat)
 
