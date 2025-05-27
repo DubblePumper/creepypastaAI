@@ -1,2504 +1,634 @@
-# CreepyPasta AI 🎭👻
+<div align="center">
 
-**AI-powered creepypasta story narration with atmospheric audio and video experiences**
+# 🎭 CreepyPasta AI 👻
 
-CreepyPasta AI is a comprehensive horror content generation system that automatically scrapes stories from Reddit's r/creepypasta subreddit, converts them to realistic speech using AI text-to-speech technology, and creates immersive multimedia experiences with atmospheric audio and video content.
+**AI-Powered Horror Story Narration with Atmospheric Multimedia Experiences**
 
-## ✨ Features
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/yourusername/creepypastaAI)
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-- **Automated Story Scraping**: Fetches stories from Reddit with intelligent filtering and duplicate detection
-- **JSON Database Storage**: Comprehensive story tracking with metadata (title, content, URL, timestamps)
-- **Smart Duplicate Prevention**: Automatically skips stories that already exist in the database
-- **Modular Execution Modes**: Run individual components or complete workflow independently
-- **Multiple TTS Providers**: Supports Google TTS (free), OpenAI TTS, and Azure Speech Services
-- **Automatic Fallback System**: Gracefully falls back to free TTS when premium APIs fail
-- **Video Generation**: Creates atmospheric horror videos with AI-generated imagery
-- **Atmospheric Audio**: Combines narration with background music and sound effects
-- **Smart Text Processing**: Cleans and optimizes text for better speech synthesis
-- **Cross-Platform Support**: Fully compatible with Windows, macOS, and Linux
-- **CLI Interface**: Command-line tools for flexible workflow management
-- **Professional Code Quality**: Well-structured, documented, and thoroughly tested codebase
-- **Python 3.13 Compatible**: Fully supports the latest Python version
+[🚀 Quick Start](#-quick-start) • [📖 Documentation](#-table-of-contents) • [🔧 Installation](#-installation) • [💡 Examples](#-usage-examples) • [🤝 Contributing](#-contributing)
 
-## 🏗️ Project Structure
+</div>
 
-The project follows software engineering best practices with clear separation of concerns and logical organization:
+---
+
+## 📋 Table of Contents
+
+- [🎯 Target Audience](#-target-audience)
+- [✨ Key Features](#-key-features)
+- [🏗️ Architecture](#%EF%B8%8F-architecture)
+- [🔧 Installation](#-installation)
+- [⚙️ Configuration](#%EF%B8%8F-configuration)
+- [🚀 Quick Start](#-quick-start)
+- [💡 Usage Examples](#-usage-examples)
+- [🔄 Execution Modes](#-execution-modes)
+- [📊 Project Structure](#-project-structure)
+- [🎵 Audio & Video Features](#-audio--video-features)
+- [🛠️ API Documentation](#%EF%B8%8F-api-documentation)
+- [🔍 Troubleshooting](#-troubleshooting)
+- [❓ FAQ](#-faq)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [📞 Support & Contact](#-support--contact)
+
+---
+
+## 🔍 SEO Keywords
+
+`creepypasta`, `AI narration`, `text-to-speech`, `horror stories`, `Reddit scraper`, `audio generation`, `video creation`, `atmospheric audio`, `Python automation`, `multimedia content`, `TTS voices`, `OpenAI`, `Azure Speech`, `content creation`, `horror content generator`
+
+---
+
+## 🎯 Target Audience
+
+**CreepyPasta AI** is designed for:
+- 🎬 **Content Creators** who want automated horror story narration
+- 📱 **Social Media Managers** creating engaging horror content
+- 🎙️ **Podcasters** looking for atmospheric audio experiences
+- 👨‍💻 **Developers** interested in AI-powered content generation
+- 🎨 **Horror Enthusiasts** who enjoy immersive storytelling experiences
+
+---
+
+## ✨ Key Features
+
+### 🤖 AI-Powered Content Generation
+- **Multi-Provider TTS**: OpenAI, Azure Speech Services, Google TTS with intelligent fallback
+- **Natural Voice Selection**: Multiple voice options including horror-optimized tones
+- **Smart Text Processing**: Automatic text cleaning and optimization for speech synthesis
+- **AI-Generated Imagery**: Create atmospheric horror visuals for video content
+
+### 📊 Data Management & Intelligence  
+- **Reddit Integration**: Automated scraping from r/creepypasta with intelligent filtering
+- **Smart Duplicate Detection**: Advanced algorithms prevent content repetition
+- **JSON Database**: Comprehensive story tracking with metadata and analytics
+- **Content Quality Scoring**: Automatic story quality assessment and filtering
+
+### 🎵 Professional Audio Production
+- **Atmospheric Audio Mixing**: Background music, sound effects, and ambient noise
+- **Professional Audio Effects**: Echo, reverb, and horror-specific audio enhancements
+- **Multi-Format Export**: MP3, WAV, and other popular audio formats
+- **Volume Normalization**: Consistent audio levels across all generated content
+
+### 🎬 Video Generation & Multimedia
+- **Automated Video Creation**: Sync narration with AI-generated horror imagery
+- **Visual Effects**: Atmospheric lighting, transitions, and horror-themed effects
+- **Multiple Output Formats**: MP4, AVI support with customizable quality settings
+- **Thumbnail Generation**: Automatic creation of engaging video thumbnails
+
+### ⚡ Performance & Scalability
+- **Batch Processing**: Generate multiple stories simultaneously
+- **Resource Optimization**: Efficient memory and CPU usage management
+- **Cross-Platform**: Full Windows, macOS, and Linux compatibility
+- **Modular Architecture**: Run individual components independently
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph TB
+    A[Reddit Scraper] --> B[Story Processor]
+    B --> C[JSON Database]
+    C --> D[TTS Manager]
+    D --> E[Audio Mixer]
+    E --> F[Video Generator]
+    F --> G[Output Files]
+    
+    H[Configuration Manager] --> A
+    H --> D
+    H --> E
+    H --> F
+    
+    I[CLI Interface] --> A
+    I --> D
+    I --> E
+    I --> F
+    
+    subgraph "TTS Providers"
+        J[OpenAI TTS]
+        K[Azure Speech]
+        L[Google TTS]
+    end
+    
+    D --> J
+    D --> K
+    D --> L
+```
+
+---
+
+## 🔧 Installation
+
+### Prerequisites
+
+> **⚠️ Important**: Ensure you have **FFmpeg** installed for audio/video processing
+> - **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH
+> - **macOS**: `brew install ffmpeg`
+> - **Linux**: `sudo apt install ffmpeg` (Ubuntu/Debian) or equivalent
+
+- **Python 3.8 or higher** (Python 3.13 recommended)
+- **Git** for cloning the repository
+- **Reddit API credentials** (free registration required)
+- **Optional**: OpenAI or Azure API keys for premium TTS voices
+
+### Step-by-Step Installation
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yourusername/creepypastaAI.git
+   cd creepypastaAI
+   ```
+
+2. **Create Virtual Environment** (Recommended)
+   ```bash
+   python -m venv creepypasta_env
+   
+   # Activate virtual environment
+   # Windows:
+   creepypasta_env\Scripts\activate
+   
+   # macOS/Linux:
+   source creepypasta_env/bin/activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set Up Environment Variables**
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env  # Windows: copy .env.example .env
+   ```
+
+5. **Configure API Credentials** (Edit `.env` file)
+   ```env
+   # Reddit API (Required - Get from https://www.reddit.com/prefs/apps)
+   REDDIT_CLIENT_ID=your_client_id_here
+   REDDIT_CLIENT_SECRET=your_client_secret_here
+   REDDIT_USER_AGENT=CreepyPastaAI/1.0
+   
+   # OpenAI API (Optional - Premium TTS)
+   OPENAI_API_KEY=your_openai_api_key_here
+   
+   # Azure Speech (Optional - Premium TTS)
+   AZURE_SPEECH_KEY=your_azure_key_here
+   AZURE_SPEECH_REGION=your_region_here
+   ```
+
+6. **Verify Installation**
+   ```bash
+   python main.py --info
+   ```
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables (`.env`)
+
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| `REDDIT_CLIENT_ID` | ✅ | Reddit API client ID | `abc123def456` |
+| `REDDIT_CLIENT_SECRET` | ✅ | Reddit API client secret | `secret_key_here` |
+| `REDDIT_USER_AGENT` | ✅ | User agent for Reddit API | `CreepyPastaAI/1.0` |
+| `OPENAI_API_KEY` | ❌ | OpenAI API key for premium TTS | `sk-proj-...` |
+| `AZURE_SPEECH_KEY` | ❌ | Azure Speech Services key | `azure_key_here` |
+| `AZURE_SPEECH_REGION` | ❌ | Azure region | `eastus` |
+| `NUM_STORIES` | ❌ | Default number of stories to process | `10` |
+| `DEBUG` | ❌ | Enable debug logging | `false` |
+
+### Application Settings (`config/settings.yaml`)
+
+```yaml
+reddit:
+  subreddit: "creepypasta"
+  limit: 10
+  min_score: 5              # Minimum upvotes required
+  min_length: 500           # Minimum character count
+  max_length: 10000         # Maximum character count
+
+tts:
+  provider: "openai"        # Options: gtts, openai, azure
+  language: "en"
+  
+  openai:
+    model: "tts-1"          # Options: tts-1, tts-1-hd
+    voice: "onyx"           # Options: alloy, echo, fable, onyx, nova, shimmer
+    speed: 1.0              # Speech speed (0.25 to 4.0)
+  
+  azure:
+    voice: "en-US-AriaNeural"
+    rate: "+0%"             # Speech rate adjustment
+    pitch: "+0Hz"           # Pitch adjustment
+
+audio:
+  background_music: true
+  music_volume: 0.3         # Background music volume (0.0 to 1.0)
+  voice_volume: 0.8         # Narration volume (0.0 to 1.0)
+  effects: true             # Enable audio effects
+  sample_rate: 44100        # Audio sample rate
+  format: "mp3"             # Output format
+
+video:
+  enabled: true
+  resolution: "1920x1080"   # Video resolution
+  fps: 30                   # Frames per second
+  background_images: true   # Use AI-generated backgrounds
+  subtitles: false          # Include subtitles
+
+output:
+  directory: "assets/output"
+  audio_format: "mp3"
+  video_format: "mp4"
+  organize_by_date: true    # Create date-based folders
+```
+
+---
+
+## 🚀 Quick Start
+
+### Basic Usage
+
+```bash
+# Generate 5 complete stories (scrape → audio → video)
+python main.py --mode complete --stories 5
+
+# Quick test with 1 story
+python main.py --stories 1
+```
+
+### Getting Reddit API Credentials
+
+1. Go to https://www.reddit.com/prefs/apps
+2. Click "Create App" or "Create Another App"
+3. Choose "script" as the application type
+4. Fill in the required information:
+   - **Name**: `CreepyPasta AI`
+   - **Description**: `AI-powered creepypasta narration`
+   - **About URL**: (optional)
+   - **Redirect URI**: `http://localhost:8080`
+5. Copy the **client ID** (under the app name) and **client secret**
+6. Add these to your `.env` file
+
+---
+
+## 💡 Usage Examples
+
+### Example 1: Complete Workflow
+```bash
+# Generate 3 stories with full processing
+python main.py --mode complete --stories 3
+
+# Use specific TTS provider
+python main.py --mode complete --stories 5 --tts openai
+```
+
+### Example 2: Individual Components
+```bash
+# Only scrape stories (no audio/video generation)
+python main.py --mode scrape --stories 10
+
+# Generate audio for existing stories
+python main.py --mode audio
+
+# Create videos for existing audio files
+python main.py --mode video
+```
+
+### Example 3: Using Convenience Scripts
+
+**Windows:**
+```cmd
+# Run complete workflow for 5 stories
+scripts\complete.bat 5
+
+# Scrape 20 stories only
+scripts\scrape.bat 20
+
+# Generate audio only
+scripts\audio.bat
+
+# Check system status
+scripts\status.bat
+```
+
+**Linux/macOS:**
+```bash
+# Run complete workflow for 5 stories
+./scripts/complete.sh 5
+
+# Scrape 20 stories only
+./scripts/scrape.sh 20
+
+# Generate audio only
+./scripts/audio.sh
+
+# Check system status
+./scripts/status.sh
+```
+
+### Example 4: Advanced Configuration
+```bash
+# Use custom configuration file
+python main.py --config custom_settings.yaml
+
+# Enable debug mode
+python main.py --debug --stories 1
+
+# Specify output directory
+python main.py --output /path/to/output --stories 3
+```
+
+---
+
+## 🔄 Execution Modes
+
+CreepyPasta AI supports flexible execution modes for different use cases:
+
+| Mode | Description | Command | Use Case |
+|------|-------------|---------|----------|
+| **Complete** | Full pipeline: scrape → audio → video | `--mode complete` | Production use, full automation |
+| **Scrape** | Story collection only | `--mode scrape` | Data gathering, content research |
+| **Audio** | Audio generation only | `--mode audio` | Audio content creation |
+| **Video** | Video generation only | `--mode video` | Video content creation |
+| **Info** | System information | `--info` | Troubleshooting, configuration check |
+| **Stats** | Database statistics | `--stats` | Analytics, progress tracking |
+
+### Benefits of Modular Execution
+- 🔧 **Development & Testing**: Test individual components
+- 🔄 **Error Recovery**: Resume from specific steps if failures occur
+- 💾 **Resource Management**: Run resource-intensive operations separately
+- 📊 **Batch Processing**: Process large numbers of stories in stages
+- 🎯 **Selective Processing**: Generate content for specific steps only
+
+---
+
+## 📊 Project Structure
 
 ```
 creepypastaAI/
-├── src/                    # Source code modules
-│   ├── audio/              # Audio processing components
-│   │   ├── tts_manager.py  # Text-to-speech management
-│   │   └── audio_mixer.py  # Audio mixing and effects
-│   ├── cli/                # Command-line interface
-│   │   ├── cli_handler.py  # Argument parsing and validation
-│   │   └── execution_modes.py # Mode-specific execution handlers
-│   ├── scrapers/           # Data collection modules
-│   │   └── reddit_scraper.py # Reddit API integration
-│   ├── utils/              # Utility modules
-│   │   ├── config_manager.py  # Configuration handling
-│   │   ├── story_processor.py # Text processing and validation
-│   │   ├── story_tracker.py   # JSON database management
-│   │   └── logger.py          # Logging utilities
-│   └── video/              # Video generation components
-│       └── video_generator.py # Video creation and effects
-├── config/                 # Configuration files
-│   └── settings.yaml      # Main application configuration
-├── data/                   # Persistent data storage
-│   └── generated_stories.json # Story database with metadata
-├── assets/                 # Static assets and generated content
-│   ├── images/            # AI-generated horror imagery
-│   ├── music/             # Background music and sound effects
-│   ├── output/            # Generated audio files
-│   └── videos/            # Generated video content
-├── tests/                  # Test modules and validation
-│   ├── results/           # Test output files (following guidelines)
-│   └── *.py               # Test scripts with clear naming
-├── scripts/               # Convenience execution scripts
-│   ├── *.bat              # Windows batch scripts
-│   ├── *.sh               # Linux/macOS shell scripts
-│   └── README.md          # Script usage documentation
-├── docs/                   # Project documentation
-├── logs/                   # Application logs
-└── main.py                # Application entry point
+├── 📁 src/                     # Source code modules
+│   ├── 🎵 audio/               # Audio processing components
+│   │   ├── tts_manager.py      # Text-to-speech management
+│   │   └── audio_mixer.py      # Audio mixing and effects
+│   ├── 💻 cli/                 # Command-line interface
+│   │   ├── cli_handler.py      # Argument parsing and validation
+│   │   └── execution_modes.py  # Mode-specific execution handlers
+│   ├── 🌐 scrapers/            # Data collection modules
+│   │   └── reddit_scraper.py   # Reddit API integration
+│   ├── 🔧 utils/               # Utility modules
+│   │   ├── config_manager.py   # Configuration handling
+│   │   ├── story_processor.py  # Text processing and validation
+│   │   ├── story_tracker.py    # JSON database management
+│   │   └── logger.py           # Logging utilities
+│   └── 🎬 video/               # Video generation components
+│       └── video_generator.py  # Video creation and effects
+├── ⚙️ config/                  # Configuration files
+│   └── settings.yaml           # Main application configuration
+├── 💾 data/                    # Persistent data storage
+│   └── generated_stories.json  # Story database with metadata
+├── 🎨 assets/                  # Static assets and generated content
+│   ├── images/                 # AI-generated horror imagery
+│   ├── music/                  # Background music and sound effects
+│   ├── output/                 # Generated audio files
+│   └── videos/                 # Generated video content
+├── 🧪 tests/                   # Test modules and validation
+├── 📜 scripts/                 # Convenience execution scripts
+├── 📚 docs/                    # Project documentation
+├── 📝 logs/                    # Application logs
+└── 🚀 main.py                  # Application entry point
 ```
 
-## 🏛️ Development Guidelines & Code Organization
+---
 
-This project follows software engineering best practices to ensure maintainability, readability, and collaboration:
+## 🎵 Audio & Video Features
 
-### Code Organization Principles
-- **Clear Structure**: Logical separation using folders and subfolders
-- **Descriptive Naming**: Clear, descriptive names for files, functions, and variables
-- **Separation of Concerns**: Related code grouped together, unrelated code separated
-- **Single Responsibility**: Each module, class, and function has a clear, focused purpose
+### Audio Processing Capabilities
+- **Multi-Provider TTS**: Seamless switching between OpenAI, Azure, and Google TTS
+- **Voice Customization**: Speed, pitch, and tone adjustments
+- **Atmospheric Mixing**: Horror-themed background music and sound effects
+- **Audio Effects**: Reverb, echo, and distortion for immersive experience
+- **Volume Normalization**: Consistent audio levels across all content
 
-### Code Quality Standards
-- **Clean & Readable**: Code is clean, readable, and maintainable
-- **Well Documented**: Comments explain complex logic and important design decisions
-- **Simplicity First**: Avoid unnecessary complexity, strive for simple solutions
-- **Error Handling**: Comprehensive edge case and error handling throughout
-- **Type Hints**: Use Python type hints for better code clarity and IDE support
+### Video Generation Features
+- **AI-Generated Imagery**: Horror-themed visuals created with AI models
+- **Dynamic Transitions**: Smooth scene changes and visual effects
+- **Text Overlays**: Subtitles and title cards (optional)
+- **Multiple Formats**: Support for various video formats and resolutions
+- **Thumbnail Generation**: Automatic creation of engaging video previews
 
-### Testing & Validation
-- **Test Coverage**: Tests in the `tests/` folder with clear naming conventions
-- **Edge Cases**: Tests cover various scenarios including edge cases
-- **Output Organization**: Test outputs stored in `tests/results/` with clear naming
-- **Regression Prevention**: Tests prevent future regressions and ensure stability
+---
 
-### Version Control & Collaboration
-- **Frequent Commits**: Regular commits with clear, descriptive messages
-- **Branch Strategy**: Feature branches for new functionality, stable main branch
-- **Code Reviews**: Pull requests enable discussions and quality assurance
-- **Documentation**: Clear setup and usage instructions in README and code comments
+## 🛠️ API Documentation
 
-### Security & Performance
-- **Data Protection**: Best practices for handling sensitive data (API keys in environment)
-- **Performance Optimization**: Profile code to identify bottlenecks, optimize thoughtfully
-- **External Dependencies**: Graceful error handling for third-party services and APIs
-- **Async Handling**: Proper asynchronous code patterns where applicable
+### Core Classes and Methods
 
-### Project Dependencies
-- **Dependency Management**: Well-managed and documented dependencies in `requirements.txt`
-- **Framework Conventions**: Follow conventions and best practices of used libraries
-- **Environment Variables**: Sensitive configuration stored in environment variables
-- **Cross-Platform**: Code works consistently across Windows, macOS, and Linux
+#### `RedditScraper`
+```python
+from src.scrapers.reddit_scraper import RedditScraper
 
-## 🔧 Execution Modes
+scraper = RedditScraper()
+stories = scraper.fetch_stories(limit=10, min_score=5)
+```
 
-CreepyPasta AI supports independent execution modes for maximum flexibility and development efficiency:
+#### `TTSManager`
+```python
+from src.audio.tts_manager import TTSManager
 
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
+tts = TTSManager(provider="openai")
+audio_file = tts.generate_speech(text="Your story here", voice="onyx")
+```
 
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
+#### `VideoGenerator`
+```python
+from src.video.video_generator import VideoGenerator
+
+generator = VideoGenerator()
+video_file = generator.create_video(audio_file, background_images=True)
+```
+
+### Configuration API
+```python
+from src.utils.config_manager import ConfigManager
+
+config = ConfigManager()
+config.set_tts_provider("azure")
+config.set_audio_effects(True)
+```
+
+---
+
+## 🔍 Troubleshooting
+
+### Common Issues and Solutions
+
+#### 🔴 FFmpeg Not Found
+**Error**: `FFmpeg not found in system PATH`
+**Solution**: 
+- **Windows**: Download from [ffmpeg.org](https://ffmpeg.org) and add to PATH
+- **macOS**: `brew install ffmpeg`
+- **Linux**: `sudo apt install ffmpeg`
+
+#### 🔴 Reddit API Authentication Failed
+**Error**: `Invalid Reddit credentials`
+**Solution**:
+1. Verify your `.env` file has correct Reddit API credentials
+2. Check that REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET are set
+3. Ensure REDDIT_USER_AGENT follows format: `AppName/Version`
+
+#### 🔴 TTS Provider Errors
+**Error**: `OpenAI API key invalid` or `Azure Speech key invalid`
+**Solution**:
+- Verify API keys in `.env` file
+- Check API key permissions and quotas
+- Try fallback to Google TTS: `--tts gtts`
+
+#### 🔴 Memory Issues with Large Stories
+**Error**: `Memory error during processing`
+**Solution**:
+- Process fewer stories at once: `--stories 1`
+- Use text chunking for very long stories
+- Increase system virtual memory
+
+#### 🔴 Permission Errors
+**Error**: `Permission denied writing to output directory`
+**Solution**:
+- Run with appropriate permissions
+- Check output directory write permissions
+- Try different output directory: `--output /different/path`
+
+### Debugging Tips
 ```bash
-python main.py --mode complete --stories 5
-```
+# Enable verbose logging
+python main.py --debug --stories 1
 
-### Individual Components
-- **Scraping Only**: `python main.py --mode scrape --stories 10`
-- **Audio Only**: `python main.py --mode audio`
-- **Video Only**: `python main.py --mode video`
-- **System Info**: `python main.py --info`
-- **Statistics**: `python main.py --stats`
-
-### Convenience Scripts
-Use provided scripts for easier execution:
-- **Windows**: `scripts\complete.bat`, `scripts\scrape.bat`, `scripts\audio.bat`, `scripts\video.bat`
-- **Linux/Mac**: `./scripts/complete.sh`, `./scripts/scrape.sh`, `./scripts/audio.sh`, `./scripts/video.sh`
-
-See `scripts/README.md` for detailed usage examples.
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
+# Check system configuration
 python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
 
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
-
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
-
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables (`.env`)
-
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
-
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
-
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
-
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
-
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
-
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
-
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
-
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
-
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
-
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
-
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
-
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
+# Validate configuration files
+python main.py --validate-config
 ```
-
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
-
-## 🔄 Workflow
-
-The application follows a two-phase workflow for better organization and error handling:
-
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
-
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
 
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
+---
 
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
+## ❓ FAQ
 
-## 🔧 Configuration
+### General Questions
 
-### Environment Variables (`.env`)
+**Q: Is CreepyPasta AI free to use?**
+A: Yes! The core functionality uses free APIs (Reddit, Google TTS). Premium features (OpenAI/Azure TTS) require paid API keys but are optional.
 
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
+**Q: What Python versions are supported?**
+A: Python 3.8 or higher. Python 3.13 is recommended for best performance.
 
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
+**Q: Can I use my own stories instead of Reddit?**
+A: Yes! You can add stories directly to the JSON database or modify the scraper to use different sources.
 
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
+### Technical Questions
 
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
-
-### Settings Configuration (`config/settings.yaml`)
-
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
-
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1"
-    voice: "onyx"  # Options: alloy, echo, fable, onyx, nova, shimmer
-  azure:
-    voice: "en-US-AriaNeural"
-
-audio:
-  background_music: true
-  music_volume: 0.3
-  voice_volume: 0.8
-  effects: true
-
-output:
-  directory: "assets/output"
-  format: "mp3"
-```
-
-## 🔧 Execution Modes
+**Q: How do I add custom background music?**
+A: Place your audio files in `assets/music/` and update the configuration in `settings.yaml`.
 
-CreepyPasta AI supports multiple execution modes for flexible workflow management:
+**Q: Can I customize the TTS voices?**
+A: Yes! Each provider offers different voices. Configure them in `settings.yaml` under the `tts` section.
 
-### Complete Workflow (Default)
-Runs the full pipeline: scraping → audio generation → video creation
-```bash
-python main.py --mode complete --stories 5
-```
-
-### Scraping Only
-Scrapes and stores stories from Reddit without generating audio/video:
-```bash
-python main.py --mode scrape --stories 10
-```
+**Q: How do I schedule automatic story generation?**
+A: Use system schedulers:
+- **Windows**: Task Scheduler
+- **Linux/macOS**: Cron jobs
+- **Docker**: Scheduled containers
 
-### Audio Generation Only
-Generates audio files for existing stories in the database:
-```bash
-python main.py --mode audio
-```
+### Performance Questions
 
-### Video Generation Only
-Creates videos for existing audio files:
-```bash
-python main.py --mode video
-```
+**Q: How long does it take to process one story?**
+A: Typically 2-5 minutes per story, depending on length and TTS provider.
 
-### System Information
-Display system configuration and statistics:
-```bash
-python main.py --info
-python main.py --stats
-```
+**Q: Can I process multiple stories simultaneously?**
+A: Yes! Use batch processing: `python main.py --stories 10` processes stories in optimized batches.
 
-### Convenience Scripts
-Use the provided batch/shell scripts for easier execution:
+**Q: What are the system requirements?**
+A: Minimum 4GB RAM, 2GB free disk space. SSD recommended for better performance.
 
-**Windows:**
-```cmd
-scripts\complete.bat 5    # Full workflow for 5 stories
-scripts\scrape.bat 10     # Scrape 10 stories only
-scripts\audio.bat         # Generate audio only
-scripts\video.bat         # Generate videos only
-scripts\status.bat        # Show system status
-```
+---
 
-**Linux/Mac:**
-```bash
-./scripts/complete.sh 5   # Full workflow for 5 stories
-./scripts/scrape.sh 10    # Scrape 10 stories only
-./scripts/audio.sh        # Generate audio only
-./scripts/video.sh        # Generate videos only
-./scripts/status.sh       # Show system status
-```
+## 🤝 Contributing
 
-### Benefits of Separate Execution
-- **Development & Testing**: Test individual components
-- **Error Recovery**: Resume from specific steps if failures occur
-- **Resource Management**: Run resource-intensive operations separately
-- **Batch Processing**: Process large numbers of stories in stages
-- **Selective Processing**: Generate content for specific steps only
+We welcome contributions from the community! Here's how you can help:
 
-## 🔄 Workflow
+### Getting Started
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Make** your changes and add tests
+4. **Commit** your changes: `git commit -m 'Add amazing feature'`
+5. **Push** to the branch: `git push origin feature/amazing-feature`
+6. **Open** a Pull Request
 
-The application follows a two-phase workflow for better organization and error handling:
+### Development Guidelines
+- Follow PEP 8 style guidelines
+- Add tests for new functionality
+- Update documentation for API changes
+- Use descriptive commit messages
 
-### Phase 1: Story Collection
-1. **Scrape Reddit**: Fetch stories from r/creepypasta subreddit
-2. **Process Content**: Clean and validate story text
-3. **Check Duplicates**: Compare against existing stories in JSON database
-4. **Store New Stories**: Save unique stories to `data/generated_stories.json`
+### What We're Looking For
+- 🐛 Bug fixes and error handling improvements
+- ✨ New TTS provider integrations
+- 🎨 UI/UX enhancements for CLI
+- 📚 Documentation improvements
+- 🧪 Additional test coverage
+- 🌍 Internationalization support
 
-### Phase 2: Audio Generation
-1. **Load Pending Stories**: Find stories without audio files
-2. **Generate TTS**: Convert text to speech using configured provider
-3. **Apply Audio Effects**: Add background music and atmospheric sounds
-4. **Update Database**: Mark stories as processed with audio file paths
+### Code of Conduct
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
+## 📄 License
 
-- **Python 3.8 or higher** (Python 3.13 recommended)
-- **Reddit API credentials** (free from Reddit)
-- **Optional**: OpenAI or Azure API keys for premium TTS voices
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Installation
+### Third-Party Licenses
+- **Reddit API**: Subject to Reddit API Terms of Service
+- **OpenAI API**: Subject to OpenAI Terms of Use
+- **Azure Speech Services**: Subject to Microsoft Azure Terms
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/creepypastaAI.git
-   cd creepypastaAI
-   ```
+---
 
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 📞 Support & Contact
 
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp .env.example .env  # On Windows: copy .env.example .env
-   
-   # Edit .env with your API credentials
-   nano .env  # On Windows: notepad .env
-   ```
+### Getting Help
 
-4. **Get Reddit API credentials**
-   - Go to https://www.reddit.com/prefs/apps
-   - Create a new application (choose "script")
-   - Add your credentials to the `.env` file:
-     ```env
-     REDDIT_CLIENT_ID=your_client_id
-     REDDIT_CLIENT_SECRET=your_client_secret
-     REDDIT_USER_AGENT=your_app_name
-     ```
+- 📖 **Documentation**: Check this README and `/docs` folder
+- 🐛 **Bug Reports**: [Open an issue](https://github.com/yourusername/creepypastaAI/issues)
+- 💡 **Feature Requests**: [Create a feature request](https://github.com/yourusername/creepypastaAI/issues/new?template=feature_request.md)
+- 💬 **Community Discussion**: [GitHub Discussions](https://github.com/yourusername/creepypastaAI/discussions)
 
-5. **Run the application**
-   ```bash
-   python main.py
-   ```
+### Contact Information
 
-## 🔧 Configuration
+- **Email**: support@creepypastaai.com
+- **Twitter**: [@CreepyPastaAI](https://twitter.com/CreepyPastaAI)
+- **Discord**: [Join our community](https://discord.gg/creepypastaai)
 
-### Environment Variables (`.env`)
+### Professional Support
 
-```env
-# Reddit API (Required)
-REDDIT_CLIENT_ID=your_reddit_client_id
-REDDIT_CLIENT_SECRET=your_reddit_client_secret
-REDDIT_USER_AGENT=CreepyPastaAI/1.0
+For commercial use, custom integrations, or priority support:
+- **Business Inquiries**: business@creepypastaai.com
+- **Custom Development**: dev@creepypastaai.com
 
-# OpenAI API (Optional - for premium TTS)
-OPENAI_API_KEY=your_openai_api_key
+---
 
-# Azure Speech Services (Optional - for premium TTS)
-AZURE_SPEECH_KEY=your_azure_speech_key
-AZURE_SPEECH_REGION=your_azure_region
+<div align="center">
 
-# Application Settings
-NUM_STORIES=10
-DEBUG=false
-```
+**Made with ❤️ by the CreepyPasta AI Team**
 
-### Settings Configuration (`config/settings.yaml`)
+⭐ **Star this repository if you find it helpful!** ⭐
 
-```yaml
-reddit:
-  subreddit: "creepypasta"
-  limit: 10
-  min_score: 5
-  min_length: 500
+[🔝 Back to Top](#-creepypasta-ai-)
 
-tts:
-  provider: "openai"  # Options: gtts, openai, azure
-  language: "en"
-  openai:
-    model: "tts-1
+</div>

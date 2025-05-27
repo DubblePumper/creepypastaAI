@@ -5,15 +5,14 @@ Creates atmospheric horror videos by combining:
 - Audio narration (from assets/output)
 - Background music (from assets/music)
 - AI-generated horror images (stored in assets/images)
+
+Uses FFmpeg-Python and OpenCV for robust, high-performance video generation.
 """
 
 import os
-import io
-import sys
 import logging
 import hashlib
 import random
-import shutil
 import tempfile
 from pathlib import Path
 from typing import List, Optional, Dict, Any
@@ -21,21 +20,11 @@ from datetime import datetime
 import json
 
 import openai
-from moviepy.editor import VideoFileClip, AudioFileClip, ImageClip, CompositeVideoClip, concatenate_videoclips, CompositeAudioClip, concatenate_audioclips
-from moviepy.config import change_settings
 from PIL import Image
 import requests
 
 from ..utils.config_manager import ConfigManager
-
-# Configure moviepy to work better with FFmpeg on Windows
-try:
-    import moviepy.config as mp_config
-    # Try to find FFmpeg automatically - let moviepy detect it
-    # Don't force a specific path, let it use PATH
-    pass
-except Exception:
-    pass  # Continue without specific configuration
+from .ffmpeg_video_processor import FFmpegVideoProcessor
 
 
 class VideoGenerator:
@@ -73,15 +62,34 @@ class VideoGenerator:
         self.images_path.mkdir(parents=True, exist_ok=True)
         self.videos_path.mkdir(parents=True, exist_ok=True)
         self.temp_video_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Video settings
+          # Video settings
         self.image_duration = 10  # seconds per image
         self.fade_duration = 1.0  # seconds for smooth transitions
         self.video_resolution = (1920, 1080)  # Full HD
-        
-        # Check moviepy/FFmpeg configuration
+          # Check FFmpeg availability
         self._check_ffmpeg_config()        
         self.logger.info("Video generator initialized successfully")
+    
+    def _check_ffmpeg_config(self):
+        """Check FFmpeg availability for video processing."""
+        try:
+            import subprocess
+            result = subprocess.run(['ffmpeg', '-version'], 
+                                  capture_output=True, text=True, timeout=10)
+            if result.returncode == 0:
+                version_info = result.stdout.split('\n')[0]
+                self.logger.info(f"FFmpeg available: {version_info}")
+            else:
+                self.logger.warning("FFmpeg not available or not working properly")
+        except Exception as e:
+            self.logger.warning(f"Could not check FFmpeg configuration: {e}")
+            
+        # Test librosa for audio duration
+        try:
+            import librosa
+            self.logger.info("Librosa audio processing: Available")
+        except ImportError:
+            self.logger.warning("Librosa not available, using fallback for audio duration")
     
     def generate_horror_images(self, story_title: str, story_content: str, num_images: Optional[int] = None) -> List[str]:
         """
@@ -258,11 +266,11 @@ class VideoGenerator:
         # Common settings
         settings = ["house", "forest", "school", "hospital", "church", "library", "attic", "basement"]
         setting = next((s for s in settings if s in text), "house")
-        
-        # Common locations
+          # Common locations
         locations = ["room", "hallway", "garden", "building", "cabin", "mansion", "apartment"]
         location = next((l for l in locations if l in text), "room")
-          # Common objects
+        
+        # Common objects
         objects = ["mirror", "doll", "book", "phone", "computer", "music box", "painting", "door"]
         obj = next((o for o in objects if o in text), "mirror")
         
@@ -279,14 +287,22 @@ class VideoGenerator:
     
     def create_video(self, audio_file: str, story_title: Optional[str] = None, story_content: Optional[str] = None, output_dir: Optional[str] = None) -> Optional[str]:
         """
-        Create a complete video with audio, images, and background music.
+        Create a complete video following the structured workflow:
+        1. Calculate needed images based on audio duration
+        2. Check available images in assets/images  
+        3. Generate additional images if needed
+        4. Create video with images (10 sec per image, smooth transitions)
+        5. Add storyline audio from assets/output
+        6. Add background music (creepy-music.mp3)
+        7. Combine everything into 1 final video
         
         Args:
             audio_file: Path to the audio narration file
             story_title: Title of the story (extracted from filename if None)
             story_content: Story content for image generation context
             output_dir: Optional output directory (uses default if None)
-              Returns:
+              
+        Returns:
             Path to generated video file, or None if failed
         """
         try:
@@ -299,32 +315,66 @@ class VideoGenerator:
             if not story_title:
                 story_title = self._extract_title_from_filename(audio_path.name)
             
-            self.logger.info(f"Creating video for: {story_title}")
+            self.logger.info(f"🎬 Starting video creation workflow for: {story_title}")
+            self.logger.info("=" * 60)
+            self.logger.info(f"📹 VIDEO GENERATION PROCESS STARTED")
+            self.logger.info(f"🎯 Target: {story_title}")
+            self.logger.info(f"📁 Input: {audio_path.name}")
+            self.logger.info("=" * 60)
             
-            # Load audio to get duration
-            audio_clip = AudioFileClip(str(audio_path))
-            audio_duration = audio_clip.duration
+            # Step 1: Load audio to get duration
+            self.logger.info("📊 Step 1: Loading audio file and calculating duration...")
+            import librosa
+            try:
+                # Use librosa to get audio duration (more reliable than MoviePy)
+                audio_duration = librosa.get_duration(path=str(audio_path))
+                self.logger.info(f"   Audio duration: {audio_duration:.2f} seconds")
+            except Exception as e:
+                self.logger.error(f"Error loading audio duration: {e}")
+                # Fallback: estimate based on file size (very rough)
+                audio_duration = max(30, audio_path.stat().st_size / 16000)  # Rough estimate
+                self.logger.warning(f"   Using estimated duration: {audio_duration:.2f} seconds")
             
-            # Get story content from database if not provided
-            if not story_content:
-                retrieved_content = self._get_story_content(story_title)
-                story_content = retrieved_content or ""
+            # Step 2: Calculate number of images needed
+            images_needed = max(3, int(audio_duration / self.image_duration))
+            self.logger.info(f"🖼️  Step 2: Calculating images needed...")
+            self.logger.info(f"   Images needed: {images_needed} (based on {self.image_duration}s per image)")
             
-            # Generate horror images
-            image_paths = self.generate_horror_images(story_title, story_content or "")
+            # Step 3: Check available images in assets/images
+            self.logger.info("📁 Step 3: Checking available images in assets/images...")
+            existing_images = []
+            if self.images_path.exists():
+                existing_images = list(self.images_path.glob("horror_*.png"))
+            self.logger.info(f"   Found {len(existing_images)} existing horror images")
             
-            if not image_paths:
-                self.logger.error("No images generated, cannot create video")
-                audio_clip.close()
+            # Step 4: Generate additional images if needed
+            if len(existing_images) < images_needed:
+                images_to_generate = images_needed - len(existing_images)
+                self.logger.info(f"🎨 Step 4: Need to generate {images_to_generate} additional images...")
+                
+                # Get story content for image generation context
+                if not story_content:
+                    retrieved_content = self._get_story_content(story_title)
+                    story_content = retrieved_content or ""
+                
+                # Generate the missing images
+                self.logger.info(f"🎨 Step 4b: Generating {images_to_generate} additional images...")
+                all_image_paths = self.generate_horror_images(story_title, story_content or "", images_needed)
+            else:
+                # Use existing images
+                self.logger.info("✅ Step 4: Sufficient images available, using existing ones...")                
+                selected_images = random.sample(existing_images, images_needed)
+                random.shuffle(selected_images)
+                all_image_paths = [str(img) for img in selected_images]
+                self.logger.info(f"   Selected {len(all_image_paths)} images from existing collection")
+            
+            if not all_image_paths:
+                self.logger.error("❌ No images available, cannot create video")
                 return None
-              # Create video clips from images
-            video_clips = self._create_video_clips_from_images(image_paths, audio_duration)
             
-            # Combine all video clips
-            final_video = concatenate_videoclips(video_clips, method="compose")
-            
-            # Add background music
-            final_video = self._add_background_music(final_video, audio_clip)
+            self.logger.info(f"   Using {len(all_image_paths)} images for video")
+            self.logger.info(f"   Total video duration will be: {audio_duration:.2f} seconds")
+            self.logger.info(f"   Each image will display for: {audio_duration/len(all_image_paths):.2f} seconds")
             
             # Generate output filename and path
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -341,93 +391,60 @@ class VideoGenerator:
             
             output_path = output_path_base / output_filename
             
-            # Write the final video with robust FFmpeg settings
-            self.logger.info(f"Rendering video: {output_filename}")            # Ensure video has proper FPS
-            final_video = final_video.set_fps(24)
+            # Step 5: Find background music
+            background_music_path = None
+            music_file = self.music_path / "creepy-music.mp3"
+            if music_file.exists():
+                background_music_path = str(music_file)
+                self.logger.info(f"🎵 Found background music: {music_file}")
+            else:
+                self.logger.warning(f"Background music not found at {music_file}, proceeding without music")
             
-            # Try rendering with proper logger configuration
-            success = False
-            old_tempdir = tempfile.tempdir  # Store original temp directory
-            try:
-                self.logger.info("Rendering video with MoviePy...")
-                
-                # Configure temp file location
-                tempfile.tempdir = str(self.temp_video_dir)
-                
-                try:
-                    # Try creating the video without audio first, then add audio separately
-                    self.logger.info("Creating video without audio first...")
-                    
-                    # Create video-only clip
-                    video_only = final_video.without_audio()
-                    
-                    # Write video without audio
-                    temp_video_path = str(output_path).replace('.mp4', '_temp_video.mp4')
-                    video_only.write_videofile(
-                        temp_video_path,
-                        fps=24,
-                        codec='libx264',
-                        verbose=False,
-                        audio=False  # Explicitly no audio
-                    )
-                    
-                    # Load the temp video and add audio
-                    self.logger.info("Adding audio to video...")
-                    temp_video_clip = VideoFileClip(temp_video_path)
-                    final_with_audio = temp_video_clip.set_audio(audio_clip)
-                    
-                    # Write final video with audio
-                    final_with_audio.write_videofile(
-                        str(output_path),
-                        fps=24,
-                        codec='libx264',
-                        audio_codec='aac',
-                        verbose=False
-                    )
-                    
-                    # Cleanup
-                    video_only.close()
-                    temp_video_clip.close()
-                    final_with_audio.close()
-                    
-                    # Remove temp file
-                    Path(temp_video_path).unlink(missing_ok=True)
-                    
-                    success = True
-                    
-                except Exception as e:
-                    self.logger.warning(f"Failed with separate audio/video approach: {e}")
-                    # Try with absolute minimal settings - just the essential parameters
-                    try:
-                        final_video.write_videofile(
-                            str(output_path),
-                            fps=24
-                        )
-                        success = True
-                        
-                    except Exception as e2:
-                        self.logger.error(f"All rendering attempts failed: {e2}")
-                        success = False
-                        
-            except Exception as e:
-                self.logger.error(f"Video rendering failed: {e}")
-                success = False
-            finally:
-                # Restore original temp directory
-                tempfile.tempdir = old_tempdir
+            # Get audio volume settings
+            music_volume = (
+                self.config.get("video.background_music.volume", None) or
+                self.config.get("audio.volume.background_music", None) or
+                self.config.get("audio.background_music.volume", None) or
+                self.config.get("video.background_music_volume", None) or
+                0.12  # Default to 12% volume for subtle background
+            )            
+            narration_volume = self.config.get("audio.volume.narration", 0.8)
             
-            if not success:
-                # Cleanup and return None
-                final_video.close()
-                audio_clip.close()
+            # Step 6: Create video using FFmpeg processor
+            self.logger.info("🎞️ Step 5-9: Creating video with FFmpeg processor...")
+            processor = FFmpegVideoProcessor(temp_dir=self.temp_video_dir)
+            
+            # Calculate duration for each image (equal distribution)
+            image_durations = [audio_duration / len(all_image_paths)] * len(all_image_paths)
+            
+            # Create video with all components
+            success = processor.create_video_from_images(
+                image_paths=all_image_paths,
+                durations=image_durations,
+                audio_path=str(audio_path),
+                output_path=str(output_path),
+                background_music_path=background_music_path,
+                music_volume=music_volume,
+                crossfade_duration=self.fade_duration,
+                resolution=self.video_resolution,
+                fps=24
+            )
+            
+            if success:
+                self.logger.info("=" * 60)
+                self.logger.info("🎉 VIDEO GENERATION COMPLETED SUCCESSFULLY!")
+                self.logger.info(f"📁 Output file: {output_path.name}")
+                self.logger.info(f"📍 Full path: {output_path}")
+                if output_path.exists():
+                    self.logger.info(f"📏 File size: {output_path.stat().st_size / (1024*1024):.1f} MB")
+                self.logger.info("=" * 60)
+                return str(output_path)
+            else:
+                self.logger.error("=" * 60)
+                self.logger.error("❌ VIDEO GENERATION FAILED")
+                self.logger.error("FFmpeg video processor failed to create video")
+                self.logger.error("=" * 60)
                 return None
-            
-            # Cleanup
-            final_video.close()
-            audio_clip.close()
-            
-            self.logger.info(f"Video created successfully: {output_path}")
-            return str(output_path)
             
         except Exception as e:
             self.logger.error(f"Error creating video: {e}")
@@ -439,6 +456,14 @@ class VideoGenerator:
             # Clean up temp video directory
             if self.temp_video_dir.exists():
                 for temp_file in self.temp_video_dir.glob("*TEMP_MPY*"):
+                    try:
+                        temp_file.unlink()
+                        self.logger.debug(f"Cleaned up temp file: {temp_file.name}")
+                    except Exception as e:
+                        self.logger.warning(f"Could not remove temp file {temp_file}: {e}")
+                
+                # Also clean up any FFmpeg temp files
+                for temp_file in self.temp_video_dir.glob("temp_*"):
                     try:
                         temp_file.unlink()
                         self.logger.debug(f"Cleaned up temp file: {temp_file.name}")
@@ -456,130 +481,6 @@ class VideoGenerator:
                     
         except Exception as e:
             self.logger.error(f"Error during temp file cleanup: {e}")
-    
-    def _create_video_clips_from_images(self, image_paths: List[str], total_duration: float) -> List[VideoFileClip]:
-        """
-        Create video clips from images with smooth transitions.        
-        Args:
-            image_paths: List of image file paths
-            total_duration: Total duration needed for the video
-            
-        Returns:
-            List of video clips
-        """
-        clips = []
-        
-        # Calculate duration per image
-        duration_per_image = total_duration / len(image_paths)
-        
-        for i, image_path in enumerate(image_paths):
-            try:
-                # Create image clip with FPS set
-                img_clip = ImageClip(image_path, duration=duration_per_image)
-                img_clip = img_clip.set_fps(24)  # Set FPS to avoid rendering issues
-                
-                # Resize to fit video resolution while maintaining aspect ratio
-                img_clip = img_clip.resize(height=self.video_resolution[1])
-                
-                # Center the image if it doesn't match the width
-                if img_clip.w < self.video_resolution[0]:
-                    img_clip = img_clip.on_color(
-                        size=self.video_resolution,
-                        color=(0, 0, 0),  # Black background
-                        pos='center'
-                    )
-                elif img_clip.w > self.video_resolution[0]:
-                    img_clip = img_clip.crop(
-                        x_center=img_clip.w/2,
-                        width=self.video_resolution[0]
-                    )
-                
-                # Add fade in/out for smooth transitions
-                if i == 0:
-                    # First image: fade in only
-                    img_clip = img_clip.fadein(self.fade_duration)
-                elif i == len(image_paths) - 1:
-                    # Last image: fade out only
-                    img_clip = img_clip.fadeout(self.fade_duration)
-                else:
-                    # Middle images: crossfade
-                    img_clip = img_clip.crossfadein(self.fade_duration).crossfadeout(self.fade_duration)
-                
-                clips.append(img_clip)
-                
-            except Exception as e:
-                self.logger.error(f"Error processing image {image_path}: {e}")
-                continue
-        
-        return clips
-    def _add_background_music(self, video_clip, narration_audio: AudioFileClip):
-        """
-        Add background music to the video.
-        
-        Args:
-            video_clip: Main video clip
-            narration_audio: Narration audio clip
-            
-        Returns:
-            Video clip with background music added
-        """
-        try:
-            # Find background music file
-            music_file = self.music_path / "creepy-music.mp3"
-            if not music_file.exists():
-                self.logger.warning(f"Background music file not found at {music_file}, proceeding without music")
-                return video_clip.set_audio(narration_audio)
-            
-            self.logger.info(f"Loading background music from {music_file}")
-            
-            # Load background music
-            background_music = AudioFileClip(str(music_file))
-            
-            # Loop music if it's shorter than the video
-            if background_music.duration < video_clip.duration:
-                # Calculate how many loops we need
-                loops_needed = int(video_clip.duration / background_music.duration) + 1
-                self.logger.info(f"Looping background music {loops_needed} times to match video duration")
-                background_music = concatenate_audioclips([background_music] * loops_needed)
-            
-            # Trim music to match video duration
-            background_music = background_music.subclip(0, video_clip.duration)            # Get background music volume from config (try multiple config paths)
-            music_volume = (
-                self.config.get("video.background_music.volume", None) or
-                self.config.get("audio.volume.background_music", None) or
-                self.config.get("audio.background_music.volume", None) or
-                self.config.get("video.background_music_volume", None) or
-                0.8  # Default to 80% volume for better audibility
-            )
-            
-            self.logger.info(f"Setting background music volume to {music_volume}")
-            
-            # Reduce background music volume 
-            background_music = background_music.volumex(music_volume)
-            
-            # Slightly reduce narration volume to make room for background music
-            narration_volume = self.config.get("audio.volume.narration", 0.7)
-            adjusted_narration = narration_audio.volumex(narration_volume)
-            
-            # Combine narration and background music
-            self.logger.info("Combining narration and background music")
-            final_audio = CompositeAudioClip([adjusted_narration, background_music])
-            
-            # Set the combined audio to the video
-            final_video = video_clip.set_audio(final_audio)
-            
-            # Cleanup
-            background_music.close()
-            
-            self.logger.info("Successfully added background music to video")
-            return final_video
-            
-        except Exception as e:
-            self.logger.error(f"Error adding background music: {e}")
-            import traceback
-            self.logger.error(f"Background music error traceback: {traceback.format_exc()}")
-            # Return video with just narration audio
-            return video_clip.set_audio(narration_audio)
     
     def _extract_title_from_filename(self, filename: str) -> str:
         """
@@ -690,20 +591,3 @@ class VideoGenerator:
             self.cleanup_temp_files()
             self.logger.error(f"Error generating videos for all audio: {e}")
             return []
-    
-    def _check_ffmpeg_config(self):
-        """Check and log moviepy/FFmpeg configuration."""
-        try:
-            from moviepy.config import FFMPEG_BINARY
-            self.logger.info(f"MoviePy FFmpeg binary: {FFMPEG_BINARY}")
-        except Exception as e:
-            self.logger.warning(f"Could not check FFmpeg configuration: {e}")
-            
-        # Test a simple moviepy operation
-        try:
-            from moviepy.editor import ColorClip
-            test_clip = ColorClip(size=(100, 100), color=(0, 0, 0), duration=0.1)
-            test_clip.close()
-            self.logger.info("MoviePy basic functionality test: PASSED")
-        except Exception as e:
-            self.logger.warning(f"MoviePy basic test failed: {e}")
