@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎭 CreepyPasta AI 👻
+# 🎭 CreepyPasta AI - Vibe Coding Project 👻
 
 **AI-Powered Horror Story Narration with Atmospheric Multimedia Experiences**
 
@@ -843,23 +843,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 💡 **Feature Requests**: [Create a feature request](https://github.com/yourusername/creepypastaAI/issues/new?template=feature_request.md)
 - 💬 **Community Discussion**: [GitHub Discussions](https://github.com/yourusername/creepypastaAI/discussions)
 
-### Contact Information
+--- 
+## 🙏 Todo
 
-- **Email**: support@creepypastaai.com
-- **Twitter**: [@CreepyPastaAI](https://twitter.com/CreepyPastaAI)
-- **Discord**: [Join our community](https://discord.gg/creepypastaai)
-
-### Professional Support
-
-For commercial use, custom integrations, or priority support:
-- **Business Inquiries**: business@creepypastaai.com
-- **Custom Development**: dev@creepypastaai.com
+- [ ] Improve error handling and logging
+- [ ] Add more tests for critical components
+- [ ] Optimize performance for large story batches
+- [ ] Update documentation for new features
+- [ ] Implement user feedback from GitHub Discussions
+- [ ] Add multilingual support for TTS voices
+- [ ] Enhance subtitle generation with advanced styling options
 
 ---
 
 <div align="center">
 
-**Made with ❤️ by the CreepyPasta AI Team**
+**Made with ❤️ by Sander Truyts**
 
 ⭐ **Star this repository if you find it helpful!** ⭐
 
