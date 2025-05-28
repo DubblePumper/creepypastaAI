@@ -54,12 +54,11 @@ multilingual:
     zh: false   # Chinese (disabled)
     ar: false   # Arabic (disabled)
     hi: false   # Hindi (disabled)
-  
-  # Translation service configuration
+    # Translation service configuration
   translation:
-    provider: "google"  # google, azure, openai
+    provider: "deepl-api"  # google, azure, openai, deepl, deepl-api
     # API keys will be read from environment variables:
-    # GOOGLE_TRANSLATE_API_KEY, AZURE_TRANSLATOR_KEY, OPENAI_API_KEY
+    # GOOGLE_TRANSLATE_API_KEY, AZURE_TRANSLATOR_KEY, OPENAI_API_KEY, DEEPL_API_KEY
     
     # Google Translate settings
     google:
@@ -68,6 +67,16 @@ multilingual:
     # Azure Translator settings
     azure:
       region: "global"  # Azure region for translator service
+    
+    # DeepL translation settings
+    deepl:
+      formality: "default"  # default, more, less, prefer_more, prefer_less (for supported languages)
+      preserve_formatting: true  # Preserve text formatting
+      
+    # DeepL API settings (same as deepl but with official API client)
+    deepl-api:
+      formality: "default"  # default, more, less, prefer_more, prefer_less
+      preserve_formatting: true  # Preserve text formatting
     
     # OpenAI translation settings
     openai:

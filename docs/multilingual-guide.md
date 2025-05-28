@@ -143,6 +143,9 @@ python main.py --mode audio --language de
 # Specifieke vertaalprovider gebruiken
 python main.py --language fr --translate --translation-provider deepl
 
+# DeepL API gebruiken (premium kwaliteit)
+python main.py --language de --translate --translation-provider deepl-api
+
 # Meerdere talen verwerken (batch)
 python main.py --languages nl,de,fr --translate --stories 3
 
@@ -272,8 +275,10 @@ python main.py --mode complete --language nl --translate --verbose --debug
 
 1. **Provider Selectie**: 
    - Google: Gratis, goede kwaliteit voor de meeste talen
-   - DeepL: Premium kwaliteit voor Europese talen
+   - DeepL: Premium kwaliteit voor Europese talen (gratis tier beschikbaar)
+   - DeepL API: Hoogste kwaliteit, professionele features (betaald)
    - Azure: Enterprise grade, consistente resultaten
+   - OpenAI: AI-powered vertaling met context awareness
 
 2. **Content Voorbereiding**:
    - Korte zinnen vertalen beter dan lange paragrafen

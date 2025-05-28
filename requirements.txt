@@ -24,6 +24,7 @@ lxml>=4.9.3                 # XML/HTML parser
 # Translation Services
 googletrans>=4.0.0          # Google Translate API
 deep-translator>=1.11.4     # Multiple translation service support
+deepl>=1.15.0               # DeepL API for high-quality translation
 langdetect>=1.0.9           # Language detection
 google-cloud-translate>=3.15.0  # Google Cloud Translation API
 

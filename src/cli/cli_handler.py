@@ -132,10 +132,9 @@ Examples:
             action="store_true",
             help="Enable automatic translation of stories to target language"
         )
-        
         parser.add_argument(
             "--translation-provider",
-            choices=["google", "azure", "openai"],
+            choices=["google", "azure", "openai", "deepl", "deepl-api"],
             help="Translation service provider (overrides config setting)"
         )
         

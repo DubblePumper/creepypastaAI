@@ -599,6 +599,53 @@ creepypastaAI/
 └── 🚀 main.py                  # Application entry point
 ```
 
+### 🎯 Project Organization & Best Practices
+
+This project follows structured development principles with clear separation of concerns and maintainable code architecture:
+
+#### **📁 Code Organization**
+- **Modular Design**: Each module has a single responsibility (TTS, scraping, video generation)
+- **Clear File Naming**: Descriptive names for functions, classes, and variables
+- **Logical Folder Structure**: Related functionality grouped together in dedicated folders
+- **Separation of Concerns**: Configuration, processing, storage, and utilities are isolated
+
+#### **🔧 Development Standards**
+- **Clean Code**: Readable, maintainable code with comprehensive documentation
+- **Error Handling**: Robust exception handling with graceful degradation
+- **Type Hints**: Full type annotations for better code clarity and IDE support
+- **Comprehensive Logging**: Detailed logging for debugging and monitoring
+- **Configuration Management**: Centralized YAML-based configuration system
+
+#### **📝 Documentation & Comments**
+- **Docstrings**: All classes and methods include comprehensive documentation
+- **Inline Comments**: Complex logic explained with clear comments
+- **README Files**: Each major module includes dedicated documentation
+- **API Documentation**: Clear examples and usage patterns provided
+
+#### **🔄 Version Control & Collaboration**
+- **Atomic Commits**: Frequent commits with clear, descriptive messages
+- **Feature Branches**: Separate branches for new features and bug fixes
+- **Code Reviews**: All changes reviewed for quality and adherence to standards
+- **Issue Tracking**: Comprehensive tracking of bugs, features, and improvements
+
+#### **🚀 Deployment & Distribution**
+- **Dependency Management**: Well-documented dependencies with version pinning
+- **Environment Configuration**: Support for development, testing, and production environments
+- **Cross-Platform Support**: Compatible with Windows, macOS, and Linux
+- **Easy Setup**: Simple installation with clear setup instructions
+
+#### **🔐 Security & Data Protection**
+- **Environment Variables**: Sensitive data stored securely in environment variables
+- **API Key Management**: Secure handling of third-party service credentials
+- **Data Validation**: Input validation and sanitization throughout the application
+- **Privacy Compliance**: Respectful handling of user data and content
+
+#### **⚡ Performance & Optimization**
+- **Caching Systems**: Translation and processing caches to avoid redundant operations
+- **Asynchronous Processing**: Non-blocking operations where appropriate
+- **Resource Management**: Efficient memory and file handle management
+- **Profiling Support**: Built-in performance monitoring and optimization tools
+
 ---
 
 ## 🎵 Audio & Video Features
