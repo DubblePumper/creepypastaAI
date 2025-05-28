@@ -21,6 +21,8 @@ from src.utils.config_manager import ConfigManager
 from src.utils.story_processor import StoryProcessor
 from src.utils.story_tracker import StoryTracker
 from src.utils.logger import setup_logger
+from src.utils.translation_manager import TranslationManager
+from src.utils.language_manager import LanguageManager
 from src.cli.cli_handler import CLIHandler
 from src.cli.execution_modes import ScrapeOnlyMode, AudioOnlyMode, VideoOnlyMode
 
@@ -38,16 +40,19 @@ class CreepyPastaAI:
         
         Args:
             config_path: Path to the configuration file
-        """
+        """        
         self.config = ConfigManager(config_path)
         self.logger = setup_logger("CreepyPastaAI", self.config.get("logging.level", "INFO"))
-          # Initialize components
+        
+        # Initialize components
         self.reddit_scraper = RedditScraper(self.config)
         self.tts_manager = TTSManager(self.config)
         self.audio_mixer = AudioMixer(self.config)
         self.video_generator = VideoGenerator(self.config)
         self.story_processor = StoryProcessor(self.config)
         self.story_tracker = StoryTracker(self.config)
+        self.translation_manager = TranslationManager(self.config)
+        self.language_manager = LanguageManager(self.config)
         
         self.logger.info("CreepyPasta AI initialized successfully")
     
@@ -478,15 +483,23 @@ def main():
         # Validate arguments
         if not cli.validate_args(args):
             sys.exit(1)
-        
-        # Display banner unless we're just showing info/stats
-        if not (args.info or args.stats):
+          # Display banner unless we're just showing info/stats/language commands
+        if not (args.info or args.stats or 
+                (hasattr(args, 'list_languages') and args.list_languages) or
+                (hasattr(args, 'enable_language') and args.enable_language) or
+                (hasattr(args, 'disable_language') and args.disable_language) or
+                (hasattr(args, 'list_enabled') and args.list_enabled) or
+                (hasattr(args, 'language_status') and args.language_status)):
             cli.display_banner()
         
         # Initialize the application
         app = CreepyPastaAI(args.config)
         
-        # Handle info and stats modes first
+        # Handle language management commands first
+        if cli.handle_language_management_commands(args, app.language_manager):
+            return
+        
+        # Handle info and stats modes
         if args.info:
             app.display_system_info()
             return
@@ -494,6 +507,21 @@ def main():
         if args.stats:
             app._display_tracking_statistics()
             return
+        
+        # Set up multilingual support
+        if hasattr(args, 'language') and args.language:
+            app.logger.info(f"Setting target language to: {args.language}")
+            app.tts_manager.set_language(args.language)
+            
+            # Override translation provider if specified
+            if hasattr(args, 'translation_provider') and args.translation_provider:
+                app.translation_manager.set_provider(args.translation_provider)
+                app.logger.info(f"Using translation provider: {args.translation_provider}")
+        
+        # Enable translation if requested
+        translation_enabled = hasattr(args, 'translate') and args.translate
+        if translation_enabled:
+            app.logger.info("Translation enabled for stories")
         
         # Set up logging level based on verbose flag
         if args.verbose:

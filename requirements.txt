@@ -21,6 +21,12 @@ pandas>=2.1.0               # Data manipulation
 beautifulsoup4>=4.12.0      # HTML parsing
 lxml>=4.9.3                 # XML/HTML parser
 
+# Translation Services
+googletrans>=4.0.0          # Google Translate API
+deep-translator>=1.11.4     # Multiple translation service support
+langdetect>=1.0.9           # Language detection
+google-cloud-translate>=3.15.0  # Google Cloud Translation API
+
 # AI/ML and Video Processing
 openai>=1.0.0               # OpenAI API for DALL-E image generation
 ffmpeg-python>=0.2.0        # FFmpeg Python wrapper for video processing

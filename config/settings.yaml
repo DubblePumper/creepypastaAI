@@ -10,7 +10,7 @@ reddit:
 # Text-to-Speech Configuration
 tts:
   provider: "elevenlabs"  # gtts, openai, azure, elevenlabs
-  language: "en"
+  language: "en"  # Default language (can be overridden by CLI)
   slow: false
   
   # OpenAI TTS settings (if using OpenAI)
@@ -32,6 +32,199 @@ tts:
     similarity_boost: 0.5
     style: 0.0
     use_speaker_boost: true
+
+# Multilingual Configuration
+multilingual:
+  enabled: true
+  default_language: "en"
+  translate_stories: true
+  
+  # Language management - enable/disable specific languages
+  enabled_languages:
+    en: true    # English (always enabled as default)
+    nl: true    # Dutch
+    de: false    # German
+    fr: false    # French
+    es: false    # Spanish
+    it: false   # Italian (disabled)
+    pt: false   # Portuguese (disabled)
+    ru: false   # Russian (disabled)
+    ja: false   # Japanese (disabled)
+    ko: false   # Korean (disabled)
+    zh: false   # Chinese (disabled)
+    ar: false   # Arabic (disabled)
+    hi: false   # Hindi (disabled)
+  
+  # Translation service configuration
+  translation:
+    provider: "google"  # google, azure, openai
+    # API keys will be read from environment variables:
+    # GOOGLE_TRANSLATE_API_KEY, AZURE_TRANSLATOR_KEY, OPENAI_API_KEY
+    
+    # Google Translate settings
+    google:
+      project_id: null  # If using service account instead of API key
+    
+    # Azure Translator settings
+    azure:
+      region: "global"  # Azure region for translator service
+    
+    # OpenAI translation settings
+    openai:
+      model: "gpt-3.5-turbo"
+      max_tokens: 2000
+      temperature: 0.3
+  
+  # Language-specific TTS voice configurations
+  voices:
+    en:
+      elevenlabs: "3SF4rB1fGBMXU9xRM7pz"  # Rachel (creepy voice)
+      openai: "onyx"
+      azure: "en-US-AriaNeural"
+      gtts: "en"
+    nl:
+      elevenlabs: "LKZ8pGqli4t1rXhzN7hq"  # Bella (Dutch-compatible)
+      openai: "nova"
+      azure: "nl-NL-ColetteNeural"
+      gtts: "nl"
+    de:
+      elevenlabs: "TxGEqnHWrfWFTfGW9XjX"  # Josh (German-compatible)
+      openai: "echo"
+      azure: "de-DE-KatjaNeural"
+      gtts: "de"
+    fr:
+      elevenlabs: "pNInz6obpgDQGcFmaJgB"  # Adam (French-compatible)
+      openai: "alloy"
+      azure: "fr-FR-DeniseNeural"
+      gtts: "fr"
+    es:
+      elevenlabs: "onwK4e9ZLuTAKqWW03F9"  # Daniel (Spanish-compatible)
+      openai: "fable"
+      azure: "es-ES-ElviraNeural"
+      gtts: "es"
+    it:
+      elevenlabs: "AZnzlk1XvdvUeBnXmlld"  # Domi (Italian-compatible)
+      openai: "shimmer"
+      azure: "it-IT-ElsaNeural"
+      gtts: "it"
+    pt:
+      elevenlabs: "pNInz6obpgDQGcFmaJgB"  # Adam (Portuguese-compatible)
+      openai: "nova"
+      azure: "pt-BR-FranciscaNeural"
+      gtts: "pt"
+    ru:
+      elevenlabs: "TxGEqnHWrfWFTfGW9XjX"  # Josh (Russian-compatible)
+      openai: "echo"
+      azure: "ru-RU-SvetlanaNeural"
+      gtts: "ru"
+    ja:
+      elevenlabs: "EXAVITQu4vr4xnSDxMaL"  # Bella (Japanese-compatible)
+      openai: "alloy"
+      azure: "ja-JP-NanamiNeural"
+      gtts: "ja"
+    ko:
+      elevenlabs: "pNInz6obpgDQGcFmaJgB"  # Adam (Korean-compatible)
+      openai: "fable"
+      azure: "ko-KR-SunHiNeural"
+      gtts: "ko"
+    zh:
+      elevenlabs: "onwK4e9ZLuTAKqWW03F9"  # Daniel (Chinese-compatible)
+      openai: "shimmer"
+      azure: "zh-CN-XiaoxiaoNeural"
+      gtts: "zh"
+    ar:
+      elevenlabs: "TxGEqnHWrfWFTfGW9XjX"  # Josh (Arabic-compatible)
+      openai: "onyx"
+      azure: "ar-SA-ZariyahNeural"
+      gtts: "ar"
+    hi:
+      elevenlabs: "EXAVITQu4vr4xnSDxMaL"  # Bella (Hindi-compatible)
+      openai: "nova"
+      azure: "hi-IN-SwaraNeural"
+      gtts: "hi"
+      
+    # Azure Translator settings
+    azure:
+      region: "global"  # or specific region like "eastus"
+      
+    # OpenAI translation settings (using GPT models)
+    openai:
+      model: "gpt-3.5-turbo"
+      max_tokens: 4000
+  
+  # Language-specific TTS voice mappings
+  languages:
+    en:  # English
+      name: "English"
+      code: "en"
+      gtts_lang: "en"
+      openai_voice: "onyx"
+      azure_voice: "en-US-AriaNeural"
+      elevenlabs_voice: "3SF4rB1fGBMXU9xRM7pz"  # Rachel
+      
+    es:  # Spanish
+      name: "Español"
+      code: "es"
+      gtts_lang: "es"
+      openai_voice: "nova"
+      azure_voice: "es-ES-ElviraNeural"
+      elevenlabs_voice: "XB0fDUnXU5powFXDhCwa"  # Spanish voice
+      
+    fr:  # French
+      name: "Français"
+      code: "fr"
+      gtts_lang: "fr"
+      openai_voice: "alloy"
+      azure_voice: "fr-FR-DeniseNeural"
+      elevenlabs_voice: "ErXwobaYiN019PkySvjV"  # French voice
+      
+    de:  # German
+      name: "Deutsch"
+      code: "de"
+      gtts_lang: "de"
+      openai_voice: "echo"
+      azure_voice: "de-DE-KatjaNeural"
+      elevenlabs_voice: "pNInz6obpgDQGcFmaJgB"  # German voice
+      
+    it:  # Italian
+      name: "Italiano"
+      code: "it"
+      gtts_lang: "it"
+      openai_voice: "fable"
+      azure_voice: "it-IT-ElsaNeural"
+      elevenlabs_voice: "XrExE9yKIg1WjnnlVkGX"  # Italian voice
+      
+    pt:  # Portuguese
+      name: "Português"
+      code: "pt"
+      gtts_lang: "pt"
+      openai_voice: "shimmer"
+      azure_voice: "pt-BR-FranciscaNeural"
+      elevenlabs_voice: "TxGEqnHWrfWFTfGW9XjX"  # Portuguese voice
+      
+    nl:  # Dutch
+      name: "Nederlands"
+      code: "nl"
+      gtts_lang: "nl"
+      openai_voice: "onyx"
+      azure_voice: "nl-NL-ColetteNeural"
+      elevenlabs_voice: "bVMeCyTHy58xNoL34h3p"  # Dutch voice
+      
+    ru:  # Russian
+      name: "Русский"
+      code: "ru"
+      gtts_lang: "ru"
+      openai_voice: "alloy"
+      azure_voice: "ru-RU-SvetlanaNeural"
+      elevenlabs_voice: "flq6f7yk4E4fJM5XTYuZ"  # Russian voice
+      
+    ja:  # Japanese
+      name: "日本語"
+      code: "ja"
+      gtts_lang: "ja"
+      openai_voice: "nova"
+      azure_voice: "ja-JP-NanamiNeural"
+      elevenlabs_voice: "PCigumGleR5JuwVZ5gwG"  # Japanese voice
 
 # Audio Configuration
 audio:

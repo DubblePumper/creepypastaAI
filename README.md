@@ -62,7 +62,14 @@
 - **Smart Text Processing**: Automatic text cleaning and optimization for speech synthesis
 - **AI-Generated Imagery**: Create atmospheric horror visuals for video content
 
-### 📊 Data Management & Intelligence  
+### 🌍 Multilingual Support
+- **13+ Supported Languages**: Generate content in English, Dutch, German, French, Spanish, and more
+- **Automatic Translation**: Convert Reddit stories to your preferred language using multiple providers
+- **Language-Specific Voices**: Native-sounding TTS voices optimized for each language
+- **Dynamic Language Management**: Enable/disable languages runtime with simple CLI commands
+- **Batch Multilingual Processing**: Generate content in multiple languages simultaneously
+
+### 📊 Data Management & Intelligence
 - **Reddit Integration**: Automated scraping from r/creepypasta with intelligent filtering
 - **Smart Duplicate Detection**: Advanced algorithms prevent content repetition
 - **JSON Database**: Comprehensive story tracking with metadata and analytics
@@ -186,6 +193,42 @@ graph TB
    ```bash
    python main.py --info
    ```
+
+### 🌍 Multilingual Quick Start
+
+CreepyPasta AI supports 13+ languages with automatic translation and language-specific voices:
+
+1. **Check Available Languages**
+   ```bash
+   python main.py --list-languages
+   ```
+
+2. **Enable Additional Languages**
+   ```bash
+   # Enable Dutch and German
+   python main.py --enable-language nl
+   python main.py --enable-language de
+   
+   # Check current status
+   python main.py --language-status
+   ```
+
+3. **Generate Content in Different Languages**
+   ```bash
+   # Generate stories in Dutch with translation
+   python main.py --mode complete --language nl --translate --stories 3
+   
+   # Generate audio in German
+   python main.py --mode audio --language de --translate
+   ```
+
+4. **Batch Process Multiple Languages**
+   ```bash
+   # Process multiple languages at once
+   python main.py --languages "nl,de,fr" --translate --stories 2
+   ```
+
+For detailed multilingual configuration and advanced features, see the [Multilingual Guide](docs/multilingual-guide.md).
 
 ---
 

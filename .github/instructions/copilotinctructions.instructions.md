@@ -22,4 +22,4 @@ When working with asynchronous code, ensure that it is handled correctly and tha
 
 edit the README.md file to reflect these guidelines and best practices.
 
-DO NOT CREATE TESTS.
+DO NOT CREATE, MAKE, WRITE TESTS.
