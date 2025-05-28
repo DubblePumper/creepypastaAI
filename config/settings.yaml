@@ -1,9 +1,8 @@
 # Reddit Scraper Configuration
 reddit:
-  subreddit: "creepypasta"
+  subreddit: "nosleep"
   allowed_flairs:
-    - "Text Story"
-    - "Very Short Story"
+    - "*"  # Accept all flairs (use '*' to allow any flair)
   sort_by: "top"  # hot, new, top, rising
   time_filter: "all"  # hour, day, week, month, year, all
   limit: 10

@@ -42,6 +42,12 @@ class RedditScraper:
         self.time_filter = config.get("reddit.time_filter", "week")
         
         self.logger.info(f"Reddit scraper initialized for r/{self.subreddit_name}")
+        
+        # Log flair filtering configuration
+        if "*" in self.allowed_flairs:
+            self.logger.info("Flair filtering: ACCEPTING ALL FLAIRS (including posts with no flair)")
+        else:
+            self.logger.info(f"Flair filtering: Only accepting posts with flairs: {self.allowed_flairs}")
     
     def _initialize_reddit(self) -> praw.Reddit:
         """
@@ -133,11 +139,12 @@ class RedditScraper:
         """
         # Check if it's a text post
         if not submission.is_self:
-            return False
-        
-        # Check flair
-        if submission.link_flair_text not in self.allowed_flairs:
-            return False
+            return False        # Check flair (allow all flairs if '*' is in allowed_flairs)
+        if "*" not in self.allowed_flairs:
+            # Handle posts with no flair (None) vs posts with specific flairs
+            post_flair = submission.link_flair_text
+            if post_flair not in self.allowed_flairs:
+                return False
         
         # Check if it has content
         if not submission.selftext or len(submission.selftext.strip()) < 100:
