@@ -58,16 +58,12 @@ class TranslationManager:
             try:
                 provider_class = get_provider_class(provider_name)
                 if provider_class:
-                    provider = provider_class(provider_config)
-                    if provider.is_available():
-                        self.providers[provider_name] = provider
-                        self.available_providers.append(provider_name)
-                        self.logger.info(f"Initialized provider: {provider_name}")
-                    else:
-                        self.logger.warning(f"Provider {provider_name} is not available")
+                    provider_instance = provider_class(provider_config)
+                    self.providers[provider_name] = provider_instance
+                    self.available_providers.append(provider_name)
+                    self.logger.info(f"Initialized provider: {provider_name}")
                 else:
-                    self.logger.error(f"Unknown provider: {provider_name}")
-                    
+                    self.logger.warning(f"Unknown provider: {provider_name}")
             except Exception as e:
                 self.logger.error(f"Failed to initialize provider {provider_name}: {e}")
     
@@ -79,16 +75,23 @@ class TranslationManager:
             List of available provider names
         """
         return self.available_providers.copy()
-    
+
     def get_provider_order(self) -> List[str]:
         """
-        Get the provider order (primary + fallbacks) filtered by availability.
+        Get the order of providers (primary first, then fallbacks).
         
         Returns:
             List of provider names in order of preference
         """
-        order = [self.primary_provider] + self.fallback_providers
-        return [provider for provider in order if provider in self.available_providers]
+        order = []
+        if self.primary_provider in self.available_providers:
+            order.append(self.primary_provider)
+        
+        for provider in self.fallback_providers:
+            if provider in self.available_providers and provider not in order:
+                order.append(provider)
+        
+        return order
     
     def translate_text(
         self, 
@@ -98,7 +101,7 @@ class TranslationManager:
         preferred_provider: Optional[str] = None
     ) -> Dict[str, Any]:
         """
-        Translate text using available providers with fallback support.
+        Translate text using the best available provider.
         
         Args:
             text: Text to translate
@@ -107,25 +110,14 @@ class TranslationManager:
             preferred_provider: Preferred provider name (optional)
             
         Returns:
-            Dict containing:
-                - translated_text: The translated text
-                - provider_used: Name of the provider that was used
-                - detected_language: Detected source language (if applicable)
-                - success: Whether translation was successful
-                - error: Error message if failed
+            Translation result dictionary
         """
         if not text.strip():
             return {
-                'translated_text': text,
-                'provider_used': None,
-                'detected_language': source_language,
-                'success': True,
-                'error': None
+                'success': False,
+                'error': 'Empty text provided',
+                'provider': None
             }
-        
-        # Use default source language if not provided
-        if not source_language:
-            source_language = self.default_source_language
         
         # Determine provider order
         if preferred_provider and preferred_provider in self.available_providers:
@@ -133,78 +125,57 @@ class TranslationManager:
         else:
             provider_order = self.get_provider_order()
         
+        if not provider_order:
+            return {
+                'success': False,
+                'error': 'No translation providers available',
+                'provider': None
+            }
+        
         # Try providers in order
         last_error = None
         for provider_name in provider_order:
             try:
                 provider = self.providers[provider_name]
+                result = provider.translate_text(
+                    text, 
+                    target_language, 
+                    source_language or self.default_source_language
+                )
                 
-                # Check if target language is supported
-                if not provider.is_language_supported(target_language):
-                    self.logger.warning(f"Provider {provider_name} doesn't support target language: {target_language}")
-                    continue
-                
-                # Check source language support if specified
-                if source_language and not provider.is_language_supported(source_language):
-                    self.logger.warning(f"Provider {provider_name} doesn't support source language: {source_language}")
-                    continue
-                
-                # Attempt translation
-                translated_text = provider.translate_text(text, target_language, source_language)
-                
-                # Detect source language if not provided
-                detected_language = source_language
-                if not source_language:
-                    try:
-                        detected_language = provider.detect_language(text)
-                    except Exception as e:
-                        self.logger.warning(f"Language detection failed with {provider_name}: {e}")
-                
-                return {
-                    'translated_text': translated_text,
-                    'provider_used': provider_name,
-                    'detected_language': detected_language,
-                    'success': True,
-                    'error': None
-                }
-                
+                if result.get('success'):
+                    self.logger.info(f"Translation successful with provider: {provider_name}")
+                    return result
+                else:
+                    last_error = result.get('error', 'Unknown error')
+                    self.logger.warning(f"Provider {provider_name} failed: {last_error}")
+                    
             except Exception as e:
                 last_error = str(e)
-                self.logger.warning(f"Translation failed with provider {provider_name}: {e}")
-                continue
+                self.logger.error(f"Exception with provider {provider_name}: {e}")
         
-        # All providers failed
         return {
-            'translated_text': text,
-            'provider_used': None,
-            'detected_language': source_language,
             'success': False,
-            'error': f"All translation providers failed. Last error: {last_error}"
+            'error': f'All providers failed. Last error: {last_error}',
+            'provider': None
         }
     
     def detect_language(self, text: str, preferred_provider: Optional[str] = None) -> Dict[str, Any]:
         """
-        Detect language of text using available providers.
+        Detect the language of text using the best available provider.
         
         Args:
             text: Text to analyze
             preferred_provider: Preferred provider name (optional)
             
         Returns:
-            Dict containing:
-                - language_code: Detected language code
-                - provider_used: Name of the provider that was used
-                - confidence: Confidence score if available
-                - success: Whether detection was successful
-                - error: Error message if failed
+            Language detection result dictionary
         """
         if not text.strip():
             return {
-                'language_code': 'en',
-                'provider_used': None,
-                'confidence': None,
-                'success': True,
-                'error': None
+                'success': False,
+                'error': 'Empty text provided',
+                'provider': None
             }
         
         # Determine provider order
@@ -213,33 +184,35 @@ class TranslationManager:
         else:
             provider_order = self.get_provider_order()
         
+        if not provider_order:
+            return {
+                'success': False,
+                'error': 'No translation providers available',
+                'provider': None
+            }
+        
         # Try providers in order
         last_error = None
         for provider_name in provider_order:
             try:
                 provider = self.providers[provider_name]
-                language_code = provider.detect_language(text)
+                result = provider.detect_language(text)
                 
-                return {
-                    'language_code': language_code,
-                    'provider_used': provider_name,
-                    'confidence': None,  # Most providers don't return confidence
-                    'success': True,
-                    'error': None
-                }
-                
+                if result.get('success'):
+                    self.logger.info(f"Language detection successful with provider: {provider_name}")
+                    return result
+                else:
+                    last_error = result.get('error', 'Unknown error')
+                    self.logger.warning(f"Provider {provider_name} failed: {last_error}")
+                    
             except Exception as e:
                 last_error = str(e)
-                self.logger.warning(f"Language detection failed with provider {provider_name}: {e}")
-                continue
+                self.logger.error(f"Exception with provider {provider_name}: {e}")
         
-        # All providers failed
         return {
-            'language_code': 'en',  # Default to English
-            'provider_used': None,
-            'confidence': None,
             'success': False,
-            'error': f"All language detection providers failed. Last error: {last_error}"
+            'error': f'All providers failed. Last error: {last_error}',
+            'provider': None
         }
     
     def get_supported_languages(self, provider_name: Optional[str] = None) -> List[str]:
@@ -247,7 +220,7 @@ class TranslationManager:
         Get supported languages for a specific provider or all providers.
         
         Args:
-            provider_name: Specific provider name (optional)
+            provider_name: Name of the provider (optional)
             
         Returns:
             List of supported language codes
@@ -257,68 +230,52 @@ class TranslationManager:
                 return self.providers[provider_name].get_supported_languages()
             else:
                 return []
-        
-        # Get union of all supported languages
-        all_languages = set()
-        for provider in self.providers.values():
-            try:
-                languages = provider.get_supported_languages()
-                all_languages.update(languages)
-            except Exception as e:
-                self.logger.warning(f"Failed to get supported languages from {provider.PROVIDER_NAME}: {e}")
-        
-        return sorted(list(all_languages))
+        else:
+            # Return union of all providers' supported languages
+            all_languages = set()
+            for provider in self.providers.values():
+                try:
+                    languages = provider.get_supported_languages()
+                    all_languages.update(languages)
+                except Exception as e:
+                    self.logger.error(f"Error getting languages from {provider.provider_name}: {e}")
+            
+            return list(all_languages)
     
     def is_language_supported(self, language_code: str, provider_name: Optional[str] = None) -> bool:
         """
-        Check if a language is supported by a specific provider or any provider.
+        Check if a language is supported.
         
         Args:
             language_code: Language code to check
-            provider_name: Specific provider name (optional)
+            provider_name: Name of the provider (optional)
             
         Returns:
-            bool: True if language is supported
+            True if language is supported, False otherwise
         """
-        if provider_name:
-            if provider_name in self.providers:
-                return self.providers[provider_name].is_language_supported(language_code)
-            else:
-                return False
-        
-        # Check if any provider supports the language
-        for provider in self.providers.values():
-            if provider.is_language_supported(language_code):
-                return True
-        
-        return False
+        supported_languages = self.get_supported_languages(provider_name)
+        return language_code.lower() in [lang.lower() for lang in supported_languages]
     
     def get_provider_info(self, provider_name: Optional[str] = None) -> Dict[str, Any]:
         """
         Get information about providers.
         
         Args:
-            provider_name: Specific provider name (optional)
+            provider_name: Name of the provider (optional)
             
         Returns:
-            Dict containing provider information
+            Provider information dictionary
         """
         if provider_name:
             if provider_name in self.providers:
                 return self.providers[provider_name].get_provider_info()
             else:
                 return {}
-        
-        # Get info for all providers
-        provider_info = {}
-        for name, provider in self.providers.items():
-            try:
-                provider_info[name] = provider.get_provider_info()
-            except Exception as e:
-                self.logger.warning(f"Failed to get info from {name}: {e}")
-                provider_info[name] = {'error': str(e)}
-        
-        return provider_info
+        else:
+            return {
+                name: provider.get_provider_info() 
+                for name, provider in self.providers.items()
+            }
     
     def translate_batch(
         self,
@@ -328,7 +285,7 @@ class TranslationManager:
         preferred_provider: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """
-        Translate multiple texts efficiently.
+        Translate multiple texts.
         
         Args:
             texts: List of texts to translate
@@ -337,43 +294,47 @@ class TranslationManager:
             preferred_provider: Preferred provider name (optional)
             
         Returns:
-            List of translation results
+            List of translation result dictionaries
         """
         results = []
         for text in texts:
-            result = self.translate_text(text, target_language, source_language, preferred_provider)
+            result = self.translate_text(
+                text, 
+                target_language, 
+                source_language, 
+                preferred_provider
+            )
             results.append(result)
         
         return results
     
     def health_check(self) -> Dict[str, Any]:
         """
-        Perform health check on all providers.
+        Perform health checks on all providers.
         
         Returns:
-            Dict containing health status of all providers
+            Health check results dictionary
         """
-        health_status = {
-            'overall_health': True,
-            'available_providers': len(self.available_providers),
-            'total_providers': len(self.providers),
-            'providers': {}
-        }
+        results = {}
+        overall_healthy = False
         
-        for name, provider in self.providers.items():
+        for provider_name, provider in self.providers.items():
             try:
-                is_available = provider.is_available()
-                health_status['providers'][name] = {
-                    'available': is_available,
-                    'error': None
-                }
-                if not is_available:
-                    health_status['overall_health'] = False
+                health = provider.health_check()
+                results[provider_name] = health
+                if health.get('success'):
+                    overall_healthy = True
             except Exception as e:
-                health_status['providers'][name] = {
-                    'available': False,
+                results[provider_name] = {
+                    'success': False,
+                    'provider': provider_name,
+                    'status': 'unhealthy',
                     'error': str(e)
                 }
-                health_status['overall_health'] = False
         
-        return health_status
+        return {
+            'overall_healthy': overall_healthy,
+            'providers': results,
+            'available_providers': self.available_providers,
+            'primary_provider': self.primary_provider
+        }

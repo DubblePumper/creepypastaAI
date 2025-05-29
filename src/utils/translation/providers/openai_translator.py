@@ -2,217 +2,164 @@
 OpenAI Translation Provider
 
 This module provides translation functionality using OpenAI's GPT models.
-Supports high-quality translation with context awareness and natural language processing.
+Requires an OpenAI API key and has usage-based pricing.
 """
 
-import openai
 from typing import Dict, List, Optional, Any
 from ..base_translator import BaseTranslationProvider
+
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    openai = None
 
 
 class OpenAITranslationProvider(BaseTranslationProvider):
     """
-    OpenAI translation provider using GPT models for translation.
+    OpenAI translation provider using GPT models.
     
-    This provider offers high-quality contextual translations using OpenAI's
-    language models, particularly useful for creative or nuanced content.
+    This provider uses OpenAI's GPT models for translation, which can provide
+    high-quality contextual translations but may be more expensive than
+    dedicated translation services.
     """
     
-    PROVIDER_NAME = "openai"
-    
-    # Language codes mapping for OpenAI (using ISO 639-1 codes)
-    LANGUAGE_CODES = {
-        'af': 'Afrikaans', 'ar': 'Arabic', 'az': 'Azerbaijani', 'be': 'Belarusian',
-        'bg': 'Bulgarian', 'bn': 'Bengali', 'bs': 'Bosnian', 'ca': 'Catalan',
-        'cs': 'Czech', 'cy': 'Welsh', 'da': 'Danish', 'de': 'German',
-        'el': 'Greek', 'en': 'English', 'es': 'Spanish', 'et': 'Estonian',
-        'eu': 'Basque', 'fa': 'Persian', 'fi': 'Finnish', 'fr': 'French',
-        'ga': 'Irish', 'gl': 'Galician', 'gu': 'Gujarati', 'he': 'Hebrew',
-        'hi': 'Hindi', 'hr': 'Croatian', 'hu': 'Hungarian', 'hy': 'Armenian',
-        'id': 'Indonesian', 'is': 'Icelandic', 'it': 'Italian', 'ja': 'Japanese',
-        'ka': 'Georgian', 'kk': 'Kazakh', 'kn': 'Kannada', 'ko': 'Korean',
-        'ky': 'Kyrgyz', 'la': 'Latin', 'lt': 'Lithuanian', 'lv': 'Latvian',
-        'mk': 'Macedonian', 'ml': 'Malayalam', 'mn': 'Mongolian', 'mr': 'Marathi',
-        'ms': 'Malay', 'mt': 'Maltese', 'ne': 'Nepali', 'nl': 'Dutch',
-        'no': 'Norwegian', 'pa': 'Punjabi', 'pl': 'Polish', 'pt': 'Portuguese',
-        'ro': 'Romanian', 'ru': 'Russian', 'si': 'Sinhala', 'sk': 'Slovak',
-        'sl': 'Slovenian', 'sq': 'Albanian', 'sr': 'Serbian', 'sv': 'Swedish',
-        'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai',
-        'tl': 'Filipino', 'tr': 'Turkish', 'uk': 'Ukrainian', 'ur': 'Urdu',
-        'uz': 'Uzbek', 'vi': 'Vietnamese', 'yi': 'Yiddish', 'zh': 'Chinese'
-    }
-    
-    def __init__(self, config: Dict[str, Any]):
-        """
-        Initialize OpenAI translation provider.
+    def _initialize(self):
+        """Initialize the OpenAI client."""
+        if not OPENAI_AVAILABLE:            raise ImportError(
+                "openai library is not installed. "
+                "Install it with: pip install openai"
+            )
         
-        Args:
-            config: Configuration dictionary containing:
-                - api_key: OpenAI API key
-                - model: Model to use (default: gpt-3.5-turbo)
-                - max_tokens: Maximum tokens per request (default: 2000)
-                - temperature: Model temperature (default: 0.3)
-        """
-        super().__init__(config)
-        
-        self.api_key = config.get('api_key')
-        self.model = config.get('model', 'gpt-3.5-turbo')
-        self.max_tokens = config.get('max_tokens', 2000)
-        self.temperature = config.get('temperature', 0.3)
-        
-        if not self.api_key:
+        api_key = self.config.get('api_key')
+        if not api_key:
             raise ValueError("OpenAI API key is required")
         
-        # Set up OpenAI client
-        openai.api_key = self.api_key
-        self.client = openai
-    
-    def is_available(self) -> bool:
-        """
-        Check if OpenAI translation service is available.
-        
-        Returns:
-            bool: True if the service is available, False otherwise
-        """
         try:
-            # Test with a simple API call
-            response = self.client.ChatCompletion.create(
-                model=self.model,
-                messages=[{"role": "user", "content": "Hello"}],
-                max_tokens=5
-            )
-            return True
+            if openai is None:
+                raise ImportError("OpenAI module not available")
+            self.client = openai.OpenAI(api_key=api_key)
+            self.model = self.config.get('model', 'gpt-3.5-turbo')
+            self.max_tokens = self.config.get('max_tokens', 1000)
+            self.temperature = self.config.get('temperature', 0.1)
+            
+            self.logger.info("OpenAI translation provider initialized successfully")
         except Exception as e:
-            self.logger.error(f"OpenAI service unavailable: {e}")
-            return False
+            self.logger.error(f"Failed to initialize OpenAI: {e}")
+            raise
     
-    def translate_text(self, text: str, target_language: str, source_language: Optional[str] = None) -> str:
+    def translate_text(
+        self, 
+        text: str, 
+        target_language: str, 
+        source_language: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
-        Translate text using OpenAI GPT models.
+        Translate text using OpenAI GPT.
         
         Args:
             text: Text to translate
-            target_language: Target language code
-            source_language: Source language code (optional)
+            target_language: Target language code or name
+            source_language: Source language code or name (optional)
             
         Returns:
-            str: Translated text
-            
-        Raises:
-            Exception: If translation fails
+            Translation result dictionary
         """
+        if not text.strip():
+            return self._create_error_response("Empty text provided")
+        
         try:
-            # Get language names for the prompt
-            target_lang_name = self.LANGUAGE_CODES.get(target_language, target_language)
-            source_lang_name = self.LANGUAGE_CODES.get(source_language, source_language) if source_language else "auto-detected language"
-            
-            # Create translation prompt
+            # Create the translation prompt
             if source_language:
-                prompt = f"Translate the following text from {source_lang_name} to {target_lang_name}. Maintain the original tone, style, and meaning. Only return the translated text without any additional commentary:\n\n{text}"
+                prompt = f"Translate the following text from {source_language} to {target_language}. Only return the translation, no explanations:\n\n{text}"
             else:
-                prompt = f"Translate the following text to {target_lang_name}. Maintain the original tone, style, and meaning. Only return the translated text without any additional commentary:\n\n{text}"
+                prompt = f"Translate the following text to {target_language}. Only return the translation, no explanations:\n\n{text}"
             
-            # Make API call
-            response = self.client.ChatCompletion.create(
+            # Make the API call
+            response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "You are a professional translator. Translate the given text accurately while preserving the original meaning, tone, and style."},
+                    {"role": "system", "content": "You are a professional translator. Translate accurately and preserve the original meaning."},
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=self.max_tokens,
                 temperature=self.temperature
             )
             
-            translated_text = response.choices[0].message.content.strip()
-            return translated_text
+            translated_text = response.choices[0].message.content
+            if translated_text is None:
+                return self._create_error_response("OpenAI returned empty response")
+            
+            translated_text = translated_text.strip()
+            
+            return self._create_success_response(
+                translated_text=translated_text,
+                source_language=source_language or 'auto',
+                target_language=target_language
+            )
             
         except Exception as e:
-            self.logger.error(f"OpenAI translation failed: {e}")
-            raise Exception(f"Translation failed: {e}")
+            error_msg = f"OpenAI translation error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
-    def detect_language(self, text: str) -> str:
+    def detect_language(self, text: str) -> Dict[str, Any]:
         """
-        Detect the language of the given text using OpenAI.
+        Detect language using OpenAI GPT.
         
         Args:
             text: Text to analyze
             
         Returns:
-            str: Detected language code
-            
-        Raises:
-            Exception: If language detection fails
+            Language detection result dictionary
         """
+        if not text.strip():
+            return self._create_error_response("Empty text provided")
+        
         try:
-            prompt = f"Detect the language of the following text and return only the ISO 639-1 language code (2 letters, lowercase):\n\n{text}"
+            prompt = f"Detect the language of the following text and return only the language code (e.g., 'en', 'es', 'fr'). Text:\n\n{text}"
             
-            response = self.client.ChatCompletion.create(
+            response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "You are a language detection expert. Return only the ISO 639-1 language code (2 letters, lowercase) for the given text."},
+                    {"role": "system", "content": "You are a language detection expert. Return only the language code."},
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=10,
-                temperature=0.1
+                temperature=0
             )
             
-            detected_lang = response.choices[0].message.content.strip().lower()
+            language_code = response.choices[0].message.content
+            if language_code is None:
+                return self._create_error_response("OpenAI returned empty detection response")
             
-            # Validate the detected language code
-            if detected_lang in self.LANGUAGE_CODES:
-                return detected_lang
-            else:
-                # Try to map common variations
-                lang_mapping = {
-                    'english': 'en', 'spanish': 'es', 'french': 'fr', 'german': 'de',
-                    'italian': 'it', 'portuguese': 'pt', 'russian': 'ru', 'chinese': 'zh',
-                    'japanese': 'ja', 'korean': 'ko', 'arabic': 'ar', 'hindi': 'hi'
-                }
-                return lang_mapping.get(detected_lang.lower(), 'en')
-                
+            language_code = language_code.strip().lower()
+            
+            return self._create_success_response(
+                language_code=language_code
+            )
+            
         except Exception as e:
-            self.logger.error(f"OpenAI language detection failed: {e}")
-            raise Exception(f"Language detection failed: {e}")
+            error_msg = f"Language detection error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
     def get_supported_languages(self) -> List[str]:
         """
         Get list of supported language codes.
         
-        Returns:
-            List[str]: List of supported language codes
-        """
-        return list(self.LANGUAGE_CODES.keys())
-    
-    def is_language_supported(self, language_code: str) -> bool:
-        """
-        Check if a language is supported by this provider.
-        
-        Args:
-            language_code: Language code to check
-            
-        Returns:
-            bool: True if language is supported, False otherwise
-        """
-        return language_code.lower() in self.LANGUAGE_CODES
-    
-    def get_provider_info(self) -> Dict[str, Any]:
-        """
-        Get provider information and capabilities.
+        OpenAI models support many languages, but we return a common set.
         
         Returns:
-            Dict containing provider information
+            List of supported language codes
         """
-        return {
-            'name': self.PROVIDER_NAME,
-            'description': 'OpenAI GPT-based translation service with context awareness',
-            'supported_languages': len(self.LANGUAGE_CODES),
-            'features': [
-                'High-quality contextual translation',
-                'Creative content translation',
-                'Tone and style preservation',
-                'Multiple GPT models support'
-            ],
-            'model': self.model,
-            'max_tokens': self.max_tokens,
-            'temperature': self.temperature
-        }
+        return [
+            'en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ja', 'ko', 'zh',
+            'ar', 'hi', 'tr', 'pl', 'nl', 'sv', 'da', 'no', 'fi', 'el',
+            'he', 'th', 'vi', 'id', 'ms', 'tl', 'sw', 'cs', 'sk', 'hu',
+            'ro', 'bg', 'hr', 'sr', 'sl', 'et', 'lv', 'lt', 'mt', 'ga',
+            'cy', 'eu', 'ca', 'gl', 'is', 'fo', 'mk', 'sq', 'az', 'be',
+            'ka', 'hy', 'ky', 'kk', 'uz', 'tg', 'mn', 'my', 'km', 'lo',
+            'si', 'ne', 'bn', 'gu', 'ta', 'te', 'kn', 'ml', 'ur', 'fa'
+        ]

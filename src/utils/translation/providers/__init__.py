@@ -5,6 +5,7 @@ This package contains individual translation provider implementations.
 Each provider follows the BaseTranslationProvider interface for consistency.
 """
 
+from ..base_translator import BaseTranslationProvider
 from .google_translate import GoogleTranslateProvider
 from .deepl import DeepLProvider
 from .deepl_api import DeepLAPIProvider
@@ -13,6 +14,7 @@ from .openai_translator import OpenAITranslationProvider
 from .libretranslate import LibreTranslateProvider
 
 __all__ = [
+    'BaseTranslationProvider',
     'GoogleTranslateProvider',
     'DeepLProvider', 
     'DeepLAPIProvider',

@@ -1,147 +1,125 @@
 """
-DeepL Translation Provider
+DeepL Translation Provider (using deep-translator)
 
-This module implements the DeepL translation provider using the deep-translator library.
+This module provides DeepL translation functionality using the deep-translator library.
+This is a free service that doesn't require API keys but has usage limitations.
 """
 
-import os
-from typing import Optional, Dict, Any, List
-
+from typing import Dict, List, Optional, Any
 from ..base_translator import BaseTranslationProvider
+
+try:
+    from deep_translator import DeeplTranslator
+    DEEPL_AVAILABLE = True
+except ImportError:
+    DEEPL_AVAILABLE = False
+    DeeplTranslator = None
 
 
 class DeepLProvider(BaseTranslationProvider):
     """
-    DeepL translation provider implementation using deep-translator.
+    DeepL translation provider using the deep-translator library.
     
-    Provides high-quality translations through the DeepL service
-    using the deep-translator library wrapper.
+    This provider uses the free DeepL service through the deep-translator    library. It doesn't require API keys but has rate limits.
     """
     
-    # Language mappings for DeepL
-    LANGUAGE_MAPPINGS = {
-        'en': 'EN',
-        'de': 'DE',
-        'fr': 'FR',
-        'es': 'ES',
-        'it': 'IT',
-        'pt': 'PT',
-        'ru': 'RU',
-        'ja': 'JA',
-        'zh': 'ZH',
-        'nl': 'NL',
-        'ko': 'KO',
-        'pl': 'PL',
-        'da': 'DA',
-        'sv': 'SV',
-        'fi': 'FI',
-        'el': 'EL',
-        'cs': 'CS',
-        'et': 'ET',
-        'lv': 'LV',
-        'lt': 'LT',
-        'sk': 'SK',
-        'sl': 'SL',
-        'bg': 'BG',
-        'hu': 'HU',
-        'ro': 'RO',
-        'uk': 'UK',
-        'tr': 'TR',
-        'ar': 'AR',
-        'hi': 'HI',
-        'id': 'ID',
-        'nb': 'NB'
-    }
-    
-    def __init__(self, config: Dict[str, Any]):
-        """
-        Initialize DeepL provider.
+    def _initialize(self):
+        """Initialize the DeepL translator."""
+        if not DEEPL_AVAILABLE or DeeplTranslator is None:
+            raise ImportError(
+                "deep-translator library is not installed. "
+                "Install it with: pip install deep-translator"
+            )
         
-        Args:
-            config: Configuration dictionary
-        """
-        self.deepl_class = None
-        super().__init__(config)
-    
-    @property
-    def provider_name(self) -> str:
-        """Return the provider name."""
-        return "DeepL (deep-translator)"
-    
-    def _initialize(self) -> None:
-        """Initialize DeepL client using deep-translator."""
         try:
-            from deep_translator import DeepL
-            self.deepl_class = DeepL
-        except ImportError as e:
-            raise Exception("deep-translator library not available. Install with: pip install deep-translator") from e
+            # Get supported languages using static method
+            try:
+                # Try to call the static method
+                get_langs_method = getattr(DeeplTranslator, 'get_supported_languages', None)
+                if get_langs_method and callable(get_langs_method):
+                    self.supported_langs = get_langs_method(as_dict=False)
+                else:
+                    # Fallback if method doesn't exist
+                    self.supported_langs = ['en', 'de', 'fr', 'it', 'ja', 'es', 'nl', 'pl', 'pt', 'ru', 'zh']
+            except Exception:
+                # Fallback if method call fails
+                self.supported_langs = ['en', 'de', 'fr', 'it', 'ja', 'es', 'nl', 'pl', 'pt', 'ru', 'zh']
+            
+            self.logger.info("DeepL provider initialized successfully")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize DeepL: {e}")
+            # Fallback to a basic list if the method fails
+            self.supported_langs = ['en', 'de', 'fr', 'it', 'ja', 'es', 'nl', 'pl', 'pt', 'ru', 'zh']
+            self.logger.warning("Using fallback language list for DeepL")
     
-    def translate(self, text: str, target_language: str, source_language: str = "auto") -> str:
+    def translate_text(
+        self, 
+        text: str, 
+        target_language: str, 
+        source_language: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Translate text using DeepL.
         
         Args:
             text: Text to translate
             target_language: Target language code
-            source_language: Source language code
+            source_language: Source language code (auto-detect if None)
             
         Returns:
-            Translated text
-            
-        Raises:
-            Exception: If translation fails
+            Translation result dictionary
         """
-        if not self.is_available:
-            raise Exception(f"DeepL provider not available: {self.error_message}")
-        
-        if not text or not text.strip():
-            return text
+        if not text.strip():
+            return self._create_error_response("Empty text provided")
         
         try:
-            # Convert language codes to DeepL format
-            deepl_target = self.convert_language_code(target_language)
-            deepl_source = self.convert_language_code(source_language) if source_language != "auto" else "auto"
-            
             # Create translator instance
-            translator = self.deepl_class(source=deepl_source, target=deepl_target)
+            if DeeplTranslator is None:
+                return self._create_error_response("DeepL translator not available")
+                
+            translator = DeeplTranslator(
+                source=source_language or 'auto',
+                target=target_language
+            )
             
             # Perform translation
-            result = translator.translate(text)
-            return result
+            translated = translator.translate(text)
+            
+            return self._create_success_response(
+                translated_text=translated,
+                source_language=source_language or 'auto',
+                target_language=target_language
+            )
             
         except Exception as e:
-            self.logger.error(f"DeepL translation error: {e}")
-            raise Exception(f"DeepL translation failed: {e}") from e
+            error_msg = f"DeepL translation error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
-    def convert_language_code(self, language_code: str) -> str:
+    def detect_language(self, text: str) -> Dict[str, Any]:
         """
-        Convert standard language code to DeepL format.
+        Detect language using DeepL.
+        
+        Note: DeepL through deep-translator doesn't have dedicated language detection,
+        so this returns a not supported message.
         
         Args:
-            language_code: Standard ISO 639-1 language code
+            text: Text to analyze
             
         Returns:
-            DeepL-specific language code
+            Language detection result dictionary
         """
-        return self.LANGUAGE_MAPPINGS.get(language_code, language_code.upper())
+        return self._create_error_response(
+            "Language detection not supported by DeepL through deep-translator"
+        )
     
     def get_supported_languages(self) -> List[str]:
         """
-        Get supported languages for DeepL.
+        Get list of supported language codes.
         
         Returns:
             List of supported language codes
         """
-        return list(self.LANGUAGE_MAPPINGS.keys())
-    
-    def validate_language_support(self, language_code: str) -> bool:
-        """
-        Check if language is supported by DeepL.
-        
-        Args:
-            language_code: Language code to check
-            
-        Returns:
-            True if supported, False otherwise
-        """
-        return language_code in self.LANGUAGE_MAPPINGS
+        if hasattr(self, 'supported_langs') and isinstance(self.supported_langs, list):
+            return self.supported_langs
+        return []

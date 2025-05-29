@@ -1,150 +1,113 @@
 """
 Azure Translator Provider
 
-This module implements the Azure Translator translation provider.
+This module provides Azure Cognitive Services Translator functionality.
+Requires an Azure Translator API key and has usage-based pricing.
 """
 
-import os
-import uuid
-from typing import Optional, Dict, Any, List
-
+import requests
+import json
+from typing import Dict, List, Optional, Any
 from ..base_translator import BaseTranslationProvider
 
 
 class AzureTranslatorProvider(BaseTranslationProvider):
     """
-    Azure Translator translation provider implementation.
+    Azure Translator provider using Azure Cognitive Services.
     
-    Uses Microsoft Azure Cognitive Services Translator API
-    for high-quality translations with enterprise features.
+    This provider uses Azure Translator which requires an API key
+    and provides high-quality translations with good language support.
     """
     
-    # Language mappings for Azure Translator
-    LANGUAGE_MAPPINGS = {
-        'zh': 'zh-Hans',  # Simplified Chinese for Azure
-        'pt': 'pt-BR',    # Brazilian Portuguese as default
-        'nb': 'no',       # Norwegian Bokmål
-        'nn': 'no'        # Norwegian Nynorsk
-    }
-    
-    def __init__(self, config: Dict[str, Any]):
-        """
-        Initialize Azure Translator provider.
-        
-        Args:
-            config: Configuration dictionary
-        """
-        self.api_key = None
-        self.region = None
-        self.endpoint = None
-        super().__init__(config)
-    
-    @property
-    def provider_name(self) -> str:
-        """Return the provider name."""
-        return "Azure Translator"
-    
-    def _initialize(self) -> None:
-        """Initialize Azure Translator client."""
-        try:
-            import requests
-        except ImportError as e:
-            raise Exception("requests library not available. Install with: pip install requests") from e
-        
-        # Get API credentials from environment or config
-        self.api_key = os.getenv("AZURE_TRANSLATOR_KEY") or self.config.get("api_key")
-        self.region = self.config.get("region", "global")
-        self.endpoint = self.config.get("endpoint", "https://api.cognitive.microsofttranslator.com/")
+    def _initialize(self):
+        """Initialize the Azure Translator client."""
+        self.api_key = self.config.get('api_key')
+        self.region = self.config.get('region', 'global')
+        self.endpoint = self.config.get('endpoint', 'https://api.cognitive.microsofttranslator.com')
         
         if not self.api_key:
-            raise Exception("AZURE_TRANSLATOR_KEY not found in environment variables or config")
+            raise ValueError("Azure Translator API key is required")
         
-        # Test the connection
-        try:
-            self._test_connection()
-        except Exception as e:
-            raise Exception(f"Failed to connect to Azure Translator: {e}") from e
-    
-    def _test_connection(self) -> None:
-        """Test the Azure Translator connection."""
-        import requests
-        
-        headers = {
+        # Set up headers
+        self.headers = {
             'Ocp-Apim-Subscription-Key': self.api_key,
-            'Ocp-Apim-Subscription-Region': self.region,
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
         }
         
-        # Test with a simple request to get supported languages
-        response = requests.get(
-            f"{self.endpoint}/languages?api-version=3.0",
-            headers=headers,
-            timeout=10
-        )
-        response.raise_for_status()
+        if self.region and self.region != 'global':
+            self.headers['Ocp-Apim-Subscription-Region'] = self.region
+        
+        try:
+            # Test the connection by getting supported languages
+            self._get_languages()
+            self.logger.info("Azure Translator provider initialized successfully")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize Azure Translator: {e}")
+            raise
     
-    def translate(self, text: str, target_language: str, source_language: str = "auto") -> str:
+    def _get_languages(self) -> Dict[str, Any]:
+        """Get supported languages from Azure Translator."""
+        try:
+            url = f"{self.endpoint}/languages?api-version=3.0"
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            self.logger.error(f"Error getting languages: {e}")
+            return {}
+    
+    def translate_text(
+        self, 
+        text: str, 
+        target_language: str, 
+        source_language: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Translate text using Azure Translator.
         
         Args:
             text: Text to translate
             target_language: Target language code
-            source_language: Source language code
+            source_language: Source language code (auto-detect if None)
             
         Returns:
-            Translated text
-            
-        Raises:
-            Exception: If translation fails
+            Translation result dictionary
         """
-        if not self.is_available:
-            raise Exception(f"Azure Translator provider not available: {self.error_message}")
-        
-        if not text or not text.strip():
-            return text
+        if not text.strip():
+            return self._create_error_response("Empty text provided")
         
         try:
-            import requests
-            
-            # Convert language codes for Azure if needed
-            azure_target = self.convert_language_code(target_language)
-            
-            headers = {
-                'Ocp-Apim-Subscription-Key': self.api_key,
-                'Ocp-Apim-Subscription-Region': self.region,
-                'Content-type': 'application/json',
-                'X-ClientTraceId': str(uuid.uuid4())
-            }
-            
-            params = {
-                'api-version': '3.0',
-                'to': azure_target
-            }
-            
-            if source_language != "auto":
-                azure_source = self.convert_language_code(source_language)
-                params['from'] = azure_source
+            # Prepare the request
+            url = f"{self.endpoint}/translate?api-version=3.0&to={target_language}"
+            if source_language:
+                url += f"&from={source_language}"
             
             body = [{'text': text}]
             
-            response = requests.post(
-                f"{self.endpoint}/translate",
-                params=params,
-                headers=headers,
-                json=body,
-                timeout=30
-            )
+            response = requests.post(url, headers=self.headers, json=body, timeout=30)
             response.raise_for_status()
             
             result = response.json()
-            return result[0]['translations'][0]['text']
-            
+            if result and len(result) > 0:
+                translation = result[0]
+                translated_text = translation['translations'][0]['text']
+                detected_lang = translation.get('detectedLanguage', {}).get('language', source_language)
+                
+                return self._create_success_response(
+                    translated_text=translated_text,
+                    source_language=detected_lang,
+                    target_language=target_language,
+                    confidence=translation.get('detectedLanguage', {}).get('score')
+                )
+            else:
+                return self._create_error_response("No translation result received")
+                
         except Exception as e:
-            self.logger.error(f"Azure Translator error: {e}")
-            raise Exception(f"Azure Translator failed: {e}") from e
+            error_msg = f"Azure Translator error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
-    def detect_language(self, text: str) -> Optional[str]:
+    def detect_language(self, text: str) -> Dict[str, Any]:
         """
         Detect language using Azure Translator.
         
@@ -152,87 +115,45 @@ class AzureTranslatorProvider(BaseTranslationProvider):
             text: Text to analyze
             
         Returns:
-            Detected language code or None if detection fails
+            Language detection result dictionary
         """
-        if not self.is_available or not text or not text.strip():
-            return None
+        if not text.strip():
+            return self._create_error_response("Empty text provided")
         
         try:
-            import requests
-            
-            headers = {
-                'Ocp-Apim-Subscription-Key': self.api_key,
-                'Ocp-Apim-Subscription-Region': self.region,
-                'Content-type': 'application/json'
-            }
-            
-            params = {'api-version': '3.0'}
+            url = f"{self.endpoint}/detect?api-version=3.0"
             body = [{'text': text}]
             
-            response = requests.post(
-                f"{self.endpoint}/detect",
-                params=params,
-                headers=headers,
-                json=body,
-                timeout=30
-            )
+            response = requests.post(url, headers=self.headers, json=body, timeout=30)
             response.raise_for_status()
             
             result = response.json()
-            return result[0]['language']
-            
+            if result and len(result) > 0:
+                detection = result[0]
+                
+                return self._create_success_response(
+                    language_code=detection['language'],
+                    confidence=detection.get('score')
+                )
+            else:
+                return self._create_error_response("No detection result received")
+                
         except Exception as e:
-            self.logger.debug(f"Azure Translator language detection failed: {e}")
-            return None
-    
-    def convert_language_code(self, language_code: str) -> str:
-        """
-        Convert standard language code to Azure format.
-        
-        Args:
-            language_code: Standard ISO 639-1 language code
-            
-        Returns:
-            Azure-specific language code
-        """
-        return self.LANGUAGE_MAPPINGS.get(language_code, language_code)
+            error_msg = f"Language detection error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
     def get_supported_languages(self) -> List[str]:
         """
-        Get supported languages for Azure Translator.
-        
-        This method fetches the current list of supported languages from Azure.
+        Get list of supported language codes.
         
         Returns:
             List of supported language codes
         """
-        if not self.is_available:
-            return []
-        
         try:
-            import requests
-            
-            response = requests.get(
-                f"{self.endpoint}/languages?api-version=3.0",
-                timeout=10
-            )
-            response.raise_for_status()
-            
-            result = response.json()
-            return list(result.get('translation', {}).keys())
-            
+            languages_data = self._get_languages()
+            translation_langs = languages_data.get('translation', {})
+            return list(translation_langs.keys())
         except Exception as e:
-            self.logger.debug(f"Failed to fetch Azure supported languages: {e}")
-            # Return a fallback list of common languages
-            return [
-                'af', 'ar', 'bg', 'bn', 'bs', 'ca', 'cs', 'cy', 'da', 'de',
-                'el', 'en', 'es', 'et', 'fa', 'fi', 'fr', 'ga', 'gu', 'he',
-                'hi', 'hr', 'hu', 'hy', 'id', 'is', 'it', 'ja', 'ka', 'kk',
-                'km', 'kn', 'ko', 'ku', 'ky', 'lo', 'lt', 'lv', 'mg', 'mi',
-                'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'my', 'nb', 'ne', 'nl',
-                'nn', 'or', 'pa', 'pl', 'ps', 'pt', 'ro', 'ru', 'sk', 'sl',
-                'sm', 'so', 'sq', 'sr-Cyrl', 'sr-Latn', 'sv', 'sw', 'ta',
-                'te', 'th', 'ti', 'tk', 'tl', 'tn', 'to', 'tr', 'tt', 'ty',
-                'ug', 'uk', 'ur', 'uz', 'vi', 'xh', 'yi', 'yo', 'yua', 'yue',
-                'zh-Hans', 'zh-Hant', 'zu'
-            ]
+            self.logger.error(f"Error getting supported languages: {e}")
+            return []

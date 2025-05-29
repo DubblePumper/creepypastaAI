@@ -30,6 +30,7 @@ Usage:
     print(result['translated_text'])  # "Hola mundo"
 """
 
+from typing import Dict, Optional
 from .base_translator import BaseTranslationProvider
 from .translation_manager import TranslationManager
 from .providers import (
@@ -66,7 +67,7 @@ __all__ = [
 ]
 
 # Quick access functions
-def create_translator(config: dict = None) -> TranslationManager:
+def create_translator(config: Optional[Dict] = None) -> 'TranslationManager':
     """
     Create a TranslationManager with default or provided configuration.
     
@@ -88,7 +89,7 @@ def create_translator(config: dict = None) -> TranslationManager:
     
     return TranslationManager(config)
 
-def quick_translate(text: str, target_language: str, source_language: str = None) -> str:
+def quick_translate(text: str, target_language: str, source_language: Optional[str] = None) -> str:
     """
     Quick translation using default configuration.
     

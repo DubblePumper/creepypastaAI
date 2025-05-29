@@ -1,189 +1,155 @@
 """
 DeepL API Provider
 
-This module implements the official DeepL API translation provider.
+This module provides DeepL translation functionality using the official DeepL API.
+Requires a DeepL API key and has usage-based pricing.
 """
 
-import os
-from typing import Optional, Dict, Any, List
-
+from typing import Dict, List, Optional, Any
 from ..base_translator import BaseTranslationProvider
+
+try:
+    import deepl
+    DEEPL_API_AVAILABLE = True
+except ImportError:
+    DEEPL_API_AVAILABLE = False
+    deepl = None
 
 
 class DeepLAPIProvider(BaseTranslationProvider):
     """
-    Official DeepL API translation provider implementation.
+    DeepL translation provider using the official DeepL API.
     
-    Uses the official DeepL Python library to access the DeepL Pro API.
-    Requires a valid DeepL API key and subscription.
+    This provider uses the official DeepL API which requires an API key
+    but provides higher quality translations and better rate limits.
     """
     
-    # Language mappings for DeepL API
-    LANGUAGE_MAPPINGS = {
-        'en': 'EN',
-        'de': 'DE',
-        'fr': 'FR',
-        'es': 'ES',
-        'it': 'IT',
-        'pt': 'PT',
-        'ru': 'RU',
-        'ja': 'JA',
-        'zh': 'ZH',
-        'nl': 'NL',
-        'ko': 'KO',
-        'pl': 'PL',
-        'da': 'DA',
-        'sv': 'SV',
-        'fi': 'FI',
-        'el': 'EL',
-        'cs': 'CS',
-        'et': 'ET',
-        'lv': 'LV',
-        'lt': 'LT',
-        'sk': 'SK',
-        'sl': 'SL',
-        'bg': 'BG',
-        'hu': 'HU',
-        'ro': 'RO',
-        'uk': 'UK',
-        'tr': 'TR',
-        'ar': 'AR',
-        'hi': 'HI',
-        'id': 'ID',
-        'nb': 'NB'
-    }
-    
-    def __init__(self, config: Dict[str, Any]):
-        """
-        Initialize DeepL API provider.
+    def _initialize(self):
+        """Initialize the DeepL API client."""
+        if not DEEPL_API_AVAILABLE or deepl is None:
+            raise ImportError(
+                "deepl library is not installed. "
+                "Install it with: pip install deepl"
+            )
         
-        Args:
-            config: Configuration dictionary
-        """
-        self.client = None
-        self.api_key = None
-        super().__init__(config)
-    
-    @property
-    def provider_name(self) -> str:
-        """Return the provider name."""
-        return "DeepL API (Official)"
-    
-    def _initialize(self) -> None:
-        """Initialize DeepL API client."""
-        try:
-            import deepl
-        except ImportError as e:
-            raise Exception("deepl library not available. Install with: pip install deepl") from e
-        
-        # Get API key from environment or config
-        self.api_key = os.getenv("DEEPL_API_KEY") or self.config.get("api_key")
-        
-        if not self.api_key:
-            raise Exception("DEEPL_API_KEY not found in environment variables or config")
+        api_key = self.config.get('api_key')
+        if not api_key:
+            raise ValueError("DeepL API key is required")
         
         try:
-            self.client = deepl.Translator(self.api_key)
-            # Test the connection
-            self.client.get_usage()
+            self.translator = deepl.Translator(api_key)
+            self.logger.info("DeepL API provider initialized successfully")
         except Exception as e:
-            raise Exception(f"Failed to initialize DeepL API client: {e}") from e
+            self.logger.error(f"Failed to initialize DeepL API: {e}")
+            raise
     
-    def translate(self, text: str, target_language: str, source_language: str = "auto") -> str:
+    def translate_text(
+        self, 
+        text: str, 
+        target_language: str, 
+        source_language: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Translate text using DeepL API.
         
         Args:
             text: Text to translate
             target_language: Target language code
-            source_language: Source language code
-            
-        Returns:
-            Translated text
-            
-        Raises:
-            Exception: If translation fails
+            source_language: Source language code (auto-detect if None)
+              Returns:
+            Translation result dictionary
         """
-        if not self.is_available:
-            raise Exception(f"DeepL API provider not available: {self.error_message}")
-        
-        if not text or not text.strip():
-            return text
+        if not text.strip():
+            return self._create_error_response("Empty text provided")
         
         try:
-            # Convert language codes to DeepL format
-            deepl_target = self.convert_language_code(target_language)
-            deepl_source = self.convert_language_code(source_language) if source_language != "auto" else None
-            
-            # Get translation settings from config
-            formality = self.config.get("formality", "default")
-            preserve_formatting = self.config.get("preserve_formatting", True)
-            
             # Perform translation
-            result = self.client.translate_text(
+            result = self.translator.translate_text(
                 text,
-                target_lang=deepl_target,
-                source_lang=deepl_source,
-                formality=formality,
-                preserve_formatting=preserve_formatting
+                target_lang=target_language.upper(),
+                source_lang=source_language.upper() if source_language else None
             )
             
-            return result.text
+            # Handle both single result and list of results
+            if isinstance(result, list):
+                if len(result) > 0:
+                    first_result = result[0]
+                    translated_text = first_result.text
+                    detected_lang = first_result.detected_source_lang
+                else:
+                    return self._create_error_response("No translation result received")
+            else:
+                translated_text = result.text
+                detected_lang = result.detected_source_lang
+            
+            return self._create_success_response(
+                translated_text=translated_text,
+                source_language=detected_lang.lower() if detected_lang else (source_language or 'auto').lower(),
+                target_language=target_language.lower()
+            )
             
         except Exception as e:
-            self.logger.error(f"DeepL API translation error: {e}")
-            raise Exception(f"DeepL API translation failed: {e}") from e
+            error_msg = f"DeepL API error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
-    def convert_language_code(self, language_code: str) -> str:
+    def detect_language(self, text: str) -> Dict[str, Any]:
         """
-        Convert standard language code to DeepL API format.
+        Detect language using DeepL API.
+        
+        Note: DeepL API doesn't have a dedicated language detection endpoint,
+        but detection happens during translation.
         
         Args:
-            language_code: Standard ISO 639-1 language code
+            text: Text to analyze
             
         Returns:
-            DeepL API-specific language code
-        """
-        return self.LANGUAGE_MAPPINGS.get(language_code, language_code.upper())
+            Language detection result dictionary        """
+        if not text.strip():
+            return self._create_error_response("Empty text provided")
+        
+        try:
+            # Use translation to English to detect source language
+            result = self.translator.translate_text(text, target_lang="EN")
+            
+            # Handle both single result and list of results
+            if isinstance(result, list):
+                if len(result) > 0:
+                    detected_lang = result[0].detected_source_lang
+                else:
+                    return self._create_error_response("No detection result received")
+            else:
+                detected_lang = result.detected_source_lang
+            
+            return self._create_success_response(
+                language_code=detected_lang.lower() if detected_lang else 'unknown'
+            )
+            
+        except Exception as e:
+            error_msg = f"Language detection error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
     def get_supported_languages(self) -> List[str]:
         """
-        Get supported languages for DeepL API.
+        Get list of supported language codes.
         
         Returns:
             List of supported language codes
         """
-        return list(self.LANGUAGE_MAPPINGS.keys())
-    
-    def validate_language_support(self, language_code: str) -> bool:
-        """
-        Check if language is supported by DeepL API.
-        
-        Args:
-            language_code: Language code to check
-            
-        Returns:
-            True if supported, False otherwise
-        """
-        return language_code in self.LANGUAGE_MAPPINGS
-    
-    def get_usage_info(self) -> Dict[str, Any]:
-        """
-        Get API usage information.
-        
-        Returns:
-            Dictionary containing usage statistics
-        """
-        if not self.is_available:
-            return {"error": "Provider not available"}
-        
         try:
-            usage = self.client.get_usage()
-            return {
-                "character_count": usage.character.count,
-                "character_limit": usage.character.limit,
-                "character_usage_percent": (usage.character.count / usage.character.limit * 100) if usage.character.limit > 0 else 0
-            }
+            source_langs = self.translator.get_source_languages()
+            target_langs = self.translator.get_target_languages()
+            
+            # Combine and deduplicate
+            all_langs = set()
+            for lang in source_langs:
+                all_langs.add(lang.code.lower())
+            for lang in target_langs:
+                all_langs.add(lang.code.lower())
+            
+            return list(all_langs)
+            
         except Exception as e:
-            self.logger.error(f"Failed to get DeepL API usage: {e}")
-            return {"error": str(e)}
+            self.logger.error(f"Error getting supported languages: {e}")
+            return []

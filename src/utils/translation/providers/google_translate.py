@@ -1,114 +1,147 @@
 """
 Google Translate Provider
 
-This module implements the Google Translate translation provider
-using the googletrans library.
+This module provides Google Translate functionality using the googletrans library.
+This is a free service that doesn't require API keys but has usage limitations.
+
+Dependencies:
+    googletrans (optional): Install with `pip install googletrans==4.0.0-rc1`
+    
+Note:
+    The googletrans import error is expected if the library is not installed.
+    The provider will gracefully handle missing dependencies and provide 
+    appropriate error messages during initialization.
 """
 
-import os
-from typing import Optional, Dict, Any, List
-
+from typing import Dict, List, Optional, Any
 from ..base_translator import BaseTranslationProvider
+
+try:
+    from googletrans import Translator, LANGUAGES  # type: ignore[import-untyped]
+    GOOGLETRANS_AVAILABLE = True
+except ImportError:
+    GOOGLETRANS_AVAILABLE = False
+    Translator = None  # type: ignore[misc,assignment]
+    LANGUAGES = {}
 
 
 class GoogleTranslateProvider(BaseTranslationProvider):
     """
-    Google Translate translation provider implementation.
+    Google Translate provider using the googletrans library.
     
-    Uses the unofficial googletrans library to provide translation services.
-    This is a free service but may have rate limitations.
+    This provider uses the free Google Translate service through the googletrans
+    library. It doesn't require API keys but has rate limits and usage restrictions.
     """
     
-    def __init__(self, config: Dict[str, Any]):
+    def _initialize(self):
         """
-        Initialize Google Translate provider.
+        Initialize the Google Translate client.
         
-        Args:
-            config: Configuration dictionary
+        Raises:
+            ImportError: If googletrans library is not installed
+            Exception: If initialization fails for other reasons
         """
-        self.client = None
-        super().__init__(config)
-    
-    @property
-    def provider_name(self) -> str:
-        """Return the provider name."""
-        return "Google Translate"
-    
-    def _initialize(self) -> None:
-        """Initialize Google Translate client."""
+        if not GOOGLETRANS_AVAILABLE:
+            raise ImportError(
+                "googletrans library is not installed. "
+                "Install it with: pip install googletrans==4.0.0-rc1"
+            )
+        
         try:
-            from googletrans import Translator
-            self.client = Translator()
-        except ImportError as e:
-            raise Exception("googletrans library not available. Install with: pip install googletrans==4.0.0-rc1") from e
+            if Translator is None:
+                raise ImportError("Translator class not available")
+            self.translator = Translator()
+            self.languages = LANGUAGES or {}
+            self.logger.info("Google Translate provider initialized successfully")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize Google Translate: {e}")
+            raise
     
-    def translate(self, text: str, target_language: str, source_language: str = "auto") -> str:
+    def translate_text(
+        self, 
+        text: str, 
+        target_language: str, 
+        source_language: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Translate text using Google Translate.
         
         Args:
-            text: Text to translate
-            target_language: Target language code
-            source_language: Source language code
+            text: Text to translate (non-empty string)
+            target_language: Target language code (e.g., 'es', 'fr', 'de')
+            source_language: Source language code (auto-detect if None)
             
         Returns:
-            Translated text
+            Translation result dictionary with success/error status
             
-        Raises:
-            Exception: If translation fails
+        Example:
+            >>> provider.translate_text("Hello", "es")
+            {'success': True, 'translated_text': 'Hola', ...}
         """
-        if not self.is_available:
-            raise Exception(f"Google Translate provider not available: {self.error_message}")
-        
+        # Input validation
         if not text or not text.strip():
-            return text
+            return self._create_error_response("Empty text provided")
+        
+        if not target_language or not target_language.strip():
+            return self._create_error_response("Target language is required")
         
         try:
-            result = self.client.translate(text, dest=target_language, src=source_language)
-            return result.text
+            # Perform translation
+            result = self.translator.translate(
+                text, 
+                dest=target_language.lower(),
+                src=source_language.lower() if source_language else 'auto'
+            )
+            
+            return self._create_success_response(
+                translated_text=result.text,
+                source_language=result.src,
+                target_language=target_language.lower(),
+                confidence=getattr(result, 'confidence', None)
+            )
         except Exception as e:
-            self.logger.error(f"Google Translate error: {e}")
-            raise Exception(f"Google Translate failed: {e}") from e
+            error_msg = f"Google Translate error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
-    def detect_language(self, text: str) -> Optional[str]:
+    def detect_language(self, text: str) -> Dict[str, Any]:
         """
         Detect language using Google Translate.
         
         Args:
-            text: Text to analyze
+            text: Text to analyze (non-empty string)
             
         Returns:
-            Detected language code or None if detection fails
+            Language detection result dictionary with success/error status
+            
+        Example:
+            >>> provider.detect_language("Hola mundo")
+            {'success': True, 'language_code': 'es', 'confidence': 0.99}
         """
-        if not self.is_available or not text or not text.strip():
-            return None
+        # Input validation
+        if not text or not text.strip():
+            return self._create_error_response("Empty text provided")
         
         try:
-            result = self.client.detect(text)
-            return result.lang
+            detection = self.translator.detect(text)
+            
+            return self._create_success_response(
+                language_code=detection.lang,
+                confidence=detection.confidence
+            )
         except Exception as e:
-            self.logger.debug(f"Google Translate language detection failed: {e}")
-            return None
+            error_msg = f"Language detection error: {str(e)}"
+            self.logger.error(error_msg)
+            return self._create_error_response(error_msg)
     
     def get_supported_languages(self) -> List[str]:
         """
-        Get supported languages for Google Translate.
+        Get list of supported language codes.
         
         Returns:
-            List of supported language codes
+            List of supported language codes, empty list if languages not available
         """
-        # Google Translate supports a wide range of languages
-        # This is a subset of the most commonly used ones
-        return [
-            'af', 'sq', 'am', 'ar', 'hy', 'az', 'eu', 'be', 'bn', 'bs',
-            'bg', 'ca', 'ceb', 'zh', 'co', 'hr', 'cs', 'da', 'nl', 'en',
-            'eo', 'et', 'fi', 'fr', 'fy', 'gl', 'ka', 'de', 'el', 'gu',
-            'ht', 'ha', 'haw', 'he', 'hi', 'hmn', 'hu', 'is', 'ig', 'id',
-            'ga', 'it', 'ja', 'jv', 'kn', 'kk', 'km', 'rw', 'ko', 'ku',
-            'ky', 'lo', 'la', 'lv', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml',
-            'mt', 'mi', 'mr', 'mn', 'my', 'ne', 'no', 'ny', 'or', 'ps',
-            'fa', 'pl', 'pt', 'pa', 'ro', 'ru', 'sm', 'gd', 'sr', 'st',
-            'sn', 'sd', 'si', 'sk', 'sl', 'so', 'es', 'su', 'sw', 'sv',
-            'tl', 'tg', 'ta', 'tt', 'te', 'th', 'tr', 'tk', 'uk', 'ur',
-            'ug', 'uz', 'vi', 'cy', 'xh', 'yi', 'yo', 'zu'
-        ]
+        if not isinstance(self.languages, dict):
+            self.logger.warning("Languages dictionary not available")
+            return []
+        return list(self.languages.keys())

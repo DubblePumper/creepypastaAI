@@ -1,92 +1,77 @@
 """
-Base Translation Provider Module
+Base Translation Provider
 
-This module defines the abstract base class for all translation providers
-in the CreepyPasta AI multilingual system.
+This module defines the abstract base class for all translation providers.
+All translation providers must inherit from this class and implement its methods.
 """
 
-import logging
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List
+from typing import Dict, List, Optional, Any, Union
+import logging
 
 
 class BaseTranslationProvider(ABC):
     """
-    Abstract base class for translation providers.
+    Abstract base class for all translation providers.
     
-    This class defines the interface that all translation providers must implement,
-    ensuring consistency across different translation services.
+    This class defines the interface that all translation providers must implement.
+    It ensures consistency across different translation services and enables
+    seamless switching between providers.
     """
     
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
         Initialize the translation provider.
         
         Args:
-            config: Configuration dictionary for the provider
+            config: Configuration dictionary specific to the provider
         """
-        self.config = config
+        self.config = config or {}
         self.logger = logging.getLogger(self.__class__.__name__)
-        self._is_available = False
-        self._error_message = ""
+        self.provider_name = self.__class__.__name__.replace('Provider', '').lower()
         
         # Initialize the provider
-        try:
-            self._initialize()
-            self._is_available = True
-            self.logger.debug(f"{self.provider_name} initialized successfully")
-        except Exception as e:
-            self._error_message = str(e)
-            self.logger.debug(f"{self.provider_name} initialization failed: {e}")
-    
-    @property
-    @abstractmethod
-    def provider_name(self) -> str:
-        """Return the name of the translation provider."""
-        pass
-    
-    @property
-    def is_available(self) -> bool:
-        """Check if the provider is available for use."""
-        return self._is_available
-    
-    @property
-    def error_message(self) -> str:
-        """Get the last error message if provider is not available."""
-        return self._error_message
+        self._initialize()
     
     @abstractmethod
-    def _initialize(self) -> None:
+    def _initialize(self):
         """
-        Initialize the provider-specific client or configuration.
+        Initialize the provider-specific settings.
         
-        This method should set up the necessary clients, API keys, and
-        configurations required for the specific translation provider.
-        
-        Raises:
-            Exception: If initialization fails
+        This method should handle any provider-specific initialization,
+        such as setting up API clients, validating credentials, etc.
         """
         pass
     
     @abstractmethod
-    def translate(self, text: str, target_language: str, source_language: str = "auto") -> str:
+    def translate_text(
+        self, 
+        text: str, 
+        target_language: str, 
+        source_language: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Translate text from source language to target language.
         
         Args:
             text: Text to translate
-            target_language: Target language code (ISO 639-1)
-            source_language: Source language code ("auto" for detection)
+            target_language: Target language code (e.g., 'es', 'fr', 'de')
+            source_language: Source language code (optional, auto-detect if None)
             
         Returns:
-            Translated text
-            
-        Raises:
-            Exception: If translation fails
+            Dictionary containing:
+                - success: bool - Whether translation was successful
+                - translated_text: str - The translated text (if successful)
+                - source_language: str - Detected or provided source language
+                - target_language: str - Target language
+                - provider: str - Name of the provider used
+                - error: str - Error message (if unsuccessful)
+                - confidence: float - Confidence score (if available)
         """
         pass
     
-    def detect_language(self, text: str) -> Optional[str]:
+    @abstractmethod
+    def detect_language(self, text: str) -> Dict[str, Any]:
         """
         Detect the language of the given text.
         
@@ -94,38 +79,26 @@ class BaseTranslationProvider(ABC):
             text: Text to analyze
             
         Returns:
-            Detected language code or None if detection is not supported
+            Dictionary containing:
+                - success: bool - Whether detection was successful
+                - language_code: str - Detected language code (if successful)
+                - confidence: float - Confidence score (if available)
+                - provider: str - Name of the provider used
+                - error: str - Error message (if unsuccessful)
         """
-        # Default implementation returns None
-        # Providers can override this if they support language detection
-        return None
+        pass
     
+    @abstractmethod
     def get_supported_languages(self) -> List[str]:
         """
         Get list of supported language codes.
         
         Returns:
-            List of ISO 639-1 language codes supported by this provider
+            List of supported language codes
         """
-        # Default implementation returns empty list
-        # Providers should override this with their supported languages
-        return []
+        pass
     
-    def convert_language_code(self, language_code: str) -> str:
-        """
-        Convert standard language code to provider-specific format.
-        
-        Args:
-            language_code: Standard ISO 639-1 language code
-            
-        Returns:
-            Provider-specific language code
-        """
-        # Default implementation returns the code as-is
-        # Providers can override this for custom mappings
-        return language_code
-    
-    def validate_language_support(self, language_code: str) -> bool:
+    def is_language_supported(self, language_code: str) -> bool:
         """
         Check if a language is supported by this provider.
         
@@ -136,17 +109,75 @@ class BaseTranslationProvider(ABC):
             True if language is supported, False otherwise
         """
         supported_languages = self.get_supported_languages()
-        if not supported_languages:
-            # If provider doesn't specify supported languages, assume all are supported
-            return True
+        return language_code.lower() in [lang.lower() for lang in supported_languages]
+    
+    def get_provider_info(self) -> Dict[str, Any]:
+        """
+        Get information about this provider.
         
-        return language_code in supported_languages
+        Returns:
+            Dictionary containing provider information
+        """
+        return {
+            'name': self.provider_name,
+            'class_name': self.__class__.__name__,
+            'supported_languages': self.get_supported_languages(),
+            'config': self.config
+        }
     
-    def __str__(self) -> str:
-        """String representation of the provider."""
-        status = "Available" if self.is_available else f"Unavailable ({self.error_message})"
-        return f"{self.provider_name}: {status}"
+    def health_check(self) -> Dict[str, Any]:
+        """
+        Perform a health check on the provider.
+        
+        Returns:
+            Dictionary containing health status
+        """
+        try:
+            # Try a simple translation to test the provider
+            result = self.translate_text("Hello", "es")
+            return {
+                'success': result.get('success', False),
+                'provider': self.provider_name,
+                'status': 'healthy' if result.get('success') else 'unhealthy',
+                'error': result.get('error') if not result.get('success') else None
+            }
+        except Exception as e:
+            return {
+                'success': False,
+                'provider': self.provider_name,
+                'status': 'unhealthy',
+                'error': str(e)
+            }
     
-    def __repr__(self) -> str:
-        """Detailed representation of the provider."""
-        return f"{self.__class__.__name__}(available={self.is_available})"
+    def _create_error_response(self, error_message: str) -> Dict[str, Any]:
+        """
+        Create a standardized error response.
+        
+        Args:
+            error_message: Error message
+            
+        Returns:
+            Standardized error response dictionary
+        """
+        return {
+            'success': False,
+            'error': error_message,
+            'provider': self.provider_name
+        }
+    
+    def _create_success_response(self, **kwargs) -> Dict[str, Any]:
+        """
+        Create a standardized success response.
+        
+        Args:
+            **kwargs: Additional response data
+            
+        Returns:
+            Standardized success response dictionary
+        """
+        response = {
+            'success': True,
+            'provider': self.provider_name
+        }
+        response.update(kwargs)
+        return response
