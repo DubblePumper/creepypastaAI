@@ -51,17 +51,17 @@ class StoryProcessor:
         try:
             # Create processed story dict
             processed_story = raw_story.copy()
-            
-            # Clean and process the content
+              # Clean and process the content
             content = self._clean_content(raw_story["content"])
             
             if not content:
-                self.logger.debug(f"Story '{raw_story['title']}' has no valid content after cleaning")
+                self.logger.warning(f"Story '{raw_story['title']}' has no valid content after cleaning")
                 return None
             
             # Validate length
             if not self._validate_length(content):
-                self.logger.debug(f"Story '{raw_story['title']}' doesn't meet length requirements")
+                content_length = len(content)
+                self.logger.warning(f"Story '{raw_story['title']}' doesn't meet length requirements: {content_length} chars (min: {self.min_length}, max: {self.max_length})")
                 return None
             
             # Update processed story

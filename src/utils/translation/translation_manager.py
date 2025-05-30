@@ -86,12 +86,30 @@ class TranslationManager:
         order = []
         if self.primary_provider in self.available_providers:
             order.append(self.primary_provider)
-        
         for provider in self.fallback_providers:
             if provider in self.available_providers and provider not in order:
                 order.append(provider)
         
         return order
+    
+    def set_provider(self, provider_name: str) -> bool:
+        """
+        Set the primary translation provider.
+        
+        Args:
+            provider_name: Name of the provider to set as primary
+            
+        Returns:
+            True if provider was set successfully, False otherwise
+        """
+        if provider_name in self.available_providers:
+            self.primary_provider = provider_name
+            self.logger.info(f"Primary translation provider set to: {provider_name}")
+            return True
+        else:
+            available = ", ".join(self.available_providers)
+            self.logger.warning(f"Provider '{provider_name}' not available. Available providers: {available}")
+            return False
     
     def translate_text(
         self, 

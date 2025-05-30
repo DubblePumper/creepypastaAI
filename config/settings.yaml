@@ -253,11 +253,11 @@ audio:
 # Story Processing
 story:
   min_length: 100  # Minimum characters
-  max_length: 5000  # Maximum characters
+  max_length: 999999  # Maximum characters
   # Story Processing
 story:
   min_length: 100  # Minimum characters
-  max_length: 5000  # Maximum characters
+  max_length: 999999  # Maximum characters
   clean_text: true
   remove_markdown: true
   

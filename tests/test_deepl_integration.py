@@ -14,7 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from src.utils.config_manager import ConfigManager
-from src.utils.translation_manager import TranslationManager
+from src.utils.translation import TranslationManager
 
 
 def test_deepl_providers():

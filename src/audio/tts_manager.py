@@ -429,37 +429,53 @@ class TTSManager:
             return None
             
         try:
+            # Check if text exceeds ElevenLabs character limit (10,000 characters)
+            max_chunk_size = 9500  # Leave some buffer for safety
+            if len(text) > max_chunk_size:
+                self.logger.info(f"Text length ({len(text)} chars) exceeds ElevenLabs limit. Splitting into chunks...")
+                return self._elevenlabs_generate_chunked(text, output_path, voice_config)
+            
             # Use voice from config or fallback to default
             voice_id = voice_config.get("elevenlabs_voice", self.elevenlabs_voice_id) if voice_config else self.elevenlabs_voice_id
             
-            # Create voice settings
-            voice_settings = VoiceSettings(
-                stability=self.elevenlabs_stability,
-                similarity_boost=self.elevenlabs_similarity_boost,
-                style=self.elevenlabs_style,
-                use_speaker_boost=self.elevenlabs_use_speaker_boost
-            )
-            
-            # Try to use a simple approach that should work with most ElevenLabs versions
+            # Create voice settings (only if VoiceSettings is available)
+            voice_settings = None
+            if VoiceSettings is not None:
+                voice_settings = VoiceSettings(
+                    stability=self.elevenlabs_stability,
+                    similarity_boost=self.elevenlabs_similarity_boost,
+                    style=self.elevenlabs_style,
+                    use_speaker_boost=self.elevenlabs_use_speaker_boost
+                )
+              # Try to use a simple approach that should work with most ElevenLabs versions
             # Note: The exact API may vary depending on elevenlabs package version
             audio = None
-            
-            # Try common API patterns
+              # Try common API patterns
             try:
                 # Try newer SDK pattern first
                 if hasattr(self.elevenlabs_client, 'text_to_speech'):
-                    audio = self.elevenlabs_client.text_to_speech.convert(
-                        text=text,
-                        voice_id=voice_id,
-                        voice_settings=voice_settings
-                    )
+                    # Call with explicit parameters to avoid type issues
+                    if voice_settings is not None:
+                        audio = self.elevenlabs_client.text_to_speech.convert(
+                            text=text,
+                            voice_id=voice_id,
+                            voice_settings=voice_settings
+                        )
+                    else:
+                        audio = self.elevenlabs_client.text_to_speech.convert(
+                            text=text,
+                            voice_id=voice_id
+                        )
                 elif hasattr(self.elevenlabs_client, 'generate'):
                     # Use getattr to avoid linter complaints about unknown method
                     generate_method = getattr(self.elevenlabs_client, 'generate')
-                    audio = generate_method(
-                        text=text,
-                        voice=voice_id
-                    )
+                    if generate_method is not None:
+                        audio = generate_method(
+                            text=text,
+                            voice=voice_id
+                        )
+                    else:
+                        raise AttributeError("Generate method is None")
                 else:
                     raise AttributeError("No suitable ElevenLabs API method found")
                     
@@ -490,8 +506,8 @@ class TTSManager:
             elif "payment" in error_msg or "402" in error_msg:
                 self.logger.error(f"ElevenLabs TTS payment required: {e}")
             else:
-                self.logger.error(f"ElevenLabs TTS generation failed: {e}")            
-                return None
+                self.logger.error(f"ElevenLabs TTS generation failed: {e}")
+            return None
     
     def _generate_filename(self, text: str, title: Optional[str] = None, language: Optional[str] = None) -> str:
         """
@@ -540,3 +556,180 @@ class TTSManager:
             providers.append("elevenlabs")
         
         return providers
+    
+    def _elevenlabs_generate_chunked(self, text: str, output_path: Path, voice_config: dict = {}) -> Optional[str]:
+        """
+        Generate speech for long text by splitting into chunks and combining the audio.
+        """
+        try:
+            # Split text into chunks
+            chunks = self._split_text_into_chunks(text, max_size=9500)
+            self.logger.info(f"Split text into {len(chunks)} chunks for ElevenLabs processing")
+              # Use voice from config or fallback to default
+            voice_id = voice_config.get("elevenlabs_voice", self.elevenlabs_voice_id) if voice_config else self.elevenlabs_voice_id
+            
+            # Create voice settings (only if VoiceSettings is available)
+            voice_settings = None
+            if VoiceSettings is not None:
+                voice_settings = VoiceSettings(
+                    stability=self.elevenlabs_stability,
+                    similarity_boost=self.elevenlabs_similarity_boost,
+                    style=self.elevenlabs_style,
+                    use_speaker_boost=self.elevenlabs_use_speaker_boost
+                )
+              # Generate audio for each chunk
+            chunk_files = []
+            for i, chunk in enumerate(chunks):
+                # Create chunk file path by modifying the filename before the extension
+                chunk_filename = f"{output_path.stem}_chunk_{i}.mp3"
+                chunk_path = output_path.parent / chunk_filename
+                result = self._elevenlabs_generate_single_chunk(chunk, chunk_path, voice_id, voice_settings)
+                if result:
+                    chunk_files.append(result)
+                else:
+                    # If any chunk fails, clean up and return None
+                    self._cleanup_temp_files(chunk_files)
+                    return None
+            
+            # Combine all chunk files into final audio
+            final_result = self._combine_audio_files(chunk_files, output_path)
+            
+            # Clean up temporary chunk files
+            self._cleanup_temp_files(chunk_files)
+            
+            return final_result
+            
+        except Exception as e:
+            self.logger.error(f"ElevenLabs chunked generation failed: {e}")
+            return None
+    
+    def _elevenlabs_generate_single_chunk(self, text: str, output_path: Path, voice_id: str, voice_settings) -> Optional[str]:
+        """
+        Generate speech for a single text chunk using ElevenLabs TTS.
+        """
+        try:            # Try to use a simple approach that should work with most ElevenLabs versions
+            audio = None
+            
+            # Try common API patterns
+            try:                # Try newer SDK pattern first
+                if hasattr(self.elevenlabs_client, 'text_to_speech'):
+                    # Call with explicit parameters to avoid type issues
+                    if voice_settings is not None:
+                        audio = self.elevenlabs_client.text_to_speech.convert(
+                            text=text,
+                            voice_id=voice_id,
+                            voice_settings=voice_settings
+                        )
+                    else:
+                        audio = self.elevenlabs_client.text_to_speech.convert(
+                            text=text,
+                            voice_id=voice_id
+                        )
+                elif hasattr(self.elevenlabs_client, 'generate'):
+                    # Use getattr to avoid linter complaints about unknown method
+                    generate_method = getattr(self.elevenlabs_client, 'generate')
+                    audio = generate_method(
+                        text=text,
+                        voice=voice_id
+                    )
+                else:
+                    raise AttributeError("No suitable ElevenLabs API method found")
+                    
+            except Exception as api_error:
+                self.logger.error(f"ElevenLabs API call failed: {api_error}")
+                return None
+            
+            if not audio:
+                self.logger.error("ElevenLabs returned no audio data")
+                return None
+            
+            # Save audio to file
+            with open(output_path, 'wb') as f:
+                for chunk in audio:
+                    f.write(chunk)
+            
+            self.logger.debug(f"Generated ElevenLabs chunk: {output_path}")
+            return str(output_path)
+            
+        except Exception as e:
+            self.logger.error(f"ElevenLabs single chunk generation failed: {e}")
+            return None
+    
+    def _split_text_into_chunks(self, text: str, max_size: int = 9500) -> list:
+        """
+        Split text into chunks at sentence boundaries to stay under character limit.
+        """
+        import re
+        
+        # Split by sentences (periods, exclamation marks, question marks)
+        sentences = re.split(r'(?<=[.!?])\s+', text)
+        
+        chunks = []
+        current_chunk = ""
+        
+        for sentence in sentences:
+            # Check if adding this sentence would exceed the limit
+            if len(current_chunk) + len(sentence) + 1 > max_size:
+                if current_chunk:
+                    chunks.append(current_chunk.strip())
+                    current_chunk = sentence
+                else:
+                    # Single sentence is too long, split by words
+                    words = sentence.split()
+                    word_chunk = ""
+                    for word in words:
+                        if len(word_chunk) + len(word) + 1 > max_size:
+                            if word_chunk:
+                                chunks.append(word_chunk.strip())
+                                word_chunk = word
+                            else:
+                                # Single word is too long, just add it
+                                chunks.append(word)
+                        else:
+                            word_chunk += " " + word if word_chunk else word
+                    if word_chunk:
+                        current_chunk = word_chunk
+            else:
+                current_chunk += " " + sentence if current_chunk else sentence
+        
+        if current_chunk:
+            chunks.append(current_chunk.strip())
+        
+        return chunks
+    
+    def _combine_audio_files(self, audio_files: list, output_path: Path) -> Optional[str]:
+        """
+        Combine multiple audio files into a single file using pydub.
+        """
+        try:
+            from pydub import AudioSegment
+            
+            combined = AudioSegment.empty()
+            
+            for audio_file in audio_files:
+                segment = AudioSegment.from_mp3(audio_file)
+                combined += segment
+            
+            # Export combined audio
+            combined.export(str(output_path), format="mp3")
+            self.logger.info(f"Combined {len(audio_files)} audio chunks into: {output_path}")
+            
+            return str(output_path)
+            
+        except ImportError:
+            self.logger.error("pydub not available for audio combining. Install with: pip install pydub")
+            return None
+        except Exception as e:
+            self.logger.error(f"Failed to combine audio files: {e}")
+            return None
+    
+    def _cleanup_temp_files(self, file_paths: list):
+        """
+        Clean up temporary audio chunk files.
+        """
+        for file_path in file_paths:
+            try:
+                if os.path.exists(file_path):
+                    os.unlink(file_path)
+            except Exception as e:
+                self.logger.warning(f"Failed to clean up temp file {file_path}: {e}")
